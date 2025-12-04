@@ -3,31 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optima Meditech E-Commerce Platform - Sales Presentation</title>
+    <title>Sales Presentation - Optima Meditech</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --primary-blue: #4A9FD8;
-            --primary-green: #7BC043;
-            --dark: #1a1a2e;
-            --light: #f8f9fa;
-            --accent: #ff6b6b;
-            --success: #51cf66;
-            --purple: #9b59b6;
-        }
         body {
             font-family: 'Inter', sans-serif;
             background: white;
-            color: var(--dark);
-            line-height: 1.6;
+            color: #333;
         }
-        
-        /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
             color: white;
             padding: 6rem 2rem;
             text-align: center;
@@ -36,48 +23,21 @@
             font-size: 4rem;
             font-weight: 900;
             margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
-        .hero .subtitle {
-            font-size: 1.8rem;
-            margin-bottom: 2rem;
-            opacity: 0.95;
-        }
-        .hero .tagline {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        /* Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 4rem 2rem;
         }
-        
-        /* Section */
-        .section {
-            margin-bottom: 5rem;
-        }
         .section-title {
             font-size: 3rem;
             font-weight: 900;
             text-align: center;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .section-subtitle {
-            text-align: center;
-            color: #666;
-            font-size: 1.3rem;
-            margin-bottom: 3rem;
-        }
-        
-        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -85,7 +45,7 @@
             margin: 3rem 0;
         }
         .stat-card {
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
             color: white;
             padding: 3rem 2rem;
             border-radius: 20px;
@@ -95,668 +55,68 @@
         .stat-value {
             font-size: 3.5rem;
             font-weight: 900;
-            margin-bottom: 0.5rem;
         }
-        .stat-label {
-            font-size: 1.1rem;
-            opacity: 0.95;
-        }
-        
-        /* Features Grid */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        .feature-card {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            transition: all 0.3s;
-        }
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(74, 159, 216, 0.2);
-        }
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: white;
-            margin-bottom: 1.5rem;
-        }
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--dark);
-        }
-        .feature-card p {
-            color: #666;
-            line-height: 1.8;
-        }
-        
-        /* Comparison Table */
-        .comparison-table {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-        }
-        .comparison-table table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .comparison-table th {
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            color: white;
-            padding: 1.5rem;
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
-        .comparison-table td {
-            padding: 1.5rem;
-            border-bottom: 1px solid #ddd;
-        }
-        .comparison-table tr:hover {
-            background: var(--light);
-        }
-        .check { color: var(--success); font-size: 1.5rem; }
-        .cross { color: var(--accent); font-size: 1.5rem; }
-        
-        /* Pricing Cards */
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0;
-        }
-        .pricing-card {
-            background: white;
-            border-radius: 20px;
-            padding: 3rem 2rem;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            text-align: center;
-            transition: all 0.3s;
-        }
-        .pricing-card.featured {
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            color: white;
-            transform: scale(1.05);
-        }
-        .pricing-card:hover {
-            transform: translateY(-10px) scale(1.05);
-        }
-        .pricing-card h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-        .pricing-card .price {
-            font-size: 3.5rem;
-            font-weight: 900;
-            margin: 1.5rem 0;
-        }
-        .pricing-card .price span {
-            font-size: 1.5rem;
-            opacity: 0.8;
-        }
-        .pricing-card ul {
-            list-style: none;
-            margin: 2rem 0;
-            text-align: left;
-        }
-        .pricing-card ul li {
-            padding: 0.8rem 0;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-        }
-        .pricing-card ul li i {
-            margin-right: 0.5rem;
-            color: var(--success);
-        }
-        .pricing-card.featured ul li {
-            border-bottom-color: rgba(255,255,255,0.3);
-        }
-        .pricing-card.featured ul li i {
-            color: white;
-        }
-        
-        /* CTA Section */
-        .cta-section {
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            color: white;
-            padding: 5rem 2rem;
-            text-align: center;
-            border-radius: 30px;
-            margin: 4rem 0;
-        }
-        .cta-section h2 {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-        }
-        .cta-section p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.95;
-        }
-        
-        /* Buttons */
         .btn {
             display: inline-block;
             padding: 1.2rem 3rem;
-            border: none;
             border-radius: 50px;
             font-size: 1.1rem;
             font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
             text-decoration: none;
             margin: 0.5rem;
+            transition: all 0.3s;
         }
         .btn-primary {
             background: white;
-            color: var(--primary-blue);
+            color: #4A9FD8;
         }
         .btn-primary:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            border: 3px solid white;
-        }
-        .btn-secondary:hover {
-            background: white;
-            color: var(--primary-blue);
-        }
-        
-        /* Testimonials */
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        .testimonial-card {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-        }
-        .testimonial-text {
-            font-size: 1.1rem;
-            font-style: italic;
-            color: #666;
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .author-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-        .author-info h4 {
-            margin-bottom: 0.3rem;
-        }
-        .author-info p {
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        /* ROI Calculator */
-        .roi-calculator {
-            background: var(--light);
-            padding: 3rem;
-            border-radius: 20px;
-            margin: 3rem 0;
-        }
-        .roi-calculator h3 {
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-        .calculator-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-        .calculator-input {
-            margin-bottom: 1.5rem;
-        }
-        .calculator-input label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        .calculator-input input {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 1rem;
-        }
-        .roi-result {
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            color: white;
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-        }
-        .roi-result h4 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .roi-result .value {
-            font-size: 3rem;
-            font-weight: 900;
-        }
-        
-        @media print {
-            .btn { display: none; }
-            body { background: white; }
-        }
-        
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .hero .subtitle { font-size: 1.3rem; }
-            .section-title { font-size: 2rem; }
-            .calculator-grid { grid-template-columns: 1fr; }
-        }
     </style>
 </head>
 <body>
-    <!-- Hero Section -->
     <div class="hero">
         <h1>OPTIMA MEDITECH</h1>
-        <p class="subtitle">Enterprise E-Commerce Platform</p>
-        <p class="tagline">Transform Your Medical Equipment Business with a Complete, Ready-to-Deploy E-Commerce Solution</p>
+        <p style="font-size: 1.8rem; margin-bottom: 2rem;">Enterprise E-Commerce Platform</p>
+        <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto;">Transform Your Medical Equipment Business with a Complete, Ready-to-Deploy E-Commerce Solution</p>
     </div>
 
-    <!-- Executive Summary -->
     <div class="container">
-        <div class="section">
-            <h2 class="section-title">Why Choose Optima Meditech Platform?</h2>
-            <p class="section-subtitle">A complete, enterprise-grade e-commerce solution built specifically for medical equipment businesses</p>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value">100+</div>
-                    <div class="stat-label">Features Included</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">15</div>
-                    <div class="stat-label">Ready Pages</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">3-Tier</div>
-                    <div class="stat-label">Admin System</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">100%</div>
-                    <div class="stat-label">Customizable</div>
-                </div>
+        <h2 class="section-title">Why Choose Optima Meditech Platform?</h2>
+        <p style="text-align: center; color: #666; font-size: 1.3rem; margin-bottom: 3rem;">A complete, enterprise-grade e-commerce solution built specifically for medical equipment businesses</p>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">100+</div>
+                <div>Features Included</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">15</div>
+                <div>Ready Pages</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">3-Tier</div>
+                <div>Admin System</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">100%</div>
+                <div>Customizable</div>
             </div>
         </div>
 
-        <!-- Key Features -->
-        <div class="section">
-            <h2 class="section-title">Complete Feature Set</h2>
-            <p class="section-subtitle">Everything you need to run a successful medical equipment e-commerce business</p>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>User Management</h3>
-                    <p>Complete user registration, authentication, profile management, multiple addresses, loyalty programs, and customer tier system.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-box"></i>
-                    </div>
-                    <h3>Product Management</h3>
-                    <p>Full product catalog, categories, search, filters, reviews, ratings, wishlist, and related products functionality.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shopping-cart"></i>
-                    </div>
-                    <h3>Shopping Cart & Checkout</h3>
-                    <p>Multi-step checkout, multiple payment methods, discount codes, GST calculation, and invoice generation.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Admin Dashboard</h3>
-                    <p>Comprehensive analytics, revenue tracking, order management, inventory control, and customer insights.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
-                    <h3>Super Admin Panel</h3>
-                    <p>Admin user management, feature toggles, system settings, and complete platform control.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-truck"></i>
-                    </div>
-                    <h3>Order & Shipping</h3>
-                    <p>Order tracking, shipment management, courier integration, and real-time status updates.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Comparison Table -->
-        <div class="section">
-            <h2 class="section-title">Platform Comparison</h2>
-            <p class="section-subtitle">See how we compare to building from scratch or using basic templates</p>
-            
-            <div class="comparison-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Feature</th>
-                            <th>Optima Meditech</th>
-                            <th>Custom Development</th>
-                            <th>Basic Template</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Complete User Management</strong></td>
-                            <td><i class="fas fa-check-circle check"></i></td>
-                            <td><i class="fas fa-check-circle check"></i> (6+ months)</td>
-                            <td><i class="fas fa-times-circle cross"></i></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Admin Dashboard</strong></td>
-                            <td><i class="fas fa-check-circle check"></i></td>
-                            <td><i class="fas fa-check-circle check"></i> (3+ months)</td>
-                            <td><i class="fas fa-times-circle cross"></i></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Super Admin Panel</strong></td>
-                            <td><i class="fas fa-check-circle check"></i></td>
-                            <td><i class="fas fa-check-circle check"></i> (2+ months)</td>
-                            <td><i class="fas fa-times-circle cross"></i></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Feature Toggle System</strong></td>
-                            <td><i class="fas fa-check-circle check"></i></td>
-                            <td><i class="fas fa-times-circle cross"></i></td>
-                            <td><i class="fas fa-times-circle cross"></i></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Order Management</strong></td>
-                            <td><i class="fas fa-check-circle check"></i></td>
-                            <td><i class="fas fa-check-circle check"></i> (2+ months)</td>
-                            <td>Basic</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Inventory Management</strong></td>
-                            <td><i class="fas fa-check-circle check"></i></td>
-                            <td><i class="fas fa-check-circle check"></i> (1+ month)</td>
-                            <td><i class="fas fa-times-circle cross"></i></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Analytics & Reports</strong></td>
-                            <td><i class="fas fa-check-circle check"></i></td>
-                            <td><i class="fas fa-check-circle check"></i> (2+ months)</td>
-                            <td><i class="fas fa-times-circle cross"></i></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Loyalty Program</strong></td>
-                            <td><i class="fas fa-check-circle check"></i></td>
-                            <td><i class="fas fa-check-circle check"></i> (1+ month)</td>
-                            <td><i class="fas fa-times-circle cross"></i></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Time to Deploy</strong></td>
-                            <td><strong>1 Day</strong></td>
-                            <td>12+ months</td>
-                            <td>2-3 months</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Cost</strong></td>
-                            <td><strong>Fixed Price</strong></td>
-                            <td>$50,000 - $150,000</td>
-                            <td>$5,000 - $20,000</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Pricing -->
-        <div class="section">
-            <h2 class="section-title">Investment Options</h2>
-            <p class="section-subtitle">Choose the package that fits your business needs</p>
-            
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <h3>Starter</h3>
-                    <div class="price">$2,999<span>/one-time</span></div>
-                    <ul>
-                        <li><i class="fas fa-check"></i> Complete Platform</li>
-                        <li><i class="fas fa-check"></i> All 15 Pages</li>
-                        <li><i class="fas fa-check"></i> Admin Dashboard</li>
-                        <li><i class="fas fa-check"></i> Basic Support (30 days)</li>
-                        <li><i class="fas fa-check"></i> Documentation</li>
-                        <li><i class="fas fa-check"></i> Source Code</li>
-                    </ul>
-                    <button class="btn btn-secondary">Get Started</button>
-                </div>
-                
-                <div class="pricing-card featured">
-                    <h3>Professional</h3>
-                    <div class="price">$4,999<span>/one-time</span></div>
-                    <ul>
-                        <li><i class="fas fa-check"></i> Everything in Starter</li>
-                        <li><i class="fas fa-check"></i> Super Admin Panel</li>
-                        <li><i class="fas fa-check"></i> Database Integration</li>
-                        <li><i class="fas fa-check"></i> Payment Gateway Setup</li>
-                        <li><i class="fas fa-check"></i> Priority Support (90 days)</li>
-                        <li><i class="fas fa-check"></i> Custom Branding</li>
-                        <li><i class="fas fa-check"></i> Training Session</li>
-                    </ul>
-                    <button class="btn btn-primary">Most Popular</button>
-                </div>
-                
-                <div class="pricing-card">
-                    <h3>Enterprise</h3>
-                    <div class="price">$9,999<span>/one-time</span></div>
-                    <ul>
-                        <li><i class="fas fa-check"></i> Everything in Professional</li>
-                        <li><i class="fas fa-check"></i> Full Customization</li>
-                        <li><i class="fas fa-check"></i> Dedicated Support (1 year)</li>
-                        <li><i class="fas fa-check"></i> Cloud Deployment</li>
-                        <li><i class="fas fa-check"></i> Email Integration</li>
-                        <li><i class="fas fa-check"></i> SMS Integration</li>
-                        <li><i class="fas fa-check"></i> Ongoing Maintenance</li>
-                    </ul>
-                    <button class="btn btn-secondary">Contact Sales</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ROI Calculator -->
-        <div class="section">
-            <h2 class="section-title">Calculate Your ROI</h2>
-            <p class="section-subtitle">See how quickly this platform pays for itself</p>
-            
-            <div class="roi-calculator">
-                <h3>ROI Calculator</h3>
-                <div class="calculator-grid">
-                    <div>
-                        <div class="calculator-input">
-                            <label>Average Order Value (₹)</label>
-                            <input type="number" id="avgOrder" value="125000" oninput="calculateROI()">
-                        </div>
-                        <div class="calculator-input">
-                            <label>Expected Orders per Month</label>
-                            <input type="number" id="ordersPerMonth" value="20" oninput="calculateROI()">
-                        </div>
-                        <div class="calculator-input">
-                            <label>Platform Investment (₹)</label>
-                            <input type="number" id="investment" value="415000" oninput="calculateROI()">
-                        </div>
-                    </div>
-                    <div>
-                        <div class="roi-result">
-                            <h4>Monthly Revenue</h4>
-                            <div class="value" id="monthlyRevenue">₹25,00,000</div>
-                        </div>
-                        <div class="roi-result" style="margin-top: 1rem;">
-                            <h4>Break-even Time</h4>
-                            <div class="value" id="breakeven">< 1 Month</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Testimonials -->
-        <div class="section">
-            <h2 class="section-title">What Our Clients Say</h2>
-            <p class="section-subtitle">Real results from real businesses</p>
-            
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"This platform transformed our business. We went from manual orders to a fully automated system in just one week. Sales increased by 300% in the first quarter!"</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">RK</div>
-                        <div class="author-info">
-                            <h4>Rajesh Kumar</h4>
-                            <p>CEO, MediEquip Solutions</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"The admin panel is incredibly powerful. We can manage everything from one place - inventory, orders, customers, and analytics. Best investment we've made!"</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">PS</div>
-                        <div class="author-info">
-                            <h4>Priya Sharma</h4>
-                            <p>Operations Manager, HealthTech India</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"The super admin panel gives us complete control. We can enable/disable features, manage admins, and configure everything without touching code. Brilliant!"</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">AM</div>
-                        <div class="author-info">
-                            <h4>Amit Mehta</h4>
-                            <p>CTO, MedSupply Pro</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- CTA Section -->
-        <div class="cta-section">
-            <h2>Ready to Transform Your Business?</h2>
-            <p>Join hundreds of medical equipment businesses already using our platform</p>
-            <div>
-                <a href="mailto:sales@optimameditech.com" class="btn btn-primary">
-                    <i class="fas fa-envelope"></i> Contact Sales
-                </a>
-                <a href="index.html" class="btn btn-secondary">
-                    <i class="fas fa-eye"></i> View Live Demo
-                </a>
-                <button class="btn btn-secondary" onclick="window.print()">
-                    <i class="fas fa-download"></i> Download PDF
-                </button>
-            </div>
-        </div>
-
-        <!-- Technical Specifications -->
-        <div class="section">
-            <h2 class="section-title">Technical Specifications</h2>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <h3>Frontend Technology</h3>
-                    <ul style="list-style: none; padding: 0;">
-                        <li>✓ HTML5, CSS3, JavaScript</li>
-                        <li>✓ Responsive Design</li>
-                        <li>✓ Modern UI/UX</li>
-                        <li>✓ Cross-browser Compatible</li>
-                    </ul>
-                </div>
-                
-                <div class="feature-card">
-                    <h3>Backend Ready</h3>
-                    <ul style="list-style: none; padding: 0;">
-                        <li>✓ Supabase Integration Ready</li>
-                        <li>✓ RESTful API Structure</li>
-                        <li>✓ Database Schema Included</li>
-                        <li>✓ Authentication System</li>
-                    </ul>
-                </div>
-                
-                <div class="feature-card">
-                    <h3>Security Features</h3>
-                    <ul style="list-style: none; padding: 0;">
-                        <li>✓ Secure Authentication</li>
-                        <li>✓ Password Encryption</li>
-                        <li>✓ XSS Protection</li>
-                        <li>✓ CSRF Protection Ready</li>
-                    </ul>
-                </div>
-            </div>
+        <div style="text-align: center; margin-top: 4rem;">
+            <a href="mailto:sales@optimameditech.com" class="btn btn-primary">
+                <i class="fas fa-envelope"></i> Contact Sales
+            </a>
+            <a href="index.html" class="btn btn-primary">
+                <i class="fas fa-eye"></i> View Live Demo
+            </a>
+            <a href="sales-proposal.html" class="btn btn-primary">
+                <i class="fas fa-file-alt"></i> View Full Proposal
+            </a>
         </div>
     </div>
-
-    <script>
-        function calculateROI() {
-            const avgOrder = parseFloat(document.getElementById('avgOrder').value) || 0;
-            const ordersPerMonth = parseFloat(document.getElementById('ordersPerMonth').value) || 0;
-            const investment = parseFloat(document.getElementById('investment').value) || 0;
-            
-            const monthlyRevenue = avgOrder * ordersPerMonth;
-            const breakeven = investment / monthlyRevenue;
-            
-            document.getElementById('monthlyRevenue').textContent = 
-                '₹' + monthlyRevenue.toLocaleString('en-IN');
-            
-            if (breakeven < 1) {
-                document.getElementById('breakeven').textContent = '< 1 Month';
-            } else {
-                document.getElementById('breakeven').textContent = 
-                    Math.ceil(breakeven) + ' Months';
-            }
-        }
-        
-        // Initialize
-        calculateROI();
-    </script>
 </body>
 </html>
