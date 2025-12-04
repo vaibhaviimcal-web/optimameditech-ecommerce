@@ -25,6 +25,27 @@
             align-items: center;
             justify-content: center;
             padding: 2rem;
+            position: relative;
+        }
+        .back-to-home {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        .back-to-home:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
         }
         .login-container {
             background: white;
@@ -207,9 +228,22 @@
         .demo-credentials strong {
             color: var(--primary-blue);
         }
+        @media (max-width: 768px) {
+            .back-to-home {
+                top: 1rem;
+                left: 1rem;
+                font-size: 0.9rem;
+                padding: 0.6rem 1rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <a href="index.html" class="back-to-home">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back to Home</span>
+    </a>
+
     <div class="login-container">
         <div class="logo-container">
             <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
