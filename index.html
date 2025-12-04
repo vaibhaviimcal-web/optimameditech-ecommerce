@@ -13,6 +13,9 @@
     <!-- AOS Animation Library -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
+    <!-- Swiper Slider -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    
     <style>
         * {
             margin: 0;
@@ -223,18 +226,25 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-green) 100%);
         }
 
-        .hero::before {
-            content: '';
+        .hero-video {
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             opacity: 0.3;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(74, 159, 216, 0.9), rgba(123, 192, 67, 0.9));
         }
 
         .hero-particles {
@@ -355,6 +365,57 @@
             background: white;
             color: var(--primary-blue);
             transform: translateY(-5px);
+        }
+
+        /* Live Activity Feed */
+        .live-activity {
+            position: fixed;
+            bottom: 280px;
+            left: 30px;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            max-width: 350px;
+            opacity: 0;
+            transform: translateX(-400px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .live-activity.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .live-activity-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .live-activity-text {
+            flex: 1;
+        }
+
+        .live-activity-text strong {
+            color: var(--dark);
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .live-activity-text small {
+            color: #666;
+            font-size: 0.85rem;
         }
 
         /* Trust Badges */
@@ -512,6 +573,7 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 2px solid transparent;
             position: relative;
+            cursor: pointer;
         }
 
         .product-card:hover {
@@ -566,6 +628,27 @@
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-5px); }
+        }
+
+        .quick-view-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            color: var(--primary-blue);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            opacity: 0;
+        }
+
+        .product-card:hover .quick-view-btn {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
         }
 
         .product-info {
@@ -631,6 +714,169 @@
             box-shadow: 0 8px 25px rgba(74, 159, 216, 0.4);
         }
 
+        /* Quick View Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 30px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            transform: rotate(90deg);
+            background: #ff5252;
+        }
+
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            padding: 3rem;
+        }
+
+        .modal-image {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            border-radius: 20px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            color: white;
+        }
+
+        .modal-details h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-details .price {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-details p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        /* Reviews Carousel */
+        .reviews-section {
+            padding: 8rem 2rem;
+            background: var(--light);
+        }
+
+        .reviews-carousel {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .review-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .review-stars {
+            color: #ffc107;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .review-text {
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .review-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .review-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .review-info h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .review-info p {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
         /* WhatsApp Floating Button */
         .whatsapp-float {
             position: fixed;
@@ -677,6 +923,106 @@
 
         .call-float:hover {
             transform: scale(1.1);
+        }
+
+        /* Live Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 190px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.5);
+            z-index: 9999;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chat-widget:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-box {
+            position: fixed;
+            bottom: 260px;
+            right: 30px;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            z-index: 9998;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-box.active {
+            display: flex;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            font-size: 1.2rem;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            background: var(--light);
+        }
+
+        .chat-message {
+            background: white;
+            padding: 1rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .chat-message.bot {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+
+        .chat-input {
+            padding: 1rem;
+            border-top: 1px solid #ddd;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .chat-input button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
         }
 
         /* Cart Sidebar */
@@ -963,44 +1309,10 @@
             color: var(--success);
         }
 
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            .hero .tagline {
-                font-size: 1.3rem;
-            }
-            .nav-links {
-                display: none;
-            }
-            .cart-sidebar {
-                width: 100%;
-                right: -100%;
-            }
-            .products-grid, .features-grid {
-                grid-template-columns: 1fr;
-            }
-            .whatsapp-float {
-                bottom: 20px;
-                right: 20px;
-                width: 55px;
-                height: 55px;
-                font-size: 28px;
-            }
-            .call-float {
-                bottom: 90px;
-                right: 20px;
-                width: 50px;
-                height: 50px;
-                font-size: 24px;
-            }
-        }
-
         /* Scroll to Top Button */
         .scroll-top {
             position: fixed;
-            bottom: 200px;
+            bottom: 270px;
             right: 30px;
             width: 50px;
             height: 50px;
@@ -1026,6 +1338,57 @@
         .scroll-top:hover {
             transform: translateY(-5px);
         }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero .tagline {
+                font-size: 1.3rem;
+            }
+            .nav-links {
+                display: none;
+            }
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            .products-grid, .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal-body {
+                grid-template-columns: 1fr;
+            }
+            .live-activity {
+                display: none;
+            }
+            .whatsapp-float {
+                bottom: 20px;
+                right: 20px;
+                width: 55px;
+                height: 55px;
+                font-size: 28px;
+            }
+            .call-float {
+                bottom: 90px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+            .chat-widget {
+                bottom: 160px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+            .chat-box {
+                width: 90%;
+                right: 5%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1034,6 +1397,17 @@
         <div class="loader-content">
             <div class="loader-logo"></div>
             <h2>Loading Excellence...</h2>
+        </div>
+    </div>
+
+    <!-- Live Activity Feed -->
+    <div class="live-activity" id="liveActivity">
+        <div class="live-activity-icon">
+            <i class="fas fa-shopping-bag"></i>
+        </div>
+        <div class="live-activity-text">
+            <strong id="activityName">John from Mumbai</strong>
+            <small id="activityAction">just purchased Digital X-Ray System</small>
         </div>
     </div>
 
@@ -1069,8 +1443,12 @@
         </nav>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Hero Section with Video Background -->
     <section class="hero">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="https://cdn.coverr.co/videos/coverr-medical-professionals-in-a-hospital-5371/1080p.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
         <div class="hero-particles" id="particles"></div>
         <div class="hero-content" data-aos="fade-up">
             <h1>OPTIMA MEDITECH</h1>
@@ -1158,6 +1536,94 @@
         <div class="products-grid" id="productsGrid"></div>
     </section>
 
+    <!-- Reviews Section -->
+    <section class="reviews-section">
+        <h2 class="section-title" data-aos="fade-up">What Our Clients Say</h2>
+        <p class="section-subtitle" data-aos="fade-up">Trusted by healthcare professionals worldwide</p>
+        <div class="reviews-carousel swiper" data-aos="fade-up">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="review-card">
+                        <div class="review-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="review-text">"Optima Meditech has been our trusted partner for over 5 years. Their equipment quality and after-sales support are exceptional. Highly recommended!"</p>
+                        <div class="review-author">
+                            <div class="review-avatar">DR</div>
+                            <div class="review-info">
+                                <h4>Dr. Rajesh Kumar</h4>
+                                <p>Apollo Hospital, Mumbai</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="review-card">
+                        <div class="review-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="review-text">"The digital X-ray system we purchased has transformed our diagnostic capabilities. The image quality is outstanding and the training provided was comprehensive."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">PS</div>
+                            <div class="review-info">
+                                <h4>Dr. Priya Sharma</h4>
+                                <p>Max Healthcare, Delhi</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="review-card">
+                        <div class="review-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="review-text">"Excellent service and premium quality equipment. The 24/7 support team is always responsive and helpful. Best investment for our hospital!"</p>
+                        <div class="review-author">
+                            <div class="review-avatar">AP</div>
+                            <div class="review-info">
+                                <h4>Dr. Amit Patel</h4>
+                                <p>Fortis Hospital, Bangalore</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <!-- Quick View Modal -->
+    <div class="modal" id="quickViewModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeQuickView()"><i class="fas fa-times"></i></button>
+            <div class="modal-body">
+                <div class="modal-image" id="modalImage">
+                    <i class="fas fa-x-ray"></i>
+                </div>
+                <div class="modal-details">
+                    <h2 id="modalName">Product Name</h2>
+                    <div class="price" id="modalPrice">₹45,999</div>
+                    <p id="modalDescription">Product description goes here...</p>
+                    <button class="btn btn-primary" onclick="addToCartFromModal()">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- WhatsApp Float Button -->
     <a href="https://wa.me/919876543210?text=Hi%20Optima%20Meditech,%20I'm%20interested%20in%20your%20products" 
        class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
@@ -1168,6 +1634,30 @@
     <a href="tel:+919876543210" class="call-float" title="Call Us">
         <i class="fas fa-phone-alt"></i>
     </a>
+
+    <!-- Live Chat Widget -->
+    <div class="chat-widget" onclick="toggleChat()">
+        <i class="fas fa-comments"></i>
+    </div>
+
+    <div class="chat-box" id="chatBox">
+        <div class="chat-header">
+            <h3>Live Chat Support</h3>
+            <button class="modal-close" onclick="toggleChat()" style="position: static; width: 30px; height: 30px; font-size: 1rem;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-message bot">
+                <strong>Support Team</strong>
+                <p>Hello! How can we help you today?</p>
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="handleChatEnter(event)">
+            <button onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
 
     <!-- Scroll to Top -->
     <div class="scroll-top" id="scrollTop" onclick="scrollToTop()">
@@ -1244,6 +1734,8 @@
 
     <!-- AOS Library -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Swiper Library -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     
     <script>
         // Initialize AOS
@@ -1251,6 +1743,29 @@
             duration: 1000,
             once: true,
             offset: 100
+        });
+
+        // Initialize Swiper
+        const swiper = new Swiper('.swiper', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                768: {
+                    slidesPerView: 2,
+                },
+                1024: {
+                    slidesPerView: 3,
+                }
+            }
         });
 
         // Loading Screen
@@ -1323,6 +1838,32 @@
             particlesContainer.appendChild(particle);
         }
 
+        // Live Activity Feed
+        const activities = [
+            { name: 'John from Mumbai', action: 'just purchased Digital X-Ray System' },
+            { name: 'Sarah from Delhi', action: 'just purchased Patient Monitor' },
+            { name: 'Amit from Bangalore', action: 'just purchased Ultrasound Scanner' },
+            { name: 'Priya from Chennai', action: 'just purchased ECG Machine' },
+            { name: 'Raj from Pune', action: 'just purchased ICU Ventilator' }
+        ];
+
+        let activityIndex = 0;
+        function showLiveActivity() {
+            const activity = activities[activityIndex];
+            document.getElementById('activityName').textContent = activity.name;
+            document.getElementById('activityAction').textContent = activity.action;
+            document.getElementById('liveActivity').classList.add('show');
+            
+            setTimeout(() => {
+                document.getElementById('liveActivity').classList.remove('show');
+            }, 5000);
+            
+            activityIndex = (activityIndex + 1) % activities.length;
+        }
+
+        setInterval(showLiveActivity, 10000);
+        setTimeout(showLiveActivity, 3000);
+
         // Products Data
         const products = [
             {id: 1, name: "Digital X-Ray System", category: "Diagnostic Imaging", price: 4599900, description: "High-resolution digital radiography system with advanced image processing and PACS integration", icon: "fa-x-ray", badge: "Best Seller"},
@@ -1337,6 +1878,7 @@
         ];
 
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let currentProduct = null;
 
         function renderProducts() {
             const grid = document.getElementById('productsGrid');
@@ -1345,6 +1887,9 @@
                     <div class="product-image">
                         <i class="fas ${product.icon}"></i>
                         ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
+                        <button class="quick-view-btn" onclick="openQuickView(${product.id})">
+                            <i class="fas fa-eye"></i> Quick View
+                        </button>
                     </div>
                     <div class="product-info">
                         <div class="product-category">${product.category}</div>
@@ -1359,6 +1904,26 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        function openQuickView(productId) {
+            currentProduct = products.find(p => p.id === productId);
+            document.getElementById('modalImage').innerHTML = `<i class="fas ${currentProduct.icon}"></i>`;
+            document.getElementById('modalName').textContent = currentProduct.name;
+            document.getElementById('modalPrice').textContent = `₹${(currentProduct.price / 100).toLocaleString('en-IN')}`;
+            document.getElementById('modalDescription').textContent = currentProduct.description;
+            document.getElementById('quickViewModal').classList.add('active');
+        }
+
+        function closeQuickView() {
+            document.getElementById('quickViewModal').classList.remove('active');
+        }
+
+        function addToCartFromModal() {
+            if (currentProduct) {
+                addToCart(currentProduct.id);
+                closeQuickView();
+            }
         }
 
         function addToCart(productId) {
@@ -1449,6 +2014,53 @@
                 notification.classList.remove('show');
                 setTimeout(() => notification.remove(), 400);
             }, 3000);
+        }
+
+        // Live Chat Functions
+        function toggleChat() {
+            document.getElementById('chatBox').classList.toggle('active');
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const messagesContainer = document.getElementById('chatMessages');
+            messagesContainer.innerHTML += `
+                <div class="chat-message">
+                    <strong>You</strong>
+                    <p>${message}</p>
+                </div>
+            `;
+
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // Simulate bot response
+            setTimeout(() => {
+                messagesContainer.innerHTML += `
+                    <div class="chat-message bot">
+                        <strong>Support Team</strong>
+                        <p>Thank you for your message! Our team will respond shortly. For immediate assistance, please call +91 (555) 123-4567 or WhatsApp us.</p>
+                    </div>
+                `;
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1000);
+        }
+
+        function handleChatEnter(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('quickViewModal');
+            if (event.target === modal) {
+                closeQuickView();
+            }
         }
 
         // Initialize
