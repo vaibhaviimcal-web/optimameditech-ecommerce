@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Setup - Optima Meditech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 25px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 1.2rem;
+        }
+
+        .step {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            border-left: 5px solid #4A9FD8;
+        }
+
+        .step h2 {
+            color: #4A9FD8;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+        }
+
+        pre {
+            background: #1a1a2e;
+            color: #00ff00;
+            padding: 1.5rem;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #4A9FD8;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .copy-btn:hover {
+            background: #7BC043;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(74, 159, 216, 0.4);
+        }
+
+        code {
+            background: #f8f9fa;
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            color: #4A9FD8;
+            font-family: 'Courier New', monospace;
+        }
+
+        ul {
+            margin-left: 2rem;
+            line-height: 2;
+        }
+
+        a {
+            color: #4A9FD8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗄️ Database Setup Guide</h1>
+        <p class="subtitle">Set up your Supabase database for Optima Meditech E-Commerce</p>
+
+        <div class="step">
+            <h2><span class="step-number">1</span> Access Supabase SQL Editor</h2>
+            <p>Go to your Supabase project dashboard:</p>
+            <ul>
+                <li>Open: <a href="https://nhgngdgezqkxxjoupllm.supabase.co" target="_blank">https://nhgngdgezqkxxjoupllm.supabase.co</a></li>
+                <li>Navigate to <strong>SQL Editor</strong> from the left sidebar</li>
+                <li>Click <strong>New Query</strong></li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h2><span class="step-number">2</span> Copy & Execute SQL Schema</h2>
+            <p>Copy the SQL code below and paste it into the SQL Editor, then click <strong>Run</strong>:</p>
+            
+            <div style="position: relative;">
+                <pre id="sqlCode">-- ============================================
+-- OPTIMA MEDITECH E-COMMERCE DATABASE SCHEMA
+-- ============================================
+
+-- 1. PRODUCTS TABLE
+CREATE TABLE IF NOT EXISTS products (
+    id BIGSERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    category TEXT NOT NULL,
+    price BIGINT NOT NULL,
+    description TEXT,
+    icon TEXT,
+    image TEXT,
+    badge TEXT,
+    stock INTEGER DEFAULT 0,
+    is_active BOOLEAN DEFAULT true,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 2. ORDERS TABLE
+CREATE TABLE IF NOT EXISTS orders (
+    id BIGSERIAL PRIMARY KEY,
+    order_id TEXT UNIQUE NOT NULL,
+    customer_first_name TEXT NOT NULL,
+    customer_last_name TEXT NOT NULL,
+    customer_email TEXT NOT NULL,
+    customer_phone TEXT NOT NULL,
+    hospital_name TEXT,
+    address TEXT NOT NULL,
+    city TEXT NOT NULL,
+    state TEXT NOT NULL,
+    pincode TEXT NOT NULL,
+    gst_number TEXT,
+    special_instructions TEXT,
+    subtotal BIGINT NOT NULL,
+    gst_amount BIGINT NOT NULL,
+    discount_amount BIGINT DEFAULT 0,
+    total_amount BIGINT NOT NULL,
+    payment_method TEXT NOT NULL,
+    payment_id TEXT,
+    order_status TEXT DEFAULT 'pending',
+    tracking_status TEXT DEFAULT 'order_placed',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 3. ORDER ITEMS TABLE
+CREATE TABLE IF NOT EXISTS order_items (
+    id BIGSERIAL PRIMARY KEY,
+    order_id BIGINT REFERENCES orders(id) ON DELETE CASCADE,
+    product_id BIGINT REFERENCES products(id),
+    product_name TEXT NOT NULL,
+    product_price BIGINT NOT NULL,
+    quantity INTEGER NOT NULL,
+    total_price BIGINT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 4. DISCOUNT CODES TABLE
+CREATE TABLE IF NOT EXISTS discount_codes (
+    id BIGSERIAL PRIMARY KEY,
+    code TEXT UNIQUE NOT NULL,
+    discount_percentage INTEGER NOT NULL,
+    is_active BOOLEAN DEFAULT true,
+    usage_count INTEGER DEFAULT 0,
+    max_usage INTEGER,
+    valid_from TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    valid_until TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 5. SITE SETTINGS TABLE
+CREATE TABLE IF NOT EXISTS site_settings (
+    id BIGSERIAL PRIMARY KEY,
+    setting_key TEXT UNIQUE NOT NULL,
+    setting_value TEXT,
+    setting_type TEXT DEFAULT 'text',
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- ============================================
+-- INSERT SAMPLE DATA
+-- ============================================
+
+INSERT INTO products (name, category, price, description, icon, image, badge, stock) VALUES
+('Digital X-Ray System', 'Diagnostic Imaging', 4599900, 'High-resolution digital radiography system', 'fa-x-ray', 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80', 'Best Seller', 10),
+('Patient Monitor', 'Patient Monitoring', 1299900, 'Multi-parameter vital signs monitor', 'fa-heartbeat', 'https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=800&q=80', 'New', 25),
+('Ultrasound Scanner', 'Diagnostic Imaging', 3850000, '4D color doppler ultrasound', 'fa-wave-square', 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80', 'Premium', 8),
+('Surgical LED Lights', 'OT Equipment', 899900, 'Shadowless LED surgical lights', 'fa-lightbulb', 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80', NULL, 15),
+('Anesthesia Workstation', 'OT Equipment', 2999900, 'Advanced anesthesia machine', 'fa-lungs', 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=800&q=80', 'Featured', 12),
+('ECG Machine', 'Cardiology', 599900, '12-lead ECG with automatic interpretation', 'fa-heart', 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=800&q=80', NULL, 30),
+('Defibrillator AED', 'Emergency Care', 349900, 'Automated external defibrillator', 'fa-bolt', 'https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80', 'Essential', 20),
+('Infusion Pump', 'IV Therapy', 279900, 'Smart infusion pump', 'fa-syringe', 'https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=800&q=80', NULL, 40),
+('ICU Ventilator', 'Critical Care', 3499900, 'Advanced ICU ventilator', 'fa-wind', 'https://images.unsplash.com/photo-1583324113626-70df0f4deaab?w=800&q=80', 'Premium', 6);
+
+INSERT INTO discount_codes (code, discount_percentage, max_usage) VALUES
+('OPTIMA10', 10, 100),
+('HEALTH20', 20, 50),
+('WELCOME15', 15, 200);
+
+INSERT INTO site_settings (setting_key, setting_value, setting_type) VALUES
+('site_name', 'Optima Meditech', 'text'),
+('site_tagline', 'Healthcare Made Easy', 'text'),
+('contact_email', 'info@optimameditech.com', 'email'),
+('contact_phone', '+91 (555) 123-4567', 'text'),
+('gst_number', '27AABCU9603R1ZM', 'text'),
+('gst_percentage', '18', 'number');
+
+-- ============================================
+-- CREATE INDEXES
+-- ============================================
+
+CREATE INDEX idx_products_category ON products(category);
+CREATE INDEX idx_products_active ON products(is_active);
+CREATE INDEX idx_orders_order_id ON orders(order_id);
+CREATE INDEX idx_orders_email ON orders(customer_email);
+CREATE INDEX idx_orders_status ON orders(order_status);
+
+-- ============================================
+-- ENABLE ROW LEVEL SECURITY
+-- ============================================
+
+ALTER TABLE products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE order_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE discount_codes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
+
+-- ============================================
+-- CREATE RLS POLICIES
+-- ============================================
+
+CREATE POLICY "Public can view active products" ON products
+    FOR SELECT USING (is_active = true);
+
+CREATE POLICY "Anyone can create orders" ON orders
+    FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Public can view active discount codes" ON discount_codes
+    FOR SELECT USING (is_active = true);
+
+CREATE POLICY "Public can view site settings" ON site_settings
+    FOR SELECT USING (true);</pre>
+                <button class="copy-btn" onclick="copySQL()">📋 Copy SQL</button>
+            </div>
+        </div>
+
+        <div class="step">
+            <h2><span class="step-number">3</span> Get Your Supabase API Key</h2>
+            <p>You need to get your Supabase Anon Key:</p>
+            <ul>
+                <li>Go to <strong>Project Settings</strong> → <strong>API</strong></li>
+                <li>Copy the <code>anon</code> <code>public</code> key</li>
+                <li>You'll need this for the admin panel</li>
+            </ul>
+            
+            <div class="warning">
+                <strong>⚠️ Important:</strong> Keep your API keys secure. Never commit them to public repositories.
+            </div>
+        </div>
+
+        <div class="step">
+            <h2><span class="step-number">4</span> Update Admin Panel</h2>
+            <p>Open <code>admin.html</code> and replace the placeholder with your actual Supabase Anon Key:</p>
+            <pre>const SUPABASE_ANON_KEY = 'YOUR_ACTUAL_ANON_KEY_HERE';</pre>
+        </div>
+
+        <div class="step">
+            <h2><span class="step-number">5</span> Access Admin Panel</h2>
+            <div class="success">
+                <strong>✅ Setup Complete!</strong> You can now access your admin panel.
+            </div>
+            <p><strong>Admin Panel URL:</strong> <a href="admin.html" target="_blank">admin.html</a></p>
+            <p><strong>Demo Credentials:</strong></p>
+            <ul>
+                <li>Email: <code>admin@optimameditech.com</code></li>
+                <li>Password: <code>admin123</code></li>
+            </ul>
+            <a href="admin.html" class="btn-primary">🚀 Open Admin Panel</a>
+        </div>
+
+        <div class="step">
+            <h2><span class="step-number">6</span> Features Available</h2>
+            <ul>
+                <li>✅ <strong>Dashboard</strong> - View statistics and recent orders</li>
+                <li>✅ <strong>Products Management</strong> - Add, edit, delete products</li>
+                <li>✅ <strong>Orders Management</strong> - View and manage customer orders</li>
+                <li>✅ <strong>Discount Codes</strong> - Create and manage promotional codes</li>
+                <li>✅ <strong>Settings</strong> - Configure site settings</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function copySQL() {
+            const sqlCode = document.getElementById('sqlCode').textContent;
+            navigator.clipboard.writeText(sqlCode).then(() => {
+                alert('✅ SQL code copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>
