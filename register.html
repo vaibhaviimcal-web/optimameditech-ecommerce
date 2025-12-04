@@ -27,26 +27,46 @@
             padding: 2rem;
             position: relative;
         }
-        .back-to-home {
+        .header-logo {
             position: absolute;
             top: 2rem;
             left: 2rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            color: white;
+            gap: 0.8rem;
             text-decoration: none;
-            font-weight: 600;
             padding: 0.8rem 1.5rem;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.95);
             border-radius: 50px;
             backdrop-filter: blur(10px);
             transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             z-index: 10;
         }
-        .back-to-home:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateX(-5px);
+        .header-logo:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+        .header-logo-svg {
+            width: 40px;
+            height: 40px;
+        }
+        .header-logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        .header-brand-name {
+            font-size: 1.1rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+        .header-brand-tagline {
+            font-size: 0.65rem;
+            color: #666;
+            font-style: italic;
         }
         .register-container {
             background: white;
@@ -204,19 +224,39 @@
             .register-left {
                 display: none;
             }
-            .back-to-home {
+            .header-logo {
                 top: 1rem;
                 left: 1rem;
-                font-size: 0.9rem;
                 padding: 0.6rem 1rem;
+            }
+            .header-logo-svg {
+                width: 35px;
+                height: 35px;
+            }
+            .header-brand-name {
+                font-size: 0.95rem;
+            }
+            .header-brand-tagline {
+                font-size: 0.6rem;
             }
         }
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-to-home">
-        <i class="fas fa-arrow-left"></i>
-        <span>Back to Home</span>
+    <a href="index.html" class="header-logo">
+        <svg class="header-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="headerLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#4A9FD8;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#7BC043;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <circle cx="50" cy="50" r="35" fill="none" stroke="url(#headerLogoGrad)" stroke-width="8"/>
+        </svg>
+        <div class="header-logo-text">
+            <span class="header-brand-name">OPTIMA MEDITECH</span>
+            <span class="header-brand-tagline">Healthcare Made Easy</span>
+        </div>
     </a>
 
     <div class="register-container">
