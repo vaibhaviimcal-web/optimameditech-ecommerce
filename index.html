@@ -1193,6 +1193,9 @@
             font-weight: 800;
             cursor: pointer;
             transition: all 0.3s;
+            text-decoration: none;
+            display: block;
+            text-align: center;
         }
 
         .checkout-btn:hover {
@@ -1681,9 +1684,9 @@
                 <span>Total:</span>
                 <span id="cartTotal">₹0.00</span>
             </div>
-            <button class="checkout-btn" onclick="checkout()">
+            <a href="checkout.html" class="checkout-btn">
                 <i class="fas fa-lock"></i> Proceed to Checkout
-            </button>
+            </a>
         </div>
     </div>
 
@@ -1989,15 +1992,6 @@
 
         function toggleCart() {
             document.getElementById('cartSidebar').classList.toggle('active');
-        }
-
-        function checkout() {
-            if (cart.length === 0) {
-                alert('Your cart is empty!');
-                return;
-            }
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            alert('Proceeding to checkout...\n\nTotal: ₹' + (total / 100).toLocaleString('en-IN') + '\n\nThank you for choosing Optima Meditech!');
         }
 
         function saveCart() {
