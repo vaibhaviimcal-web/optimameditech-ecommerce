@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Optima Meditech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Razorpay SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #4A9FD8;
+            --primary-green: #7BC043;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --accent: #ff6b6b;
+            --success: #51cf66;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            padding: 1.5rem 2rem;
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .logo-svg {
+            width: 50px;
+            height: 50px;
+        }
+
+        .logo-text .brand-name {
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .checkout-container {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 3rem;
+        }
+
+        .checkout-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(74, 159, 216, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .order-summary {
+            position: sticky;
+            top: 2rem;
+            height: fit-content;
+        }
+
+        .order-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--light);
+            border-radius: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .order-item-image {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .order-item-details {
+            flex: 1;
+        }
+
+        .order-item-name {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-item-price {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .order-item-qty {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .price-breakdown {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--light);
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .price-row.total {
+            font-size: 1.5rem;
+            font-weight: 800;
+            padding-top: 1rem;
+            border-top: 2px solid var(--light);
+            margin-top: 1rem;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-method {
+            padding: 1.5rem;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary-blue);
+            background: rgba(74, 159, 216, 0.05);
+        }
+
+        .payment-method.active {
+            border-color: var(--primary-blue);
+            background: linear-gradient(135deg, rgba(74, 159, 216, 0.1), rgba(123, 192, 67, 0.1));
+        }
+
+        .payment-method i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-blue);
+        }
+
+        .payment-method span {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(74, 159, 216, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .security-badges {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--light);
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .security-badge i {
+            color: var(--success);
+            font-size: 1.2rem;
+        }
+
+        .discount-code {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .discount-code input {
+            flex: 1;
+        }
+
+        .discount-code button {
+            padding: 1rem 2rem;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .discount-code button:hover {
+            background: var(--primary-green);
+        }
+
+        .success-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-modal.active {
+            display: flex;
+        }
+
+        .success-content {
+            background: white;
+            padding: 4rem;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 500px;
+            animation: successSlideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes successSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--success), #40c057);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 3rem;
+            color: white;
+            animation: successPulse 1s ease-in-out;
+        }
+
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .success-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .success-content p {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .order-id {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo-container">
+                <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4A9FD8;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#7BC043;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="url(#logoGradient)" stroke-width="8"/>
+                </svg>
+                <div class="logo-text">
+                    <span class="brand-name">OPTIMA MEDITECH</span>
+                </div>
+            </a>
+        </nav>
+    </header>
+
+    <div class="checkout-container">
+        <div class="checkout-section">
+            <h2 class="section-title">Billing & Shipping Details</h2>
+            
+            <form id="checkoutForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>First Name *</label>
+                        <input type="text" id="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name *</label>
+                        <input type="text" id="lastName" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Email Address *</label>
+                    <input type="email" id="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number *</label>
+                    <input type="tel" id="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Hospital/Clinic Name *</label>
+                    <input type="text" id="hospitalName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Complete Address *</label>
+                    <textarea id="address" rows="3" required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>City *</label>
+                        <input type="text" id="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label>State *</label>
+                        <select id="state" required>
+                            <option value="">Select State</option>
+                            <option value="Maharashtra">Maharashtra</option>
+                            <option value="Delhi">Delhi</option>
+                            <option value="Karnataka">Karnataka</option>
+                            <option value="Tamil Nadu">Tamil Nadu</option>
+                            <option value="Gujarat">Gujarat</option>
+                            <option value="Rajasthan">Rajasthan</option>
+                            <option value="Uttar Pradesh">Uttar Pradesh</option>
+                            <option value="West Bengal">West Bengal</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>PIN Code *</label>
+                        <input type="text" id="pincode" required>
+                    </div>
+                    <div class="form-group">
+                        <label>GST Number (Optional)</label>
+                        <input type="text" id="gst">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Special Instructions (Optional)</label>
+                    <textarea id="instructions" rows="3" placeholder="Any special delivery or installation requirements..."></textarea>
+                </div>
+
+                <h3 style="margin: 2rem 0 1rem; font-size: 1.5rem;">Payment Method</h3>
+                
+                <div class="payment-methods">
+                    <div class="payment-method active" onclick="selectPayment('razorpay')">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Card/UPI/Wallet</span>
+                    </div>
+                    <div class="payment-method" onclick="selectPayment('netbanking')">
+                        <i class="fas fa-university"></i>
+                        <span>Net Banking</span>
+                    </div>
+                    <div class="payment-method" onclick="selectPayment('cod')">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Pay on Delivery</span>
+                    </div>
+                </div>
+
+                <div class="security-badges">
+                    <div class="security-badge">
+                        <i class="fas fa-lock"></i>
+                        <span>Secure Payment</span>
+                    </div>
+                    <div class="security-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>SSL Encrypted</span>
+                    </div>
+                    <div class="security-badge">
+                        <i class="fas fa-check-circle"></i>
+                        <span>PCI Compliant</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="checkout-section order-summary">
+            <h2 class="section-title">Order Summary</h2>
+            
+            <div id="orderItems"></div>
+
+            <div class="discount-code">
+                <input type="text" id="discountCode" placeholder="Enter discount code">
+                <button onclick="applyDiscount()">Apply</button>
+            </div>
+
+            <div class="price-breakdown">
+                <div class="price-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">₹0.00</span>
+                </div>
+                <div class="price-row">
+                    <span>Shipping:</span>
+                    <span id="shipping">FREE</span>
+                </div>
+                <div class="price-row">
+                    <span>GST (18%):</span>
+                    <span id="gst">₹0.00</span>
+                </div>
+                <div class="price-row" id="discountRow" style="display: none; color: var(--success);">
+                    <span>Discount:</span>
+                    <span id="discount">-₹0.00</span>
+                </div>
+                <div class="price-row total">
+                    <span>Total:</span>
+                    <span id="total">₹0.00</span>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="processPayment()">
+                <i class="fas fa-lock"></i> Place Order & Pay
+            </button>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="success-content">
+            <div class="success-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <h2>Order Placed Successfully!</h2>
+            <p>Thank you for your purchase. Your order has been confirmed and will be processed shortly.</p>
+            <div class="order-id">
+                Order ID: <span id="orderId">OM-2025-001234</span>
+            </div>
+            <p style="font-size: 0.9rem;">A confirmation email has been sent to your registered email address.</p>
+            <button class="btn btn-primary" onclick="window.location.href='index.html'" style="margin-top: 1rem;">
+                Continue Shopping
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let selectedPayment = 'razorpay';
+        let discountApplied = false;
+        let discountAmount = 0;
+
+        function renderOrderSummary() {
+            const orderItems = document.getElementById('orderItems');
+            const subtotalEl = document.getElementById('subtotal');
+            const gstEl = document.getElementById('gst');
+            const totalEl = document.getElementById('total');
+            const discountEl = document.getElementById('discount');
+            const discountRow = document.getElementById('discountRow');
+
+            if (cart.length === 0) {
+                orderItems.innerHTML = '<p style="text-align: center; color: #999;">Your cart is empty</p>';
+                return;
+            }
+
+            orderItems.innerHTML = cart.map(item => `
+                <div class="order-item">
+                    <div class="order-item-image">
+                        <i class="fas ${item.icon}"></i>
+                    </div>
+                    <div class="order-item-details">
+                        <div class="order-item-name">${item.name}</div>
+                        <div class="order-item-price">₹${(item.price / 100).toLocaleString('en-IN')}</div>
+                        <div class="order-item-qty">Quantity: ${item.quantity}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const gst = subtotal * 0.18;
+            let total = subtotal + gst;
+
+            if (discountApplied) {
+                total -= discountAmount;
+                discountRow.style.display = 'flex';
+                discountEl.textContent = `-₹${(discountAmount / 100).toLocaleString('en-IN')}`;
+            }
+
+            subtotalEl.textContent = `₹${(subtotal / 100).toLocaleString('en-IN')}`;
+            gstEl.textContent = `₹${(gst / 100).toLocaleString('en-IN')}`;
+            totalEl.textContent = `₹${(total / 100).toLocaleString('en-IN')}`;
+        }
+
+        function selectPayment(method) {
+            selectedPayment = method;
+            document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('active'));
+            event.target.closest('.payment-method').classList.add('active');
+        }
+
+        function applyDiscount() {
+            const code = document.getElementById('discountCode').value.trim().toUpperCase();
+            const validCodes = {
+                'OPTIMA10': 10,
+                'HEALTH20': 20,
+                'WELCOME15': 15
+            };
+
+            if (validCodes[code]) {
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                discountAmount = subtotal * (validCodes[code] / 100);
+                discountApplied = true;
+                renderOrderSummary();
+                alert(`Discount code applied! You saved ${validCodes[code]}%`);
+            } else {
+                alert('Invalid discount code');
+            }
+        }
+
+        function processPayment() {
+            const form = document.getElementById('checkoutForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const gst = subtotal * 0.18;
+            let total = subtotal + gst;
+            if (discountApplied) {
+                total -= discountAmount;
+            }
+
+            const orderData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                hospitalName: document.getElementById('hospitalName').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                pincode: document.getElementById('pincode').value,
+                gst: document.getElementById('gst').value,
+                instructions: document.getElementById('instructions').value,
+                items: cart,
+                subtotal: subtotal,
+                gst: gst,
+                discount: discountAmount,
+                total: total,
+                paymentMethod: selectedPayment
+            };
+
+            if (selectedPayment === 'cod') {
+                // Process COD order
+                showSuccessModal();
+                clearCart();
+            } else {
+                // Process Razorpay payment
+                initiateRazorpayPayment(orderData, total);
+            }
+        }
+
+        function initiateRazorpayPayment(orderData, amount) {
+            const options = {
+                key: 'rzp_test_1234567890', // Replace with your Razorpay key
+                amount: amount, // Amount in paise
+                currency: 'INR',
+                name: 'Optima Meditech',
+                description: 'Medical Equipment Purchase',
+                image: 'https://vaibhaviimcal-web.github.io/optimameditech-ecommerce/logo.png',
+                handler: function (response) {
+                    // Payment successful
+                    console.log('Payment ID:', response.razorpay_payment_id);
+                    showSuccessModal();
+                    clearCart();
+                },
+                prefill: {
+                    name: orderData.firstName + ' ' + orderData.lastName,
+                    email: orderData.email,
+                    contact: orderData.phone
+                },
+                notes: {
+                    hospital: orderData.hospitalName,
+                    address: orderData.address
+                },
+                theme: {
+                    color: '#4A9FD8'
+                },
+                modal: {
+                    ondismiss: function() {
+                        alert('Payment cancelled. Please try again.');
+                    }
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+        }
+
+        function showSuccessModal() {
+            const orderId = 'OM-' + new Date().getFullYear() + '-' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+            document.getElementById('orderId').textContent = orderId;
+            document.getElementById('successModal').classList.add('active');
+        }
+
+        function clearCart() {
+            cart = [];
+            localStorage.removeItem('cart');
+        }
+
+        // Initialize
+        renderOrderSummary();
+
+        // Redirect if cart is empty
+        if (cart.length === 0) {
+            setTimeout(() => {
+                alert('Your cart is empty. Redirecting to products page...');
+                window.location.href = 'products.html';
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
