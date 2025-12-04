@@ -42,7 +42,7 @@
             overflow-x: hidden;
         }
 
-        /* Loading Screen */
+        /* Loading Screen - Simplified */
         .loader {
             position: fixed;
             top: 0;
@@ -60,6 +60,7 @@
         .loader.hidden {
             opacity: 0;
             visibility: hidden;
+            pointer-events: none;
         }
 
         .loader-content {
@@ -68,13 +69,13 @@
         }
 
         .loader-logo {
-            width: 80px;
-            height: 80px;
-            border: 4px solid rgba(255,255,255,0.3);
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255,255,255,0.3);
             border-top-color: white;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 15px;
         }
 
         @keyframes spin {
@@ -217,7 +218,7 @@
             50% { transform: scale(1.1); }
         }
 
-        /* Hero Section with Video Background */
+        /* Hero Section - Optimized without video */
         .hero {
             margin-top: 80px;
             position: relative;
@@ -226,25 +227,18 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-green) 100%);
         }
 
-        .hero-video {
+        .hero::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
             opacity: 0.3;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(74, 159, 216, 0.9), rgba(123, 192, 67, 0.9));
         }
 
         .hero-particles {
@@ -1399,7 +1393,7 @@
     <div class="loader">
         <div class="loader-content">
             <div class="loader-logo"></div>
-            <h2>Loading Excellence...</h2>
+            <h2>Loading...</h2>
         </div>
     </div>
 
@@ -1446,12 +1440,8 @@
         </nav>
     </header>
 
-    <!-- Hero Section with Video Background -->
+    <!-- Hero Section - Optimized -->
     <section class="hero">
-        <video class="hero-video" autoplay muted loop playsinline>
-            <source src="https://cdn.coverr.co/videos/coverr-medical-professionals-in-a-hospital-5371/1080p.mp4" type="video/mp4">
-        </video>
-        <div class="hero-overlay"></div>
         <div class="hero-particles" id="particles"></div>
         <div class="hero-content" data-aos="fade-up">
             <h1>OPTIMA MEDITECH</h1>
@@ -1771,11 +1761,11 @@
             }
         });
 
-        // Loading Screen
+        // Loading Screen - Faster
         window.addEventListener('load', function() {
             setTimeout(() => {
                 document.querySelector('.loader').classList.add('hidden');
-            }, 1500);
+            }, 800);
         });
 
         // Sticky Header
@@ -1828,9 +1818,9 @@
             });
         });
 
-        // Particles Animation
+        // Particles Animation - Reduced for performance
         const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 20; i++) {
             const particle = document.createElement('div');
             particle.className = 'particle';
             particle.style.width = Math.random() * 10 + 5 + 'px';
