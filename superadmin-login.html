@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Login - Optima Meditech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --purple: #9b59b6;
+            --dark-purple: #8e44ad;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--purple), var(--dark-purple));
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+        .header-logo {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            background: rgba(255,255,255,0.95);
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .header-logo:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+        .header-logo-svg {
+            width: 40px;
+            height: 40px;
+        }
+        .header-logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        .header-brand-name {
+            font-size: 1.1rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--purple), var(--dark-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+        .header-brand-tagline {
+            font-size: 0.65rem;
+            color: #666;
+            font-style: italic;
+        }
+        .login-container {
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 450px;
+            width: 100%;
+            padding: 3rem;
+        }
+        .logo-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .logo-svg {
+            width: 80px;
+            height: 80px;
+        }
+        .logo-container h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--purple), var(--dark-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-top: 1rem;
+        }
+        .logo-container p {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        .security-badge {
+            background: linear-gradient(135deg, var(--purple), var(--dark-purple));
+            color: white;
+            padding: 0.8rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--purple);
+            box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.1);
+        }
+        .btn-login {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--purple), var(--dark-purple));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(155, 89, 182, 0.4);
+        }
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .alert {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .demo-credentials {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        .demo-credentials strong {
+            color: var(--purple);
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #666;
+        }
+        .back-link a {
+            color: var(--purple);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .header-logo {
+                top: 1rem;
+                left: 1rem;
+                padding: 0.6rem 1rem;
+            }
+            .header-logo-svg {
+                width: 35px;
+                height: 35px;
+            }
+            .header-brand-name {
+                font-size: 0.95rem;
+            }
+            .header-brand-tagline {
+                font-size: 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="header-logo">
+        <svg class="header-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="headerLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#8e44ad;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <circle cx="50" cy="50" r="35" fill="none" stroke="url(#headerLogoGrad)" stroke-width="8"/>
+        </svg>
+        <div class="header-logo-text">
+            <span class="header-brand-name">OPTIMA MEDITECH</span>
+            <span class="header-brand-tagline">Healthcare Made Easy</span>
+        </div>
+    </a>
+
+    <div class="login-container">
+        <div class="logo-container">
+            <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#8e44ad;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="url(#logoGrad)" stroke-width="8"/>
+            </svg>
+            <h1>Super Admin</h1>
+            <p>System Management Portal</p>
+        </div>
+
+        <div class="security-badge">
+            <i class="fas fa-shield-alt"></i> Secure Access Only
+        </div>
+
+        <div id="alertBox"></div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="email" required placeholder="superadmin@optimameditech.com">
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" required placeholder="Enter super admin password">
+            </div>
+
+            <button type="submit" class="btn-login" id="submitBtn">
+                <i class="fas fa-sign-in-alt"></i> Access Super Admin Panel
+            </button>
+        </form>
+
+        <div class="demo-credentials">
+            <strong>Demo Credentials:</strong><br>
+            Email: superadmin@optimameditech.com<br>
+            Password: superadmin123
+        </div>
+
+        <div class="back-link">
+            <a href="admin.html"><i class="fas fa-arrow-left"></i> Back to Admin Panel</a>
+        </div>
+    </div>
+
+    <script>
+        // Super admin credentials
+        const superAdminCredentials = {
+            email: 'superadmin@optimameditech.com',
+            password: 'superadmin123'
+        };
+
+        async function handleLogin(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Disable submit button
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+
+            try {
+                // Check super admin credentials
+                if (email === superAdminCredentials.email && password === superAdminCredentials.password) {
+                    // Set super admin session
+                    localStorage.setItem('isSuperAdmin', 'true');
+                    localStorage.setItem('superAdminEmail', email);
+                    
+                    showAlert('Authentication successful! Redirecting...', 'success');
+
+                    setTimeout(() => {
+                        window.location.href = 'superadmin.html';
+                    }, 1500);
+                } else {
+                    throw new Error('Invalid credentials. Super admin access denied.');
+                }
+
+            } catch (error) {
+                console.error('Login error:', error);
+                showAlert(error.message, 'error');
+                
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Access Super Admin Panel';
+            }
+        }
+
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            setTimeout(() => {
+                if (type !== 'success') {
+                    alertBox.innerHTML = '';
+                }
+            }, 5000);
+        }
+
+        // Check if already logged in
+        if (localStorage.getItem('isSuperAdmin') === 'true') {
+            window.location.href = 'superadmin.html';
+        }
+
+        // Show info message
+        window.addEventListener('load', () => {
+            showAlert('Super Admin access required. Use demo credentials to login.', 'warning');
+            setTimeout(() => {
+                document.getElementById('alertBox').innerHTML = '';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
