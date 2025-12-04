@@ -3,31 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Database Setup - Optima Meditech</title>
+    <title>Advanced Database Setup - Optima Meditech</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #4A9FD8, #7BC043);
             min-height: 100vh;
             padding: 2rem;
         }
-
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
             border-radius: 25px;
             padding: 3rem;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
-
         h1 {
             text-align: center;
             font-size: 3rem;
@@ -36,42 +29,12 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 1rem;
         }
-
         .subtitle {
             text-align: center;
             color: #666;
             margin-bottom: 3rem;
             font-size: 1.2rem;
         }
-
-        .step {
-            background: #f8f9fa;
-            padding: 2rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-            border-left: 5px solid #4A9FD8;
-        }
-
-        .step h2 {
-            color: #4A9FD8;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .step-number {
-            background: linear-gradient(135deg, #4A9FD8, #7BC043);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-        }
-
         pre {
             background: #1a1a2e;
             color: #00ff00;
@@ -80,12 +43,12 @@
             overflow-x: auto;
             margin: 1rem 0;
             position: relative;
+            max-height: 600px;
         }
-
         .copy-btn {
-            position: absolute;
+            position: sticky;
             top: 10px;
-            right: 10px;
+            float: right;
             background: #4A9FD8;
             color: white;
             border: none;
@@ -93,28 +56,25 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
+            z-index: 10;
         }
-
-        .copy-btn:hover {
-            background: #7BC043;
+        .copy-btn:hover { background: #7BC043; }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
         }
-
-        .warning {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            padding: 1rem;
-            border-radius: 10px;
-            margin: 1rem 0;
+        .feature-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 5px solid #4A9FD8;
         }
-
-        .success {
-            background: #d4edda;
-            border: 2px solid #28a745;
-            padding: 1rem;
-            border-radius: 10px;
-            margin: 1rem 0;
+        .feature-card h3 {
+            color: #4A9FD8;
+            margin-bottom: 0.5rem;
         }
-
         .btn-primary {
             background: linear-gradient(135deg, #4A9FD8, #7BC043);
             color: white;
@@ -126,185 +86,479 @@
             cursor: pointer;
             text-decoration: none;
             display: inline-block;
-            margin-top: 1rem;
+            margin: 1rem 0.5rem;
         }
-
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(74, 159, 216, 0.4);
-        }
-
-        code {
-            background: #f8f9fa;
-            padding: 0.2rem 0.5rem;
-            border-radius: 5px;
-            color: #4A9FD8;
-            font-family: 'Courier New', monospace;
-        }
-
-        ul {
-            margin-left: 2rem;
-            line-height: 2;
-        }
-
-        a {
-            color: #4A9FD8;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        a:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🗄️ Database Setup Guide</h1>
-        <p class="subtitle">Set up your Supabase database for Optima Meditech E-Commerce</p>
+        <h1>🚀 Enterprise E-Commerce Database</h1>
+        <p class="subtitle">Advanced features: Analytics, Courier, Inventory, Reports & More</p>
 
-        <div class="step">
-            <h2><span class="step-number">1</span> Access Supabase SQL Editor</h2>
-            <p>Go to your Supabase project dashboard:</p>
-            <ul>
-                <li>Open: <a href="https://nhgngdgezqkxxjoupllm.supabase.co" target="_blank">https://nhgngdgezqkxxjoupllm.supabase.co</a></li>
-                <li>Navigate to <strong>SQL Editor</strong> from the left sidebar</li>
-                <li>Click <strong>New Query</strong></li>
-            </ul>
+        <h2 style="color: #4A9FD8; margin: 2rem 0 1rem;">✨ New Features Added</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>📊 Analytics & Reports</h3>
+                <p>Sales trends, revenue charts, product performance</p>
+            </div>
+            <div class="feature-card">
+                <h3>🚚 Courier Integration</h3>
+                <p>Shipping partners, tracking, delivery management</p>
+            </div>
+            <div class="feature-card">
+                <h3>📦 Inventory Management</h3>
+                <p>Stock alerts, reorder points, supplier tracking</p>
+            </div>
+            <div class="feature-card">
+                <h3>👥 Customer Management</h3>
+                <p>Customer profiles, purchase history, loyalty</p>
+            </div>
+            <div class="feature-card">
+                <h3>💰 Revenue Analytics</h3>
+                <p>Daily/monthly revenue, profit margins, forecasting</p>
+            </div>
+            <div class="feature-card">
+                <h3>📧 Notifications</h3>
+                <p>Email/SMS alerts, order updates, stock alerts</p>
+            </div>
+            <div class="feature-card">
+                <h3>⭐ Reviews & Ratings</h3>
+                <p>Product reviews, customer feedback, ratings</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎯 Marketing</h3>
+                <p>Campaigns, banners, promotional offers</p>
+            </div>
         </div>
 
-        <div class="step">
-            <h2><span class="step-number">2</span> Copy & Execute SQL Schema</h2>
-            <p>Copy the SQL code below and paste it into the SQL Editor, then click <strong>Run</strong>:</p>
-            
-            <div style="position: relative;">
-                <pre id="sqlCode">-- ============================================
--- OPTIMA MEDITECH E-COMMERCE DATABASE SCHEMA
+        <h2 style="color: #4A9FD8; margin: 2rem 0 1rem;">📋 Complete SQL Schema</h2>
+        <p>Copy and execute this in your Supabase SQL Editor:</p>
+        
+        <button class="copy-btn" onclick="copySQL()">📋 Copy All SQL</button>
+        <pre id="sqlCode">-- ============================================
+-- OPTIMA MEDITECH - ENTERPRISE E-COMMERCE DATABASE
 -- ============================================
 
--- 1. PRODUCTS TABLE
+-- 1. PRODUCTS TABLE (Enhanced)
 CREATE TABLE IF NOT EXISTS products (
     id BIGSERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     category TEXT NOT NULL,
     price BIGINT NOT NULL,
+    cost_price BIGINT,
     description TEXT,
     icon TEXT,
     image TEXT,
     badge TEXT,
     stock INTEGER DEFAULT 0,
+    reorder_level INTEGER DEFAULT 10,
+    supplier_id BIGINT,
+    sku TEXT UNIQUE,
+    weight DECIMAL(10,2),
+    dimensions TEXT,
     is_active BOOLEAN DEFAULT true,
+    featured BOOLEAN DEFAULT false,
+    views_count INTEGER DEFAULT 0,
+    sales_count INTEGER DEFAULT 0,
+    rating_average DECIMAL(3,2) DEFAULT 0,
+    rating_count INTEGER DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 2. ORDERS TABLE
-CREATE TABLE IF NOT EXISTS orders (
+-- 2. CUSTOMERS TABLE
+CREATE TABLE IF NOT EXISTS customers (
     id BIGSERIAL PRIMARY KEY,
-    order_id TEXT UNIQUE NOT NULL,
-    customer_first_name TEXT NOT NULL,
-    customer_last_name TEXT NOT NULL,
-    customer_email TEXT NOT NULL,
-    customer_phone TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    phone TEXT,
     hospital_name TEXT,
-    address TEXT NOT NULL,
+    gst_number TEXT,
+    total_orders INTEGER DEFAULT 0,
+    total_spent BIGINT DEFAULT 0,
+    loyalty_points INTEGER DEFAULT 0,
+    customer_tier TEXT DEFAULT 'bronze',
+    is_active BOOLEAN DEFAULT true,
+    last_order_date TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 3. CUSTOMER ADDRESSES
+CREATE TABLE IF NOT EXISTS customer_addresses (
+    id BIGSERIAL PRIMARY KEY,
+    customer_id BIGINT REFERENCES customers(id) ON DELETE CASCADE,
+    address_type TEXT DEFAULT 'shipping',
+    address_line1 TEXT NOT NULL,
+    address_line2 TEXT,
     city TEXT NOT NULL,
     state TEXT NOT NULL,
     pincode TEXT NOT NULL,
+    is_default BOOLEAN DEFAULT false,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 4. ORDERS TABLE (Enhanced)
+CREATE TABLE IF NOT EXISTS orders (
+    id BIGSERIAL PRIMARY KEY,
+    order_id TEXT UNIQUE NOT NULL,
+    customer_id BIGINT REFERENCES customers(id),
+    customer_email TEXT NOT NULL,
+    customer_first_name TEXT NOT NULL,
+    customer_last_name TEXT NOT NULL,
+    customer_phone TEXT NOT NULL,
+    hospital_name TEXT,
+    shipping_address TEXT NOT NULL,
+    shipping_city TEXT NOT NULL,
+    shipping_state TEXT NOT NULL,
+    shipping_pincode TEXT NOT NULL,
+    billing_address TEXT,
     gst_number TEXT,
     special_instructions TEXT,
     subtotal BIGINT NOT NULL,
     gst_amount BIGINT NOT NULL,
     discount_amount BIGINT DEFAULT 0,
+    shipping_charges BIGINT DEFAULT 0,
     total_amount BIGINT NOT NULL,
     payment_method TEXT NOT NULL,
     payment_id TEXT,
+    payment_status TEXT DEFAULT 'pending',
     order_status TEXT DEFAULT 'pending',
     tracking_status TEXT DEFAULT 'order_placed',
+    courier_partner TEXT,
+    tracking_number TEXT,
+    expected_delivery DATE,
+    delivered_at TIMESTAMP WITH TIME ZONE,
+    cancelled_at TIMESTAMP WITH TIME ZONE,
+    cancellation_reason TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 3. ORDER ITEMS TABLE
+-- 5. ORDER ITEMS TABLE
 CREATE TABLE IF NOT EXISTS order_items (
     id BIGSERIAL PRIMARY KEY,
     order_id BIGINT REFERENCES orders(id) ON DELETE CASCADE,
     product_id BIGINT REFERENCES products(id),
     product_name TEXT NOT NULL,
+    product_sku TEXT,
     product_price BIGINT NOT NULL,
     quantity INTEGER NOT NULL,
+    discount_applied BIGINT DEFAULT 0,
     total_price BIGINT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 4. DISCOUNT CODES TABLE
+-- 6. DISCOUNT CODES TABLE (Enhanced)
 CREATE TABLE IF NOT EXISTS discount_codes (
     id BIGSERIAL PRIMARY KEY,
     code TEXT UNIQUE NOT NULL,
-    discount_percentage INTEGER NOT NULL,
+    discount_type TEXT DEFAULT 'percentage',
+    discount_value INTEGER NOT NULL,
+    min_order_amount BIGINT DEFAULT 0,
+    max_discount_amount BIGINT,
     is_active BOOLEAN DEFAULT true,
     usage_count INTEGER DEFAULT 0,
     max_usage INTEGER,
+    max_usage_per_customer INTEGER DEFAULT 1,
     valid_from TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     valid_until TIMESTAMP WITH TIME ZONE,
+    applicable_categories TEXT[],
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 5. SITE SETTINGS TABLE
+-- 7. COURIER PARTNERS TABLE
+CREATE TABLE IF NOT EXISTS courier_partners (
+    id BIGSERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    tracking_url_template TEXT,
+    api_endpoint TEXT,
+    api_key TEXT,
+    is_active BOOLEAN DEFAULT true,
+    base_rate BIGINT,
+    per_kg_rate BIGINT,
+    delivery_time_days INTEGER,
+    coverage_pincodes TEXT[],
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 8. SHIPMENTS TABLE
+CREATE TABLE IF NOT EXISTS shipments (
+    id BIGSERIAL PRIMARY KEY,
+    order_id BIGINT REFERENCES orders(id) ON DELETE CASCADE,
+    courier_partner_id BIGINT REFERENCES courier_partners(id),
+    tracking_number TEXT UNIQUE,
+    current_status TEXT DEFAULT 'pending_pickup',
+    shipped_date TIMESTAMP WITH TIME ZONE,
+    delivered_date TIMESTAMP WITH TIME ZONE,
+    estimated_delivery DATE,
+    weight DECIMAL(10,2),
+    shipping_cost BIGINT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 9. SHIPMENT TRACKING TABLE
+CREATE TABLE IF NOT EXISTS shipment_tracking (
+    id BIGSERIAL PRIMARY KEY,
+    shipment_id BIGINT REFERENCES shipments(id) ON DELETE CASCADE,
+    status TEXT NOT NULL,
+    location TEXT,
+    description TEXT,
+    timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 10. INVENTORY LOGS TABLE
+CREATE TABLE IF NOT EXISTS inventory_logs (
+    id BIGSERIAL PRIMARY KEY,
+    product_id BIGINT REFERENCES products(id) ON DELETE CASCADE,
+    change_type TEXT NOT NULL,
+    quantity_change INTEGER NOT NULL,
+    previous_stock INTEGER,
+    new_stock INTEGER,
+    reference_id BIGINT,
+    reference_type TEXT,
+    notes TEXT,
+    created_by TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 11. SUPPLIERS TABLE
+CREATE TABLE IF NOT EXISTS suppliers (
+    id BIGSERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    contact_person TEXT,
+    email TEXT,
+    phone TEXT,
+    address TEXT,
+    gst_number TEXT,
+    payment_terms TEXT,
+    is_active BOOLEAN DEFAULT true,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 12. PURCHASE ORDERS TABLE
+CREATE TABLE IF NOT EXISTS purchase_orders (
+    id BIGSERIAL PRIMARY KEY,
+    po_number TEXT UNIQUE NOT NULL,
+    supplier_id BIGINT REFERENCES suppliers(id),
+    total_amount BIGINT NOT NULL,
+    status TEXT DEFAULT 'pending',
+    expected_delivery DATE,
+    received_date TIMESTAMP WITH TIME ZONE,
+    notes TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 13. PRODUCT REVIEWS TABLE
+CREATE TABLE IF NOT EXISTS product_reviews (
+    id BIGSERIAL PRIMARY KEY,
+    product_id BIGINT REFERENCES products(id) ON DELETE CASCADE,
+    customer_id BIGINT REFERENCES customers(id),
+    order_id BIGINT REFERENCES orders(id),
+    rating INTEGER CHECK (rating >= 1 AND rating <= 5),
+    review_title TEXT,
+    review_text TEXT,
+    is_verified_purchase BOOLEAN DEFAULT false,
+    is_approved BOOLEAN DEFAULT false,
+    helpful_count INTEGER DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 14. NOTIFICATIONS TABLE
+CREATE TABLE IF NOT EXISTS notifications (
+    id BIGSERIAL PRIMARY KEY,
+    notification_type TEXT NOT NULL,
+    recipient_email TEXT,
+    recipient_phone TEXT,
+    subject TEXT,
+    message TEXT NOT NULL,
+    status TEXT DEFAULT 'pending',
+    sent_at TIMESTAMP WITH TIME ZONE,
+    error_message TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 15. SALES ANALYTICS TABLE
+CREATE TABLE IF NOT EXISTS sales_analytics (
+    id BIGSERIAL PRIMARY KEY,
+    date DATE NOT NULL,
+    total_orders INTEGER DEFAULT 0,
+    total_revenue BIGINT DEFAULT 0,
+    total_profit BIGINT DEFAULT 0,
+    total_customers INTEGER DEFAULT 0,
+    new_customers INTEGER DEFAULT 0,
+    avg_order_value BIGINT DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE(date)
+);
+
+-- 16. MARKETING CAMPAIGNS TABLE
+CREATE TABLE IF NOT EXISTS marketing_campaigns (
+    id BIGSERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    campaign_type TEXT,
+    start_date TIMESTAMP WITH TIME ZONE,
+    end_date TIMESTAMP WITH TIME ZONE,
+    budget BIGINT,
+    target_audience TEXT,
+    discount_code_id BIGINT REFERENCES discount_codes(id),
+    clicks INTEGER DEFAULT 0,
+    conversions INTEGER DEFAULT 0,
+    revenue_generated BIGINT DEFAULT 0,
+    is_active BOOLEAN DEFAULT true,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 17. SITE SETTINGS TABLE
 CREATE TABLE IF NOT EXISTS site_settings (
     id BIGSERIAL PRIMARY KEY,
     setting_key TEXT UNIQUE NOT NULL,
     setting_value TEXT,
     setting_type TEXT DEFAULT 'text',
+    category TEXT DEFAULT 'general',
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 18. ADMIN ACTIVITY LOGS TABLE
+CREATE TABLE IF NOT EXISTS admin_activity_logs (
+    id BIGSERIAL PRIMARY KEY,
+    admin_email TEXT NOT NULL,
+    action TEXT NOT NULL,
+    entity_type TEXT,
+    entity_id BIGINT,
+    changes JSONB,
+    ip_address TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
 -- ============================================
 -- INSERT SAMPLE DATA
 -- ============================================
 
-INSERT INTO products (name, category, price, description, icon, image, badge, stock) VALUES
-('Digital X-Ray System', 'Diagnostic Imaging', 4599900, 'High-resolution digital radiography system', 'fa-x-ray', 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80', 'Best Seller', 10),
-('Patient Monitor', 'Patient Monitoring', 1299900, 'Multi-parameter vital signs monitor', 'fa-heartbeat', 'https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=800&q=80', 'New', 25),
-('Ultrasound Scanner', 'Diagnostic Imaging', 3850000, '4D color doppler ultrasound', 'fa-wave-square', 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80', 'Premium', 8),
-('Surgical LED Lights', 'OT Equipment', 899900, 'Shadowless LED surgical lights', 'fa-lightbulb', 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80', NULL, 15),
-('Anesthesia Workstation', 'OT Equipment', 2999900, 'Advanced anesthesia machine', 'fa-lungs', 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=800&q=80', 'Featured', 12),
-('ECG Machine', 'Cardiology', 599900, '12-lead ECG with automatic interpretation', 'fa-heart', 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=800&q=80', NULL, 30),
-('Defibrillator AED', 'Emergency Care', 349900, 'Automated external defibrillator', 'fa-bolt', 'https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80', 'Essential', 20),
-('Infusion Pump', 'IV Therapy', 279900, 'Smart infusion pump', 'fa-syringe', 'https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=800&q=80', NULL, 40),
-('ICU Ventilator', 'Critical Care', 3499900, 'Advanced ICU ventilator', 'fa-wind', 'https://images.unsplash.com/photo-1583324113626-70df0f4deaab?w=800&q=80', 'Premium', 6);
+-- Products
+INSERT INTO products (name, category, price, cost_price, description, icon, image, badge, stock, sku, weight) VALUES
+('Digital X-Ray System', 'Diagnostic Imaging', 4599900, 3500000, 'High-resolution digital radiography system', 'fa-x-ray', 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80', 'Best Seller', 10, 'DXR-001', 150.00),
+('Patient Monitor', 'Patient Monitoring', 1299900, 950000, 'Multi-parameter vital signs monitor', 'fa-heartbeat', 'https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=800&q=80', 'New', 25, 'PM-001', 8.50),
+('Ultrasound Scanner', 'Diagnostic Imaging', 3850000, 2900000, '4D color doppler ultrasound', 'fa-wave-square', 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80', 'Premium', 8, 'US-001', 45.00),
+('Surgical LED Lights', 'OT Equipment', 899900, 650000, 'Shadowless LED surgical lights', 'fa-lightbulb', 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80', NULL, 15, 'SLL-001', 25.00),
+('Anesthesia Workstation', 'OT Equipment', 2999900, 2200000, 'Advanced anesthesia machine', 'fa-lungs', 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=800&q=80', 'Featured', 12, 'AWS-001', 120.00),
+('ECG Machine', 'Cardiology', 599900, 420000, '12-lead ECG with automatic interpretation', 'fa-heart', 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=800&q=80', NULL, 30, 'ECG-001', 5.00),
+('Defibrillator AED', 'Emergency Care', 349900, 250000, 'Automated external defibrillator', 'fa-bolt', 'https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80', 'Essential', 20, 'DEF-001', 3.50),
+('Infusion Pump', 'IV Therapy', 279900, 195000, 'Smart infusion pump', 'fa-syringe', 'https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=800&q=80', NULL, 40, 'IP-001', 2.00),
+('ICU Ventilator', 'Critical Care', 3499900, 2600000, 'Advanced ICU ventilator', 'fa-wind', 'https://images.unsplash.com/photo-1583324113626-70df0f4deaab?w=800&q=80', 'Premium', 6, 'VEN-001', 85.00);
 
-INSERT INTO discount_codes (code, discount_percentage, max_usage) VALUES
-('OPTIMA10', 10, 100),
-('HEALTH20', 20, 50),
-('WELCOME15', 15, 200);
+-- Discount Codes
+INSERT INTO discount_codes (code, discount_type, discount_value, min_order_amount, max_usage) VALUES
+('OPTIMA10', 'percentage', 10, 50000, 100),
+('HEALTH20', 'percentage', 20, 100000, 50),
+('WELCOME15', 'percentage', 15, 0, 200),
+('FLAT5000', 'fixed', 500000, 500000, 30);
 
-INSERT INTO site_settings (setting_key, setting_value, setting_type) VALUES
-('site_name', 'Optima Meditech', 'text'),
-('site_tagline', 'Healthcare Made Easy', 'text'),
-('contact_email', 'info@optimameditech.com', 'email'),
-('contact_phone', '+91 (555) 123-4567', 'text'),
-('gst_number', '27AABCU9603R1ZM', 'text'),
-('gst_percentage', '18', 'number');
+-- Courier Partners
+INSERT INTO courier_partners (name, tracking_url_template, base_rate, per_kg_rate, delivery_time_days, is_active) VALUES
+('Blue Dart', 'https://www.bluedart.com/tracking?awb={tracking_number}', 5000, 3000, 3, true),
+('Delhivery', 'https://www.delhivery.com/track/package/{tracking_number}', 4500, 2500, 4, true),
+('FedEx', 'https://www.fedex.com/fedextrack/?tracknumbers={tracking_number}', 8000, 4000, 2, true),
+('DTDC', 'https://www.dtdc.in/tracking.asp?strCnno={tracking_number}', 4000, 2000, 5, true);
+
+-- Suppliers
+INSERT INTO suppliers (name, contact_person, email, phone, gst_number, is_active) VALUES
+('MedTech Supplies India', 'Rajesh Kumar', 'rajesh@medtechsupplies.com', '+91 98765 43210', '29AABCU9603R1ZM', true),
+('Global Medical Equipment', 'Sarah Johnson', 'sarah@globalmed.com', '+91 98765 43211', '27AABCU9603R1ZN', true),
+('Healthcare Solutions Ltd', 'Amit Patel', 'amit@healthcaresol.com', '+91 98765 43212', '24AABCU9603R1ZO', true);
+
+-- Site Settings
+INSERT INTO site_settings (setting_key, setting_value, setting_type, category) VALUES
+('site_name', 'Optima Meditech', 'text', 'general'),
+('site_tagline', 'Healthcare Made Easy', 'text', 'general'),
+('contact_email', 'info@optimameditech.com', 'email', 'contact'),
+('contact_phone', '+91 (555) 123-4567', 'text', 'contact'),
+('gst_number', '27AABCU9603R1ZM', 'text', 'business'),
+('gst_percentage', '18', 'number', 'business'),
+('low_stock_threshold', '10', 'number', 'inventory'),
+('free_shipping_threshold', '100000', 'number', 'shipping'),
+('enable_reviews', 'true', 'boolean', 'features'),
+('enable_loyalty_points', 'true', 'boolean', 'features');
 
 -- ============================================
--- CREATE INDEXES
+-- CREATE INDEXES FOR PERFORMANCE
 -- ============================================
 
 CREATE INDEX idx_products_category ON products(category);
 CREATE INDEX idx_products_active ON products(is_active);
+CREATE INDEX idx_products_sku ON products(sku);
+CREATE INDEX idx_customers_email ON customers(email);
 CREATE INDEX idx_orders_order_id ON orders(order_id);
-CREATE INDEX idx_orders_email ON orders(customer_email);
+CREATE INDEX idx_orders_customer ON orders(customer_id);
 CREATE INDEX idx_orders_status ON orders(order_status);
+CREATE INDEX idx_orders_date ON orders(created_at);
+CREATE INDEX idx_shipments_tracking ON shipments(tracking_number);
+CREATE INDEX idx_reviews_product ON product_reviews(product_id);
+CREATE INDEX idx_analytics_date ON sales_analytics(date);
+
+-- ============================================
+-- CREATE VIEWS FOR ANALYTICS
+-- ============================================
+
+-- Daily Sales Summary
+CREATE OR REPLACE VIEW daily_sales_summary AS
+SELECT 
+    DATE(created_at) as sale_date,
+    COUNT(*) as total_orders,
+    SUM(total_amount) as total_revenue,
+    AVG(total_amount) as avg_order_value,
+    COUNT(DISTINCT customer_email) as unique_customers
+FROM orders
+WHERE order_status NOT IN ('cancelled', 'refunded')
+GROUP BY DATE(created_at)
+ORDER BY sale_date DESC;
+
+-- Product Performance
+CREATE OR REPLACE VIEW product_performance AS
+SELECT 
+    p.id,
+    p.name,
+    p.category,
+    p.stock,
+    p.sales_count,
+    p.rating_average,
+    p.rating_count,
+    COALESCE(SUM(oi.total_price), 0) as total_revenue
+FROM products p
+LEFT JOIN order_items oi ON p.id = oi.product_id
+GROUP BY p.id, p.name, p.category, p.stock, p.sales_count, p.rating_average, p.rating_count
+ORDER BY total_revenue DESC;
+
+-- Low Stock Alert
+CREATE OR REPLACE VIEW low_stock_products AS
+SELECT 
+    id,
+    name,
+    category,
+    stock,
+    reorder_level,
+    sku
+FROM products
+WHERE stock <= reorder_level AND is_active = true
+ORDER BY stock ASC;
 
 -- ============================================
 -- ENABLE ROW LEVEL SECURITY
 -- ============================================
 
 ALTER TABLE products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE customers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE order_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE discount_codes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE courier_partners ENABLE ROW LEVEL SECURITY;
+ALTER TABLE product_reviews ENABLE ROW LEVEL SECURITY;
 ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
 
 -- ============================================
@@ -321,54 +575,27 @@ CREATE POLICY "Public can view active discount codes" ON discount_codes
     FOR SELECT USING (is_active = true);
 
 CREATE POLICY "Public can view site settings" ON site_settings
-    FOR SELECT USING (true);</pre>
-                <button class="copy-btn" onclick="copySQL()">📋 Copy SQL</button>
-            </div>
-        </div>
+    FOR SELECT USING (true);
 
-        <div class="step">
-            <h2><span class="step-number">3</span> Get Your Supabase API Key</h2>
-            <p>You need to get your Supabase Anon Key:</p>
-            <ul>
-                <li>Go to <strong>Project Settings</strong> → <strong>API</strong></li>
-                <li>Copy the <code>anon</code> <code>public</code> key</li>
-                <li>You'll need this for the admin panel</li>
-            </ul>
-            
-            <div class="warning">
-                <strong>⚠️ Important:</strong> Keep your API keys secure. Never commit them to public repositories.
-            </div>
-        </div>
+CREATE POLICY "Public can view approved reviews" ON product_reviews
+    FOR SELECT USING (is_approved = true);
 
-        <div class="step">
-            <h2><span class="step-number">4</span> Update Admin Panel</h2>
-            <p>Open <code>admin.html</code> and replace the placeholder with your actual Supabase Anon Key:</p>
-            <pre>const SUPABASE_ANON_KEY = 'YOUR_ACTUAL_ANON_KEY_HERE';</pre>
-        </div>
+-- ============================================
+-- SUCCESS MESSAGE
+-- ============================================
 
-        <div class="step">
-            <h2><span class="step-number">5</span> Access Admin Panel</h2>
-            <div class="success">
-                <strong>✅ Setup Complete!</strong> You can now access your admin panel.
-            </div>
-            <p><strong>Admin Panel URL:</strong> <a href="admin.html" target="_blank">admin.html</a></p>
-            <p><strong>Demo Credentials:</strong></p>
-            <ul>
-                <li>Email: <code>admin@optimameditech.com</code></li>
-                <li>Password: <code>admin123</code></li>
-            </ul>
-            <a href="admin.html" class="btn-primary">🚀 Open Admin Panel</a>
-        </div>
+DO $$
+BEGIN
+    RAISE NOTICE '✅ Enterprise E-Commerce Database Created Successfully!';
+    RAISE NOTICE '📊 18 Tables Created';
+    RAISE NOTICE '📈 3 Analytics Views Created';
+    RAISE NOTICE '🔐 Row Level Security Enabled';
+    RAISE NOTICE '🚀 Ready for Production!';
+END $$;</pre>
 
-        <div class="step">
-            <h2><span class="step-number">6</span> Features Available</h2>
-            <ul>
-                <li>✅ <strong>Dashboard</strong> - View statistics and recent orders</li>
-                <li>✅ <strong>Products Management</strong> - Add, edit, delete products</li>
-                <li>✅ <strong>Orders Management</strong> - View and manage customer orders</li>
-                <li>✅ <strong>Discount Codes</strong> - Create and manage promotional codes</li>
-                <li>✅ <strong>Settings</strong> - Configure site settings</li>
-            </ul>
+        <div style="text-align: center; margin: 3rem 0;">
+            <a href="admin.html" class="btn-primary">🚀 Open Advanced Admin Panel</a>
+            <a href="index.html" class="btn-primary">🏠 Back to Website</a>
         </div>
     </div>
 
@@ -376,7 +603,7 @@ CREATE POLICY "Public can view site settings" ON site_settings
         function copySQL() {
             const sqlCode = document.getElementById('sqlCode').textContent;
             navigator.clipboard.writeText(sqlCode).then(() => {
-                alert('✅ SQL code copied to clipboard!');
+                alert('✅ Complete SQL schema copied to clipboard!');
             });
         }
     </script>
