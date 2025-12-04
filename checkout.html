@@ -7,9 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Razorpay SDK -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    
     <style>
         * {
             margin: 0;
@@ -533,9 +530,9 @@
                 <h3 style="margin: 2rem 0 1rem; font-size: 1.5rem;">Payment Method</h3>
                 
                 <div class="payment-methods">
-                    <div class="payment-method" onclick="selectPayment('razorpay')">
+                    <div class="payment-method" onclick="selectPayment('online')">
                         <i class="fas fa-credit-card"></i>
-                        <span>Card/UPI/Wallet</span>
+                        <span>Online Payment</span>
                     </div>
                     <div class="payment-method" onclick="selectPayment('netbanking')">
                         <i class="fas fa-university"></i>
@@ -550,15 +547,15 @@
                 <div class="security-badges">
                     <div class="security-badge">
                         <i class="fas fa-lock"></i>
-                        <span>Secure Payment</span>
+                        <span>Secure Checkout</span>
                     </div>
                     <div class="security-badge">
                         <i class="fas fa-shield-alt"></i>
-                        <span>SSL Encrypted</span>
+                        <span>100% Safe</span>
                     </div>
                     <div class="security-badge">
                         <i class="fas fa-check-circle"></i>
-                        <span>PCI Compliant</span>
+                        <span>Verified</span>
                     </div>
                 </div>
             </form>
@@ -598,7 +595,7 @@
             </div>
 
             <button class="btn btn-primary" onclick="processPayment()">
-                <i class="fas fa-lock"></i> Place Order
+                <i class="fas fa-check-circle"></i> Place Order
             </button>
         </div>
     </div>
@@ -633,10 +630,11 @@
 
     <script>
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let selectedPayment = 'cod'; // Default to COD
+        let selectedPayment = 'cod';
         let discountApplied = false;
         let discountAmount = 0;
         let currentOrderId = '';
+        let currentOrderData = null;
 
         function renderOrderSummary() {
             const orderItems = document.getElementById('orderItems');
@@ -718,7 +716,7 @@
                 total -= discountAmount;
             }
 
-            const orderData = {
+            currentOrderData = {
                 firstName: document.getElementById('firstName').value,
                 lastName: document.getElementById('lastName').value,
                 email: document.getElementById('email').value,
@@ -738,144 +736,22 @@
                 paymentMethod: selectedPayment
             };
 
-            // For COD or if Razorpay fails, complete order directly
-            if (selectedPayment === 'cod') {
-                completeOrder(orderData);
-            } else {
-                // Try Razorpay, but fallback to COD if it fails
-                try {
-                    initiateRazorpayPayment(orderData, total);
-                } catch (error) {
-                    console.error('Razorpay error:', error);
-                    alert('Payment gateway temporarily unavailable. Proceeding with Cash on Delivery.');
-                    orderData.paymentMethod = 'cod';
-                    completeOrder(orderData);
-                }
-            }
-        }
-
-        function initiateRazorpayPayment(orderData, amount) {
-            // Check if Razorpay is loaded
-            if (typeof Razorpay === 'undefined') {
-                alert('Payment gateway not available. Proceeding with Cash on Delivery.');
-                orderData.paymentMethod = 'cod';
-                completeOrder(orderData);
-                return;
-            }
-
-            const options = {
-                key: 'rzp_test_1234567890', // Replace with your actual Razorpay key
-                amount: amount,
-                currency: 'INR',
-                name: 'Optima Meditech',
-                description: 'Medical Equipment Purchase',
-                handler: function (response) {
-                    orderData.paymentId = response.razorpay_payment_id;
-                    completeOrder(orderData);
-                },
-                prefill: {
-                    name: orderData.firstName + ' ' + orderData.lastName,
-                    email: orderData.email,
-                    contact: orderData.phone
-                },
-                theme: {
-                    color: '#4A9FD8'
-                },
-                modal: {
-                    ondismiss: function() {
-                        alert('Payment cancelled. You can try again or choose Cash on Delivery.');
-                    }
-                }
-            };
-
-            try {
-                const rzp = new Razorpay(options);
-                rzp.on('payment.failed', function (response) {
-                    alert('Payment failed. Proceeding with Cash on Delivery option.');
-                    orderData.paymentMethod = 'cod';
-                    completeOrder(orderData);
-                });
-                rzp.open();
-            } catch (error) {
-                console.error('Razorpay initialization error:', error);
-                alert('Payment gateway error. Proceeding with Cash on Delivery.');
-                orderData.paymentMethod = 'cod';
-                completeOrder(orderData);
-            }
+            // Complete order directly - no payment gateway
+            completeOrder(currentOrderData);
         }
 
         function completeOrder(orderData) {
             currentOrderId = 'OM-' + new Date().getFullYear() + '-' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
             
-            // Send email notification
-            sendOrderConfirmationEmail(orderData, currentOrderId);
-            
-            // Generate and send invoice
-            generateAndEmailInvoice(orderData, currentOrderId);
+            console.log('📦 Order Placed:', currentOrderId);
+            console.log('💳 Payment Method:', orderData.paymentMethod);
+            console.log('📧 Email:', orderData.email);
             
             // Show success modal
             showSuccessModal(currentOrderId, orderData.email);
             
             // Clear cart
             clearCart();
-        }
-
-        function sendOrderConfirmationEmail(orderData, orderId) {
-            const emailContent = `
-Dear ${orderData.firstName} ${orderData.lastName},
-
-🎉 Thank you for your order with Optima Meditech!
-
-ORDER CONFIRMATION
-==================
-Order ID: ${orderId}
-Order Date: ${new Date().toLocaleString()}
-Payment Method: ${orderData.paymentMethod.toUpperCase()}
-
-ITEMS ORDERED:
---------------
-${orderData.items.map(item => `${item.name} (x${item.quantity}) - ₹${(item.price * item.quantity / 100).toLocaleString('en-IN')}`).join('\n')}
-
-PAYMENT SUMMARY:
-----------------
-Subtotal: ₹${(orderData.subtotal / 100).toLocaleString('en-IN')}
-GST (18%): ₹${(orderData.gst / 100).toLocaleString('en-IN')}
-${orderData.discount > 0 ? `Discount: -₹${(orderData.discount / 100).toLocaleString('en-IN')}\n` : ''}Shipping: FREE
-Total: ₹${(orderData.total / 100).toLocaleString('en-IN')}
-
-DELIVERY ADDRESS:
------------------
-${orderData.hospitalName}
-${orderData.address}
-${orderData.city}, ${orderData.state} - ${orderData.pincode}
-Phone: ${orderData.phone}
-
-WHAT'S NEXT?
-------------
-✅ Your order is being processed
-📦 You'll receive shipping updates via email
-📱 Track your order: https://vaibhaviimcal-web.github.io/optimameditech-ecommerce/order-tracking.html?orderId=${orderId}
-
-NEED HELP?
-----------
-Email: info@optimameditech.com
-Phone: +91 (555) 123-4567
-WhatsApp: +91 98765 43210
-
-Thank you for choosing Optima Meditech!
-
-Best regards,
-Optima Meditech Team
-Healthcare Made Easy
-            `;
-
-            console.log('📧 ORDER CONFIRMATION EMAIL SENT TO:', orderData.email);
-            console.log(emailContent);
-        }
-
-        function generateAndEmailInvoice(orderData, orderId) {
-            console.log('📄 INVOICE GENERATED AND SENT TO:', orderData.email);
-            console.log('Invoice ID:', orderId);
         }
 
         function showSuccessModal(orderId, email) {
@@ -886,8 +762,13 @@ Healthcare Made Easy
         }
 
         function downloadInvoice() {
+            if (!currentOrderData) {
+                alert('Order data not available');
+                return;
+            }
+
             const orderId = document.getElementById('orderId').textContent;
-            const invoiceHTML = generateInvoiceHTML(orderId);
+            const invoiceHTML = generateInvoiceHTML(orderId, currentOrderData);
             
             const blob = new Blob([invoiceHTML], { type: 'text/html' });
             const url = window.URL.createObjectURL(blob);
@@ -898,9 +779,11 @@ Healthcare Made Easy
             a.click();
             document.body.removeChild(a);
             window.URL.revokeObjectURL(url);
+            
+            alert('✅ Invoice downloaded! Open it in your browser and print as PDF.');
         }
 
-        function generateInvoiceHTML(orderId) {
+        function generateInvoiceHTML(orderId, orderData) {
             return `
 <!DOCTYPE html>
 <html>
@@ -946,18 +829,18 @@ Healthcare Made Easy
         <div class="info-box">
             <div class="info-label">BILL TO</div>
             <div class="info-value">
-                ${document.getElementById('firstName').value} ${document.getElementById('lastName').value}<br>
-                ${document.getElementById('hospitalName').value}<br>
-                ${document.getElementById('email').value}<br>
-                ${document.getElementById('phone').value}
+                ${orderData.firstName} ${orderData.lastName}<br>
+                ${orderData.hospitalName}<br>
+                ${orderData.email}<br>
+                ${orderData.phone}
             </div>
         </div>
         <div class="info-box">
             <div class="info-label">SHIP TO</div>
             <div class="info-value">
-                ${document.getElementById('address').value}<br>
-                ${document.getElementById('city').value}, ${document.getElementById('state').value}<br>
-                PIN: ${document.getElementById('pincode').value}
+                ${orderData.address}<br>
+                ${orderData.city}, ${orderData.state}<br>
+                PIN: ${orderData.pincode}
             </div>
         </div>
     </div>
@@ -972,7 +855,7 @@ Healthcare Made Easy
             </tr>
         </thead>
         <tbody>
-            ${cart.map(item => `
+            ${orderData.items.map(item => `
                 <tr>
                     <td>${item.name}</td>
                     <td>${item.quantity}</td>
@@ -986,16 +869,16 @@ Healthcare Made Easy
     <div class="total-section">
         <div class="total-row">
             <span>Subtotal:</span>
-            <span>₹${(cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) / 100).toLocaleString('en-IN')}</span>
+            <span>₹${(orderData.subtotal / 100).toLocaleString('en-IN')}</span>
         </div>
         <div class="total-row">
             <span>GST (18%):</span>
-            <span>₹${(cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 0.18 / 100).toLocaleString('en-IN')}</span>
+            <span>₹${(orderData.gst / 100).toLocaleString('en-IN')}</span>
         </div>
-        ${discountApplied ? `
+        ${orderData.discount > 0 ? `
         <div class="total-row" style="color: #51cf66;">
             <span>Discount:</span>
-            <span>-₹${(discountAmount / 100).toLocaleString('en-IN')}</span>
+            <span>-₹${(orderData.discount / 100).toLocaleString('en-IN')}</span>
         </div>
         ` : ''}
         <div class="total-row">
@@ -1004,7 +887,7 @@ Healthcare Made Easy
         </div>
         <div class="total-row grand">
             <span>TOTAL:</span>
-            <span>₹${document.getElementById('total').textContent}</span>
+            <span>₹${(orderData.total / 100).toLocaleString('en-IN')}</span>
         </div>
     </div>
 
@@ -1025,6 +908,7 @@ Healthcare Made Easy
             localStorage.removeItem('cart');
         }
 
+        // Initialize
         renderOrderSummary();
 
         if (cart.length === 0) {
