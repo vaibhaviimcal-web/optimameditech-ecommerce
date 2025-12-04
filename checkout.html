@@ -533,7 +533,7 @@
                 <h3 style="margin: 2rem 0 1rem; font-size: 1.5rem;">Payment Method</h3>
                 
                 <div class="payment-methods">
-                    <div class="payment-method active" onclick="selectPayment('razorpay')">
+                    <div class="payment-method" onclick="selectPayment('razorpay')">
                         <i class="fas fa-credit-card"></i>
                         <span>Card/UPI/Wallet</span>
                     </div>
@@ -541,9 +541,9 @@
                         <i class="fas fa-university"></i>
                         <span>Net Banking</span>
                     </div>
-                    <div class="payment-method" onclick="selectPayment('cod')">
+                    <div class="payment-method active" onclick="selectPayment('cod')">
                         <i class="fas fa-money-bill-wave"></i>
-                        <span>Pay on Delivery</span>
+                        <span>Cash on Delivery</span>
                     </div>
                 </div>
 
@@ -598,7 +598,7 @@
             </div>
 
             <button class="btn btn-primary" onclick="processPayment()">
-                <i class="fas fa-lock"></i> Place Order & Pay
+                <i class="fas fa-lock"></i> Place Order
             </button>
         </div>
     </div>
@@ -633,7 +633,7 @@
 
     <script>
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let selectedPayment = 'razorpay';
+        let selectedPayment = 'cod'; // Default to COD
         let discountApplied = false;
         let discountAmount = 0;
         let currentOrderId = '';
@@ -698,9 +698,9 @@
                 discountAmount = subtotal * (validCodes[code] / 100);
                 discountApplied = true;
                 renderOrderSummary();
-                alert(`Discount code applied! You saved ${validCodes[code]}%`);
+                alert(`✅ Discount code applied! You saved ${validCodes[code]}%`);
             } else {
-                alert('Invalid discount code');
+                alert('❌ Invalid discount code');
             }
         }
 
@@ -738,16 +738,33 @@
                 paymentMethod: selectedPayment
             };
 
+            // For COD or if Razorpay fails, complete order directly
             if (selectedPayment === 'cod') {
                 completeOrder(orderData);
             } else {
-                initiateRazorpayPayment(orderData, total);
+                // Try Razorpay, but fallback to COD if it fails
+                try {
+                    initiateRazorpayPayment(orderData, total);
+                } catch (error) {
+                    console.error('Razorpay error:', error);
+                    alert('Payment gateway temporarily unavailable. Proceeding with Cash on Delivery.');
+                    orderData.paymentMethod = 'cod';
+                    completeOrder(orderData);
+                }
             }
         }
 
         function initiateRazorpayPayment(orderData, amount) {
+            // Check if Razorpay is loaded
+            if (typeof Razorpay === 'undefined') {
+                alert('Payment gateway not available. Proceeding with Cash on Delivery.');
+                orderData.paymentMethod = 'cod';
+                completeOrder(orderData);
+                return;
+            }
+
             const options = {
-                key: 'rzp_test_1234567890',
+                key: 'rzp_test_1234567890', // Replace with your actual Razorpay key
                 amount: amount,
                 currency: 'INR',
                 name: 'Optima Meditech',
@@ -763,11 +780,28 @@
                 },
                 theme: {
                     color: '#4A9FD8'
+                },
+                modal: {
+                    ondismiss: function() {
+                        alert('Payment cancelled. You can try again or choose Cash on Delivery.');
+                    }
                 }
             };
 
-            const rzp = new Razorpay(options);
-            rzp.open();
+            try {
+                const rzp = new Razorpay(options);
+                rzp.on('payment.failed', function (response) {
+                    alert('Payment failed. Proceeding with Cash on Delivery option.');
+                    orderData.paymentMethod = 'cod';
+                    completeOrder(orderData);
+                });
+                rzp.open();
+            } catch (error) {
+                console.error('Razorpay initialization error:', error);
+                alert('Payment gateway error. Proceeding with Cash on Delivery.');
+                orderData.paymentMethod = 'cod';
+                completeOrder(orderData);
+            }
         }
 
         function completeOrder(orderData) {
@@ -807,7 +841,7 @@ PAYMENT SUMMARY:
 Subtotal: ₹${(orderData.subtotal / 100).toLocaleString('en-IN')}
 GST (18%): ₹${(orderData.gst / 100).toLocaleString('en-IN')}
 ${orderData.discount > 0 ? `Discount: -₹${(orderData.discount / 100).toLocaleString('en-IN')}\n` : ''}Shipping: FREE
-Total Paid: ₹${(orderData.total / 100).toLocaleString('en-IN')}
+Total: ₹${(orderData.total / 100).toLocaleString('en-IN')}
 
 DELIVERY ADDRESS:
 -----------------
