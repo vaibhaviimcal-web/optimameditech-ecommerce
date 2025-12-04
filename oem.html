@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OEM Services - Optima Meditech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #4A9FD8;
+            --primary-green: #7BC043;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+        .logo {
+            width: 60px;
+            height: 60px;
+        }
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .brand-text h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .brand-text p {
+            font-size: 0.75rem;
+            color: #666;
+            font-style: italic;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: var(--primary-blue);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+        }
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+        
+        /* Content Section */
+        .content-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+        .section-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .section-subtitle {
+            font-size: 1.3rem;
+            color: #666;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin: 4rem 0;
+        }
+        .service-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(74, 159, 216, 0.2);
+        }
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+        .service-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        .service-card p {
+            color: #666;
+            line-height: 1.8;
+        }
+        .service-card ul {
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+        }
+        .service-card ul li {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Benefits Section */
+        .benefits-section {
+            background: var(--light);
+            padding: 6rem 2rem;
+        }
+        .benefits-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .benefit-item {
+            text-align: center;
+            padding: 2rem;
+        }
+        .benefit-item i {
+            font-size: 3rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+        .benefit-item h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--dark);
+        }
+        .benefit-item p {
+            color: #666;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+        .cta-section h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+        }
+        .cta-section p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+        }
+        .btn {
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: white;
+            color: var(--primary-blue);
+            margin: 0.5rem;
+        }
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-green);
+        }
+        .footer-section ul {
+            list-style: none;
+        }
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .footer-section a:hover {
+            color: var(--primary-blue);
+        }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="index.html" class="logo-container">
+                <div class="logo">
+                    <img src="https://optimameditech.com/wp-content/uploads/2024/11/cropped-Optima-Meditech-Logo-1.png" alt="Optima Meditech Logo">
+                </div>
+                <div class="brand-text">
+                    <h1>OPTIMA MEDITECH</h1>
+                    <p>Healthcare Made Easy</p>
+                </div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="oem.html">OEM</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>OEM Services</h1>
+        <p>Custom Medical Equipment Manufacturing Solutions for Your Brand</p>
+    </section>
+
+    <!-- Main Content -->
+    <section class="content-section">
+        <h2 class="section-title">Original Equipment Manufacturing</h2>
+        <p class="section-subtitle">Partner with us to manufacture high-quality medical equipment under your brand name</p>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-industry"></i>
+                </div>
+                <h3>Custom Manufacturing</h3>
+                <p>We manufacture medical equipment according to your specifications and requirements.</p>
+                <ul>
+                    <li>Product design & development</li>
+                    <li>Prototype creation</li>
+                    <li>Mass production</li>
+                    <li>Quality assurance</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <h3>Certification Support</h3>
+                <p>Complete assistance with regulatory compliance and certifications.</p>
+                <ul>
+                    <li>CE certification</li>
+                    <li>FDA approval</li>
+                    <li>ISO compliance</li>
+                    <li>Documentation support</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-paint-brush"></i>
+                </div>
+                <h3>Private Labeling</h3>
+                <p>Brand our products with your company name and logo.</p>
+                <ul>
+                    <li>Custom branding</li>
+                    <li>Packaging design</li>
+                    <li>Marketing materials</li>
+                    <li>Product manuals</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h3>Product Development</h3>
+                <p>From concept to market-ready products with our expert team.</p>
+                <ul>
+                    <li>R&D support</li>
+                    <li>Engineering design</li>
+                    <li>Testing & validation</li>
+                    <li>Market analysis</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-shipping-fast"></i>
+                </div>
+                <h3>Supply Chain Management</h3>
+                <p>Efficient logistics and delivery solutions worldwide.</p>
+                <ul>
+                    <li>Global shipping</li>
+                    <li>Inventory management</li>
+                    <li>Just-in-time delivery</li>
+                    <li>Warehousing solutions</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>After-Sales Support</h3>
+                <p>Comprehensive support for your customers and business.</p>
+                <ul>
+                    <li>Technical training</li>
+                    <li>Warranty management</li>
+                    <li>Spare parts supply</li>
+                    <li>Customer service</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+        <div class="content-section">
+            <h2 class="section-title">Why Choose Our OEM Services?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <i class="fas fa-award"></i>
+                    <h4>20+ Years Experience</h4>
+                    <p>Decades of expertise in medical equipment manufacturing</p>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-check-circle"></i>
+                    <h4>Quality Assurance</h4>
+                    <p>Strict quality control at every production stage</p>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-dollar-sign"></i>
+                    <h4>Competitive Pricing</h4>
+                    <p>Cost-effective solutions without compromising quality</p>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-clock"></i>
+                    <h4>Fast Turnaround</h4>
+                    <p>Quick production and delivery timelines</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Ready to Start Your OEM Partnership?</h2>
+        <p>Contact us today to discuss your custom manufacturing requirements</p>
+        <div>
+            <a href="#contact" class="btn">
+                <i class="fas fa-envelope"></i> Get a Quote
+            </a>
+            <a href="tel:+919876543210" class="btn">
+                <i class="fas fa-phone"></i> Call Us Now
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>Leading supplier of premium medical equipment across India, committed to excellence in healthcare.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="oem.html">OEM Services</a></li>
+                    <li><a href="admin.html">Admin Panel</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>OEM Services</h3>
+                <ul>
+                    <li><a href="#manufacturing">Custom Manufacturing</a></li>
+                    <li><a href="#certification">Certification Support</a></li>
+                    <li><a href="#labeling">Private Labeling</a></li>
+                    <li><a href="#development">Product Development</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li><i class="fas fa-phone"></i> +91 (555) 123-4567</li>
+                    <li><i class="fas fa-envelope"></i> oem@optimameditech.com</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Mumbai, India</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Optima Meditech. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
