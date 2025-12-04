@@ -792,7 +792,8 @@
                 const canvas = await html2canvas(element, {
                     scale: 2,
                     useCORS: true,
-                    logging: false
+                    logging: false,
+                    backgroundColor: '#ffffff'
                 });
 
                 const imgData = canvas.toDataURL('image/png');
@@ -814,12 +815,31 @@
         }
 
         function generateInvoiceHTML(orderId, orderData) {
+            // SVG Logo as base64 data URL
+            const logoSVG = `data:image/svg+xml;base64,${btoa(`
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4A9FD8;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#7BC043;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="url(#logoGrad)" stroke-width="8"/>
+                </svg>
+            `)}`;
+
             return `
 <div style="font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; background: white;">
+    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 30px; gap: 15px;">
+        <img src="${logoSVG}" style="width: 80px; height: 80px;" alt="Optima Meditech Logo">
+        <div style="text-align: left;">
+            <div style="font-size: 36px; font-weight: bold; background: linear-gradient(135deg, #4A9FD8, #7BC043); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: #4A9FD8;">OPTIMA MEDITECH</div>
+            <div style="color: #666; font-style: italic; margin-top: 5px; font-size: 14px;">Healthcare Made Easy</div>
+        </div>
+    </div>
+    
     <div style="text-align: center; margin-bottom: 40px; border-bottom: 3px solid #4A9FD8; padding-bottom: 20px;">
-        <div style="font-size: 32px; font-weight: bold; color: #4A9FD8;">OPTIMA MEDITECH</div>
-        <div style="color: #666; font-style: italic; margin-top: 5px;">Healthcare Made Easy</div>
-        <div style="font-size: 28px; margin-top: 20px; color: #333;">TAX INVOICE</div>
+        <div style="font-size: 28px; color: #333; font-weight: bold;">TAX INVOICE</div>
     </div>
 
     <div style="margin: 30px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
