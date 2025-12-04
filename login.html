@@ -6,7 +6,6 @@
     <title>Login - Optima Meditech</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -115,6 +114,11 @@
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(74, 159, 216, 0.4);
         }
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
         .divider {
             text-align: center;
             margin: 2rem 0;
@@ -188,6 +192,21 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .demo-credentials {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        .demo-credentials strong {
+            color: var(--primary-blue);
+        }
     </style>
 </head>
 <body>
@@ -227,10 +246,16 @@
                 <a href="forgot-password.html" class="forgot-password">Forgot Password?</a>
             </div>
 
-            <button type="submit" class="btn-login">
+            <button type="submit" class="btn-login" id="submitBtn">
                 <i class="fas fa-sign-in-alt"></i> Sign In
             </button>
         </form>
+
+        <div class="demo-credentials">
+            <strong>Demo Mode:</strong> Create an account or use test credentials<br>
+            Email: demo@optimameditech.com<br>
+            Password: demo1234
+        </div>
 
         <div class="divider">
             <span>OR</span>
@@ -251,9 +276,18 @@
     </div>
 
     <script>
-        const SUPABASE_URL = 'https://nhgngdgezqkxxjoupllm.supabase.co';
-        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Demo user for testing
+        const demoUser = {
+            email: 'demo@optimameditech.com',
+            password: 'demo1234',
+            firstName: 'Demo',
+            lastName: 'User',
+            phone: '+91 98765 43210',
+            customerTier: 'gold',
+            totalOrders: 15,
+            totalSpent: 2500000,
+            loyaltyPoints: 2500
+        };
 
         async function handleLogin(event) {
             event.preventDefault();
@@ -262,85 +296,87 @@
             const password = document.getElementById('password').value;
             const remember = document.getElementById('remember').checked;
 
+            // Disable submit button
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+
             try {
-                // Sign in with Supabase
-                const { data, error } = await supabase.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
-
-                if (error) throw error;
-
-                // Get customer data
-                const { data: customerData, error: customerError } = await supabase
-                    .from('customers')
-                    .select('*')
-                    .eq('email', email)
-                    .single();
-
-                if (customerError) throw customerError;
-
-                // Store user data
-                localStorage.setItem('userEmail', email);
-                localStorage.setItem('userName', `${customerData.first_name} ${customerData.last_name}`);
-                localStorage.setItem('userLoggedIn', 'true');
-                localStorage.setItem('customerId', customerData.id);
-
-                if (remember) {
-                    localStorage.setItem('rememberMe', 'true');
+                // Check demo user
+                if (email === demoUser.email && password === demoUser.password) {
+                    loginSuccess(demoUser, remember);
+                    return;
                 }
 
-                showAlert('Login successful! Redirecting...', 'success');
+                // Check registered users
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const user = users.find(u => u.email === email && u.password === password);
 
-                setTimeout(() => {
-                    const redirect = new URLSearchParams(window.location.search).get('redirect');
-                    window.location.href = redirect || 'account.html';
-                }, 1500);
+                if (!user) {
+                    throw new Error('Invalid email or password');
+                }
+
+                loginSuccess(user, remember);
 
             } catch (error) {
                 console.error('Login error:', error);
                 showAlert(error.message || 'Invalid email or password', 'error');
+                
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
             }
         }
 
-        async function loginWithGoogle() {
-            try {
-                const { data, error } = await supabase.auth.signInWithOAuth({
-                    provider: 'google',
-                    options: {
-                        redirectTo: window.location.origin + '/account.html'
-                    }
-                });
-                if (error) throw error;
-            } catch (error) {
-                showAlert('Google login not configured', 'error');
+        function loginSuccess(user, remember) {
+            // Store user data
+            localStorage.setItem('userEmail', user.email);
+            localStorage.setItem('userName', `${user.firstName} ${user.lastName}`);
+            localStorage.setItem('userLoggedIn', 'true');
+            localStorage.setItem('customerId', user.id || Date.now());
+
+            if (remember) {
+                localStorage.setItem('rememberMe', 'true');
             }
+
+            showAlert('Login successful! Redirecting...', 'success');
+
+            setTimeout(() => {
+                const redirect = new URLSearchParams(window.location.search).get('redirect');
+                window.location.href = redirect || 'account.html';
+            }, 1500);
         }
 
-        async function loginWithFacebook() {
-            try {
-                const { data, error } = await supabase.auth.signInWithOAuth({
-                    provider: 'facebook',
-                    options: {
-                        redirectTo: window.location.origin + '/account.html'
-                    }
-                });
-                if (error) throw error;
-            } catch (error) {
-                showAlert('Facebook login not configured', 'error');
-            }
+        function loginWithGoogle() {
+            showAlert('Social login coming soon! Please use email/password for now.', 'warning');
+        }
+
+        function loginWithFacebook() {
+            showAlert('Social login coming soon! Please use email/password for now.', 'warning');
         }
 
         function showAlert(message, type) {
             const alertBox = document.getElementById('alertBox');
             alertBox.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
-            setTimeout(() => alertBox.innerHTML = '', 5000);
+            setTimeout(() => {
+                if (type !== 'success') {
+                    alertBox.innerHTML = '';
+                }
+            }, 5000);
         }
 
         // Check if already logged in
         if (localStorage.getItem('userLoggedIn') === 'true') {
             window.location.href = 'account.html';
         }
+
+        // Show info message
+        window.addEventListener('load', () => {
+            showAlert('Demo Mode: Use demo credentials or create a new account', 'warning');
+            setTimeout(() => {
+                document.getElementById('alertBox').innerHTML = '';
+            }, 5000);
+        });
     </script>
 </body>
 </html>
