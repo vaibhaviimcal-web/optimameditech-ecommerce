@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Panel - Optima Meditech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #4A9FD8;
+            --primary-green: #7BC043;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --accent: #ff6b6b;
+            --success: #51cf66;
+            --warning: #ffc107;
+            --purple: #9b59b6;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--purple), #8e44ad);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 20px rgba(155, 89, 182, 0.3);
+        }
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .logo-svg { width: 50px; height: 50px; }
+        .brand-info h1 {
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+        .brand-info p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .logout-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover {
+            background: white;
+            color: var(--purple);
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+        .stat-icon.purple { background: linear-gradient(135deg, var(--purple), #8e44ad); }
+        .stat-icon.blue { background: linear-gradient(135deg, var(--primary-blue), #3498db); }
+        .stat-icon.green { background: linear-gradient(135deg, var(--primary-green), #27ae60); }
+        .stat-icon.red { background: linear-gradient(135deg, var(--accent), #e74c3c); }
+        .stat-info h3 {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 0.3rem;
+        }
+        .stat-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #ddd;
+        }
+        .tab {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .tab.active {
+            color: var(--purple);
+            border-bottom-color: var(--purple);
+        }
+        
+        /* Content Sections */
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        
+        /* Card */
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+        .card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--purple);
+        }
+        
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: var(--light);
+            font-weight: 700;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--purple), #8e44ad);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(155, 89, 182, 0.4);
+        }
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        .btn-danger {
+            background: var(--accent);
+            color: white;
+        }
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 30px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+        }
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+        
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .feature-item {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .feature-info h4 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        .feature-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Form */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        /* Badge */
+        .badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .badge-success { background: #d4edda; color: #155724; }
+        .badge-danger { background: #f8d7da; color: #721c24; }
+        .badge-warning { background: #fff3cd; color: #856404; }
+        .badge-info { background: #d1ecf1; color: #0c5460; }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .modal-header h3 {
+            font-size: 1.5rem;
+            color: var(--purple);
+        }
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        /* Alert */
+        .alert {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 5px solid var(--success);
+        }
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 5px solid var(--accent);
+        }
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left: 5px solid var(--warning);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo-container">
+                <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="white" stroke-width="8"/>
+                </svg>
+                <div class="brand-info">
+                    <h1>SUPER ADMIN PANEL</h1>
+                    <p>Optima Meditech - System Management</p>
+                </div>
+            </div>
+            <div class="user-info">
+                <div>
+                    <strong id="superAdminName">Super Admin</strong><br>
+                    <small id="superAdminEmail">superadmin@optimameditech.com</small>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon purple">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalAdmins">0</h3>
+                    <p>Total Admins</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalUsers">0</h3>
+                    <p>Total Users</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="fas fa-toggle-on"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="activeFeatures">0</h3>
+                    <p>Active Features</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon red">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="systemStatus">Active</h3>
+                    <p>System Status</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('admins')">
+                <i class="fas fa-user-shield"></i> Admin Management
+            </button>
+            <button class="tab" onclick="showTab('features')">
+                <i class="fas fa-toggle-on"></i> Feature Control
+            </button>
+            <button class="tab" onclick="showTab('settings')">
+                <i class="fas fa-cog"></i> System Settings
+            </button>
+            <button class="tab" onclick="showTab('logs')">
+                <i class="fas fa-history"></i> Activity Logs
+            </button>
+        </div>
+
+        <!-- Admin Management Section -->
+        <div id="admins" class="content-section active">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2>Admin Users</h2>
+                    <button class="btn btn-primary" onclick="openAddAdminModal()">
+                        <i class="fas fa-plus"></i> Add New Admin
+                    </button>
+                </div>
+
+                <div id="alertBox"></div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminsTable">
+                        <tr>
+                            <td colspan="6" style="text-align: center;">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Feature Control Section -->
+        <div id="features" class="content-section">
+            <div class="card">
+                <h2>Feature Toggles</h2>
+                <p style="color: #666; margin-bottom: 2rem;">Enable or disable features across the platform</p>
+
+                <div class="feature-grid" id="featureGrid">
+                    <!-- Features will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- System Settings Section -->
+        <div id="settings" class="content-section">
+            <div class="card">
+                <h2>System Configuration</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Site Name</label>
+                        <input type="text" id="siteName" value="Optima Meditech">
+                    </div>
+                    <div class="form-group">
+                        <label>Support Email</label>
+                        <input type="email" id="supportEmail" value="support@optimameditech.com">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Currency</label>
+                        <select id="currency">
+                            <option value="INR">INR (₹)</option>
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Timezone</label>
+                        <select id="timezone">
+                            <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
+                            <option value="America/New_York">America/New_York (EST)</option>
+                            <option value="Europe/London">Europe/London (GMT)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Maintenance Mode</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="maintenanceMode">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <button class="btn btn-primary" onclick="saveSettings()">
+                    <i class="fas fa-save"></i> Save Settings
+                </button>
+            </div>
+        </div>
+
+        <!-- Activity Logs Section -->
+        <div id="logs" class="content-section">
+            <div class="card">
+                <h2>Activity Logs</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>User</th>
+                            <th>Action</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logsTable">
+                        <tr>
+                            <td colspan="4" style="text-align: center;">No logs available</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Admin Modal -->
+    <div id="addAdminModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Admin</h3>
+                <button class="close-modal" onclick="closeAddAdminModal()">&times;</button>
+            </div>
+            <form id="addAdminForm" onsubmit="handleAddAdmin(event)">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="adminName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" id="adminEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Password *</label>
+                    <input type="password" id="adminPassword" required minlength="8">
+                </div>
+                <div class="form-group">
+                    <label>Role *</label>
+                    <select id="adminRole" required>
+                        <option value="admin">Admin</option>
+                        <option value="manager">Manager</option>
+                        <option value="support">Support</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-plus"></i> Create Admin
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Check super admin authentication
+        function checkSuperAdminAuth() {
+            const isSuperAdmin = localStorage.getItem('isSuperAdmin') === 'true';
+            if (!isSuperAdmin) {
+                window.location.href = 'superadmin-login.html';
+            }
+        }
+
+        // Initialize
+        function init() {
+            checkSuperAdminAuth();
+            loadAdmins();
+            loadFeatures();
+            loadStats();
+            loadLogs();
+        }
+
+        // Tab switching
+        function showTab(tabName) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Load Admins
+        function loadAdmins() {
+            const admins = JSON.parse(localStorage.getItem('admins')) || [
+                {
+                    id: 1,
+                    name: 'Admin User',
+                    email: 'admin@optimameditech.com',
+                    role: 'admin',
+                    status: 'active',
+                    createdAt: '2024-01-01'
+                }
+            ];
+
+            const table = document.getElementById('adminsTable');
+            table.innerHTML = admins.map(admin => `
+                <tr>
+                    <td>${admin.name}</td>
+                    <td>${admin.email}</td>
+                    <td><span class="badge badge-info">${admin.role}</span></td>
+                    <td><span class="badge badge-${admin.status === 'active' ? 'success' : 'danger'}">${admin.status}</span></td>
+                    <td>${new Date(admin.createdAt).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" onclick="editAdmin(${admin.id})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteAdmin(${admin.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            document.getElementById('totalAdmins').textContent = admins.length;
+        }
+
+        // Load Features
+        function loadFeatures() {
+            const features = JSON.parse(localStorage.getItem('featureToggles')) || {
+                userRegistration: true,
+                socialLogin: true,
+                productReviews: true,
+                wishlist: true,
+                loyaltyProgram: true,
+                discountCodes: true,
+                guestCheckout: true,
+                multipleAddresses: true,
+                orderTracking: true,
+                emailNotifications: true,
+                smsNotifications: false,
+                chatSupport: false,
+                productComparison: true,
+                advancedSearch: true,
+                bulkOrders: true,
+                invoiceGeneration: true
+            };
+
+            const featureDescriptions = {
+                userRegistration: 'Allow new users to register',
+                socialLogin: 'Enable Google/Facebook login',
+                productReviews: 'Allow customers to review products',
+                wishlist: 'Enable wishlist functionality',
+                loyaltyProgram: 'Loyalty points and rewards',
+                discountCodes: 'Promotional discount codes',
+                guestCheckout: 'Allow checkout without account',
+                multipleAddresses: 'Multiple shipping addresses',
+                orderTracking: 'Real-time order tracking',
+                emailNotifications: 'Email notifications',
+                smsNotifications: 'SMS notifications',
+                chatSupport: 'Live chat support',
+                productComparison: 'Compare products',
+                advancedSearch: 'Advanced search filters',
+                bulkOrders: 'Bulk order functionality',
+                invoiceGeneration: 'PDF invoice generation'
+            };
+
+            const grid = document.getElementById('featureGrid');
+            grid.innerHTML = Object.keys(features).map(key => `
+                <div class="feature-item">
+                    <div class="feature-info">
+                        <h4>${key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</h4>
+                        <p>${featureDescriptions[key]}</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" ${features[key] ? 'checked' : ''} onchange="toggleFeature('${key}', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            `).join('');
+
+            const activeCount = Object.values(features).filter(v => v).length;
+            document.getElementById('activeFeatures').textContent = activeCount;
+        }
+
+        // Toggle Feature
+        function toggleFeature(featureName, enabled) {
+            const features = JSON.parse(localStorage.getItem('featureToggles')) || {};
+            features[featureName] = enabled;
+            localStorage.setItem('featureToggles', JSON.stringify(features));
+            
+            showAlert(`Feature "${featureName}" ${enabled ? 'enabled' : 'disabled'}`, 'success');
+            loadFeatures();
+            logActivity('Feature Toggle', `${featureName} ${enabled ? 'enabled' : 'disabled'}`);
+        }
+
+        // Load Stats
+        function loadStats() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            document.getElementById('totalUsers').textContent = users.length;
+        }
+
+        // Load Logs
+        function loadLogs() {
+            const logs = JSON.parse(localStorage.getItem('activityLogs')) || [];
+            const table = document.getElementById('logsTable');
+            
+            if (logs.length === 0) {
+                table.innerHTML = '<tr><td colspan="4" style="text-align: center;">No logs available</td></tr>';
+                return;
+            }
+
+            table.innerHTML = logs.slice(-20).reverse().map(log => `
+                <tr>
+                    <td>${new Date(log.timestamp).toLocaleString()}</td>
+                    <td>${log.user}</td>
+                    <td>${log.action}</td>
+                    <td>${log.details}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Log Activity
+        function logActivity(action, details) {
+            const logs = JSON.parse(localStorage.getItem('activityLogs')) || [];
+            logs.push({
+                timestamp: new Date().toISOString(),
+                user: 'Super Admin',
+                action: action,
+                details: details
+            });
+            localStorage.setItem('activityLogs', JSON.stringify(logs));
+        }
+
+        // Modal Functions
+        function openAddAdminModal() {
+            document.getElementById('addAdminModal').classList.add('active');
+        }
+
+        function closeAddAdminModal() {
+            document.getElementById('addAdminModal').classList.remove('active');
+            document.getElementById('addAdminForm').reset();
+        }
+
+        // Add Admin
+        function handleAddAdmin(event) {
+            event.preventDefault();
+            
+            const admins = JSON.parse(localStorage.getItem('admins')) || [];
+            const newAdmin = {
+                id: Date.now(),
+                name: document.getElementById('adminName').value,
+                email: document.getElementById('adminEmail').value,
+                password: document.getElementById('adminPassword').value,
+                role: document.getElementById('adminRole').value,
+                status: 'active',
+                createdAt: new Date().toISOString()
+            };
+
+            admins.push(newAdmin);
+            localStorage.setItem('admins', JSON.stringify(admins));
+            
+            showAlert('Admin created successfully!', 'success');
+            closeAddAdminModal();
+            loadAdmins();
+            logActivity('Admin Created', `${newAdmin.name} (${newAdmin.email})`);
+        }
+
+        // Delete Admin
+        function deleteAdmin(id) {
+            if (!confirm('Are you sure you want to delete this admin?')) return;
+            
+            let admins = JSON.parse(localStorage.getItem('admins')) || [];
+            const admin = admins.find(a => a.id === id);
+            admins = admins.filter(a => a.id !== id);
+            localStorage.setItem('admins', JSON.stringify(admins));
+            
+            showAlert('Admin deleted successfully!', 'success');
+            loadAdmins();
+            logActivity('Admin Deleted', `${admin.name} (${admin.email})`);
+        }
+
+        // Save Settings
+        function saveSettings() {
+            const settings = {
+                siteName: document.getElementById('siteName').value,
+                supportEmail: document.getElementById('supportEmail').value,
+                currency: document.getElementById('currency').value,
+                timezone: document.getElementById('timezone').value,
+                maintenanceMode: document.getElementById('maintenanceMode').checked
+            };
+            
+            localStorage.setItem('systemSettings', JSON.stringify(settings));
+            showAlert('Settings saved successfully!', 'success');
+            logActivity('Settings Updated', 'System configuration updated');
+        }
+
+        // Show Alert
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            setTimeout(() => alertBox.innerHTML = '', 5000);
+        }
+
+        // Logout
+        function handleLogout() {
+            localStorage.removeItem('isSuperAdmin');
+            window.location.href = 'superadmin-login.html';
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
