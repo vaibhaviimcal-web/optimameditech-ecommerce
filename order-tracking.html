@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Order - Optima Meditech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #4A9FD8;
+            --primary-green: #7BC043;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --accent: #ff6b6b;
+            --success: #51cf66;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            padding: 1.5rem 2rem;
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .logo-svg {
+            width: 50px;
+            height: 50px;
+        }
+
+        .logo-text .brand-name {
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tracking-container {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .tracking-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .tracking-header h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .tracking-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .search-box {
+            background: white;
+            padding: 3rem;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            margin-bottom: 3rem;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-form input {
+            flex: 1;
+            padding: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .search-form input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(74, 159, 216, 0.1);
+        }
+
+        .search-form button {
+            padding: 1.2rem 3rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-form button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(74, 159, 216, 0.4);
+        }
+
+        .tracking-result {
+            display: none;
+            background: white;
+            padding: 3rem;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+
+        .tracking-result.active {
+            display: block;
+        }
+
+        .order-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .status-badge.processing {
+            background: linear-gradient(135deg, #ffd93d, #ffb800);
+            color: #664d00;
+        }
+
+        .status-badge.shipped {
+            background: linear-gradient(135deg, var(--primary-blue), #3a8bc2);
+            color: white;
+        }
+
+        .status-badge.delivered {
+            background: linear-gradient(135deg, var(--success), #40c057);
+            color: white;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--light);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 80px;
+            margin-bottom: 3rem;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-icon {
+            position: absolute;
+            left: 0;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            z-index: 1;
+        }
+
+        .timeline-icon.inactive {
+            background: var(--light);
+            color: #999;
+        }
+
+        .timeline-content {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 15px;
+        }
+
+        .timeline-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-date {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .download-invoice {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--light);
+            text-align: center;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(74, 159, 216, 0.4);
+        }
+
+        .no-result {
+            display: none;
+            background: white;
+            padding: 3rem;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .no-result.active {
+            display: block;
+        }
+
+        .no-result i {
+            font-size: 5rem;
+            color: #ddd;
+            margin-bottom: 1.5rem;
+        }
+
+        .no-result h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .no-result p {
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .search-form {
+                flex-direction: column;
+            }
+            .order-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo-container">
+                <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4A9FD8;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#7BC043;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="url(#logoGradient)" stroke-width="8"/>
+                </svg>
+                <div class="logo-text">
+                    <span class="brand-name">OPTIMA MEDITECH</span>
+                </div>
+            </a>
+        </nav>
+    </header>
+
+    <div class="tracking-container">
+        <div class="tracking-header">
+            <h1>Track Your Order</h1>
+            <p>Enter your order ID to track your shipment</p>
+        </div>
+
+        <div class="search-box">
+            <form class="search-form" onsubmit="trackOrder(event)">
+                <input type="text" id="orderIdInput" placeholder="Enter Order ID (e.g., OM-2025-001234)" required>
+                <button type="submit">
+                    <i class="fas fa-search"></i> Track Order
+                </button>
+            </form>
+        </div>
+
+        <div class="tracking-result" id="trackingResult">
+            <div class="order-info">
+                <div class="info-item">
+                    <div class="info-label">Order ID</div>
+                    <div class="info-value" id="displayOrderId">OM-2025-001234</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Order Date</div>
+                    <div class="info-value" id="orderDate">Dec 04, 2025</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Status</div>
+                    <div class="info-value">
+                        <span class="status-badge shipped" id="statusBadge">In Transit</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Expected Delivery</div>
+                    <div class="info-value" id="expectedDelivery">Dec 10, 2025</div>
+                </div>
+            </div>
+
+            <h3 style="margin-bottom: 2rem; font-size: 1.5rem;">Shipment Timeline</h3>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Order Confirmed</div>
+                        <div class="timeline-date">Dec 04, 2025 - 2:30 PM</div>
+                        <div class="timeline-description">Your order has been confirmed and is being prepared for shipment.</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Order Packed</div>
+                        <div class="timeline-date">Dec 05, 2025 - 10:15 AM</div>
+                        <div class="timeline-description">Your order has been carefully packed and quality checked.</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Shipped</div>
+                        <div class="timeline-date">Dec 06, 2025 - 9:00 AM</div>
+                        <div class="timeline-description">Your order is on the way! Tracking ID: TRK123456789</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">In Transit</div>
+                        <div class="timeline-date">Dec 07, 2025 - 3:45 PM</div>
+                        <div class="timeline-description">Package is in transit to your delivery location.</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-icon inactive">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Out for Delivery</div>
+                        <div class="timeline-date">Expected: Dec 10, 2025</div>
+                        <div class="timeline-description">Your order will be out for delivery soon.</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-icon inactive">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Delivered</div>
+                        <div class="timeline-date">Expected: Dec 10, 2025</div>
+                        <div class="timeline-description">Your order will be delivered to your address.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="download-invoice">
+                <h3 style="margin-bottom: 1rem;">Order Documents</h3>
+                <button class="download-btn" onclick="downloadInvoice()">
+                    <i class="fas fa-file-pdf"></i> Download Invoice
+                </button>
+                <button class="download-btn" onclick="sendEmailNotification()" style="margin-left: 1rem;">
+                    <i class="fas fa-envelope"></i> Email Invoice
+                </button>
+            </div>
+        </div>
+
+        <div class="no-result" id="noResult">
+            <i class="fas fa-search"></i>
+            <h3>Order Not Found</h3>
+            <p>We couldn't find an order with that ID. Please check and try again.</p>
+        </div>
+    </div>
+
+    <script>
+        function trackOrder(event) {
+            event.preventDefault();
+            const orderId = document.getElementById('orderIdInput').value.trim();
+            
+            // Simulate order lookup
+            if (orderId.startsWith('OM-2025-')) {
+                document.getElementById('trackingResult').classList.add('active');
+                document.getElementById('noResult').classList.remove('active');
+                document.getElementById('displayOrderId').textContent = orderId;
+            } else {
+                document.getElementById('trackingResult').classList.remove('active');
+                document.getElementById('noResult').classList.add('active');
+            }
+        }
+
+        function downloadInvoice() {
+            const orderId = document.getElementById('displayOrderId').textContent;
+            generateInvoicePDF(orderId);
+        }
+
+        function generateInvoicePDF(orderId) {
+            // Create invoice HTML
+            const invoiceHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice - ${orderId}</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 40px; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .company-name { font-size: 28px; font-weight: bold; color: #4A9FD8; }
+        .invoice-title { font-size: 24px; margin-top: 20px; }
+        .info-section { margin: 30px 0; }
+        .info-row { display: flex; justify-content: space-between; margin: 10px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 30px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #4A9FD8; color: white; }
+        .total { font-size: 20px; font-weight: bold; text-align: right; margin-top: 20px; }
+        .footer { margin-top: 50px; text-align: center; color: #666; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="company-name">OPTIMA MEDITECH</div>
+        <div style="color: #666; font-style: italic;">Healthcare Made Easy</div>
+        <div class="invoice-title">INVOICE</div>
+    </div>
+
+    <div class="info-section">
+        <div class="info-row">
+            <div><strong>Invoice Number:</strong> ${orderId}</div>
+            <div><strong>Date:</strong> ${new Date().toLocaleDateString()}</div>
+        </div>
+        <div class="info-row">
+            <div><strong>Customer Name:</strong> John Doe</div>
+            <div><strong>Hospital:</strong> Apollo Hospital</div>
+        </div>
+        <div class="info-row">
+            <div><strong>Email:</strong> john.doe@hospital.com</div>
+            <div><strong>Phone:</strong> +91 98765 43210</div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Digital X-Ray System</td>
+                <td>1</td>
+                <td>₹45,999.00</td>
+                <td>₹45,999.00</td>
+            </tr>
+            <tr>
+                <td>Patient Monitor</td>
+                <td>2</td>
+                <td>₹12,999.00</td>
+                <td>₹25,998.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="text-align: right; margin-top: 20px;">
+        <div style="margin: 10px 0;">Subtotal: ₹71,997.00</div>
+        <div style="margin: 10px 0;">GST (18%): ₹12,959.46</div>
+        <div style="margin: 10px 0;">Shipping: FREE</div>
+        <div class="total">Total: ₹84,956.46</div>
+    </div>
+
+    <div class="footer">
+        <p>Thank you for your business!</p>
+        <p>Optima Meditech | Healthcare District, India | info@optimameditech.com | +91 (555) 123-4567</p>
+        <p>This is a computer-generated invoice and does not require a signature.</p>
+    </div>
+</body>
+</html>
+            `;
+
+            // Create a blob and download
+            const blob = new Blob([invoiceHTML], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Invoice-${orderId}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            alert('Invoice downloaded successfully! You can open it in your browser and print as PDF.');
+        }
+
+        function sendEmailNotification() {
+            const orderId = document.getElementById('displayOrderId').textContent;
+            
+            // Simulate email sending
+            const emailContent = `
+Dear Customer,
+
+Thank you for your order with Optima Meditech!
+
+ORDER DETAILS:
+--------------
+Order ID: ${orderId}
+Order Date: ${new Date().toLocaleDateString()}
+Status: In Transit
+Expected Delivery: Dec 10, 2025
+
+ITEMS ORDERED:
+--------------
+1. Digital X-Ray System - ₹45,999.00
+2. Patient Monitor (x2) - ₹25,998.00
+
+PAYMENT SUMMARY:
+----------------
+Subtotal: ₹71,997.00
+GST (18%): ₹12,959.46
+Shipping: FREE
+Total: ₹84,956.46
+
+TRACKING INFORMATION:
+---------------------
+Your order is currently in transit. You can track your shipment using the tracking ID: TRK123456789
+
+DELIVERY ADDRESS:
+-----------------
+Apollo Hospital
+Healthcare District
+Mumbai, Maharashtra - 400001
+India
+
+For any queries, please contact us:
+Email: info@optimameditech.com
+Phone: +91 (555) 123-4567
+WhatsApp: +91 98765 43210
+
+Thank you for choosing Optima Meditech!
+
+Best regards,
+Optima Meditech Team
+Healthcare Made Easy
+
+---
+This is an automated email. Please do not reply to this message.
+            `;
+
+            // In a real application, this would send via backend API
+            console.log('Email Content:', emailContent);
+            
+            alert('✅ Invoice has been sent to your registered email address!\n\nPlease check your inbox and spam folder.');
+        }
+
+        // Auto-track if order ID is in URL
+        window.addEventListener('load', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('orderId');
+            if (orderId) {
+                document.getElementById('orderIdInput').value = orderId;
+                trackOrder({ preventDefault: () => {} });
+            }
+        });
+    </script>
+</body>
+</html>
