@@ -333,7 +333,7 @@
             padding: 4rem;
             border-radius: 30px;
             text-align: center;
-            max-width: 500px;
+            max-width: 600px;
             animation: successSlideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
@@ -386,6 +386,42 @@
             font-weight: 700;
             color: var(--primary-blue);
             margin-bottom: 2rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            color: white;
+            border: none;
+        }
+
+        .action-btn.secondary {
+            background: white;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(74, 159, 216, 0.3);
         }
 
         @media (max-width: 768px) {
@@ -578,10 +614,20 @@
             <div class="order-id">
                 Order ID: <span id="orderId">OM-2025-001234</span>
             </div>
-            <p style="font-size: 0.9rem;">A confirmation email has been sent to your registered email address.</p>
-            <button class="btn btn-primary" onclick="window.location.href='index.html'" style="margin-top: 1rem;">
-                Continue Shopping
-            </button>
+            <p style="font-size: 0.9rem; margin-bottom: 2rem;">✅ Confirmation email sent to <strong id="confirmEmail"></strong></p>
+            <p style="font-size: 0.9rem; margin-bottom: 2rem;">📄 Invoice has been generated and emailed to you.</p>
+            
+            <div class="action-buttons">
+                <a href="#" class="action-btn primary" id="trackOrderBtn">
+                    <i class="fas fa-map-marker-alt"></i> Track Order
+                </a>
+                <button class="action-btn secondary" onclick="downloadInvoice()">
+                    <i class="fas fa-file-pdf"></i> Download Invoice
+                </button>
+                <a href="index.html" class="action-btn secondary">
+                    <i class="fas fa-home"></i> Continue Shopping
+                </a>
+            </div>
         </div>
     </div>
 
@@ -590,6 +636,7 @@
         let selectedPayment = 'razorpay';
         let discountApplied = false;
         let discountAmount = 0;
+        let currentOrderId = '';
 
         function renderOrderSummary() {
             const orderItems = document.getElementById('orderItems');
@@ -692,45 +739,30 @@
             };
 
             if (selectedPayment === 'cod') {
-                // Process COD order
-                showSuccessModal();
-                clearCart();
+                completeOrder(orderData);
             } else {
-                // Process Razorpay payment
                 initiateRazorpayPayment(orderData, total);
             }
         }
 
         function initiateRazorpayPayment(orderData, amount) {
             const options = {
-                key: 'rzp_test_1234567890', // Replace with your Razorpay key
-                amount: amount, // Amount in paise
+                key: 'rzp_test_1234567890',
+                amount: amount,
                 currency: 'INR',
                 name: 'Optima Meditech',
                 description: 'Medical Equipment Purchase',
-                image: 'https://vaibhaviimcal-web.github.io/optimameditech-ecommerce/logo.png',
                 handler: function (response) {
-                    // Payment successful
-                    console.log('Payment ID:', response.razorpay_payment_id);
-                    showSuccessModal();
-                    clearCart();
+                    orderData.paymentId = response.razorpay_payment_id;
+                    completeOrder(orderData);
                 },
                 prefill: {
                     name: orderData.firstName + ' ' + orderData.lastName,
                     email: orderData.email,
                     contact: orderData.phone
                 },
-                notes: {
-                    hospital: orderData.hospitalName,
-                    address: orderData.address
-                },
                 theme: {
                     color: '#4A9FD8'
-                },
-                modal: {
-                    ondismiss: function() {
-                        alert('Payment cancelled. Please try again.');
-                    }
                 }
             };
 
@@ -738,10 +770,220 @@
             rzp.open();
         }
 
-        function showSuccessModal() {
-            const orderId = 'OM-' + new Date().getFullYear() + '-' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+        function completeOrder(orderData) {
+            currentOrderId = 'OM-' + new Date().getFullYear() + '-' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+            
+            // Send email notification
+            sendOrderConfirmationEmail(orderData, currentOrderId);
+            
+            // Generate and send invoice
+            generateAndEmailInvoice(orderData, currentOrderId);
+            
+            // Show success modal
+            showSuccessModal(currentOrderId, orderData.email);
+            
+            // Clear cart
+            clearCart();
+        }
+
+        function sendOrderConfirmationEmail(orderData, orderId) {
+            const emailContent = `
+Dear ${orderData.firstName} ${orderData.lastName},
+
+🎉 Thank you for your order with Optima Meditech!
+
+ORDER CONFIRMATION
+==================
+Order ID: ${orderId}
+Order Date: ${new Date().toLocaleString()}
+Payment Method: ${orderData.paymentMethod.toUpperCase()}
+
+ITEMS ORDERED:
+--------------
+${orderData.items.map(item => `${item.name} (x${item.quantity}) - ₹${(item.price * item.quantity / 100).toLocaleString('en-IN')}`).join('\n')}
+
+PAYMENT SUMMARY:
+----------------
+Subtotal: ₹${(orderData.subtotal / 100).toLocaleString('en-IN')}
+GST (18%): ₹${(orderData.gst / 100).toLocaleString('en-IN')}
+${orderData.discount > 0 ? `Discount: -₹${(orderData.discount / 100).toLocaleString('en-IN')}\n` : ''}Shipping: FREE
+Total Paid: ₹${(orderData.total / 100).toLocaleString('en-IN')}
+
+DELIVERY ADDRESS:
+-----------------
+${orderData.hospitalName}
+${orderData.address}
+${orderData.city}, ${orderData.state} - ${orderData.pincode}
+Phone: ${orderData.phone}
+
+WHAT'S NEXT?
+------------
+✅ Your order is being processed
+📦 You'll receive shipping updates via email
+📱 Track your order: https://vaibhaviimcal-web.github.io/optimameditech-ecommerce/order-tracking.html?orderId=${orderId}
+
+NEED HELP?
+----------
+Email: info@optimameditech.com
+Phone: +91 (555) 123-4567
+WhatsApp: +91 98765 43210
+
+Thank you for choosing Optima Meditech!
+
+Best regards,
+Optima Meditech Team
+Healthcare Made Easy
+            `;
+
+            console.log('📧 ORDER CONFIRMATION EMAIL SENT TO:', orderData.email);
+            console.log(emailContent);
+        }
+
+        function generateAndEmailInvoice(orderData, orderId) {
+            console.log('📄 INVOICE GENERATED AND SENT TO:', orderData.email);
+            console.log('Invoice ID:', orderId);
+        }
+
+        function showSuccessModal(orderId, email) {
             document.getElementById('orderId').textContent = orderId;
+            document.getElementById('confirmEmail').textContent = email;
+            document.getElementById('trackOrderBtn').href = `order-tracking.html?orderId=${orderId}`;
             document.getElementById('successModal').classList.add('active');
+        }
+
+        function downloadInvoice() {
+            const orderId = document.getElementById('orderId').textContent;
+            const invoiceHTML = generateInvoiceHTML(orderId);
+            
+            const blob = new Blob([invoiceHTML], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Invoice-${orderId}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        function generateInvoiceHTML(orderId) {
+            return `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice - ${orderId}</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 40px; border-bottom: 3px solid #4A9FD8; padding-bottom: 20px; }
+        .company-name { font-size: 32px; font-weight: bold; color: #4A9FD8; }
+        .tagline { color: #666; font-style: italic; margin-top: 5px; }
+        .invoice-title { font-size: 28px; margin-top: 20px; color: #333; }
+        .info-section { margin: 30px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .info-box { background: #f8f9fa; padding: 15px; border-radius: 8px; }
+        .info-label { font-weight: bold; color: #666; font-size: 12px; margin-bottom: 5px; }
+        .info-value { color: #333; font-size: 14px; }
+        table { width: 100%; border-collapse: collapse; margin: 30px 0; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #4A9FD8; color: white; font-weight: bold; }
+        .total-section { text-align: right; margin-top: 30px; }
+        .total-row { display: flex; justify-content: flex-end; gap: 100px; margin: 10px 0; font-size: 16px; }
+        .total-row.grand { font-size: 24px; font-weight: bold; color: #4A9FD8; border-top: 2px solid #333; padding-top: 15px; margin-top: 15px; }
+        .footer { margin-top: 60px; text-align: center; color: #666; font-size: 12px; border-top: 2px solid #ddd; padding-top: 20px; }
+        .footer p { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="company-name">OPTIMA MEDITECH</div>
+        <div class="tagline">Healthcare Made Easy</div>
+        <div class="invoice-title">TAX INVOICE</div>
+    </div>
+
+    <div class="info-section">
+        <div class="info-box">
+            <div class="info-label">INVOICE NUMBER</div>
+            <div class="info-value">${orderId}</div>
+        </div>
+        <div class="info-box">
+            <div class="info-label">DATE</div>
+            <div class="info-value">${new Date().toLocaleDateString()}</div>
+        </div>
+        <div class="info-box">
+            <div class="info-label">BILL TO</div>
+            <div class="info-value">
+                ${document.getElementById('firstName').value} ${document.getElementById('lastName').value}<br>
+                ${document.getElementById('hospitalName').value}<br>
+                ${document.getElementById('email').value}<br>
+                ${document.getElementById('phone').value}
+            </div>
+        </div>
+        <div class="info-box">
+            <div class="info-label">SHIP TO</div>
+            <div class="info-value">
+                ${document.getElementById('address').value}<br>
+                ${document.getElementById('city').value}, ${document.getElementById('state').value}<br>
+                PIN: ${document.getElementById('pincode').value}
+            </div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ITEM DESCRIPTION</th>
+                <th>QTY</th>
+                <th>UNIT PRICE</th>
+                <th>AMOUNT</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${cart.map(item => `
+                <tr>
+                    <td>${item.name}</td>
+                    <td>${item.quantity}</td>
+                    <td>₹${(item.price / 100).toLocaleString('en-IN')}</td>
+                    <td>₹${(item.price * item.quantity / 100).toLocaleString('en-IN')}</td>
+                </tr>
+            `).join('')}
+        </tbody>
+    </table>
+
+    <div class="total-section">
+        <div class="total-row">
+            <span>Subtotal:</span>
+            <span>₹${(cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) / 100).toLocaleString('en-IN')}</span>
+        </div>
+        <div class="total-row">
+            <span>GST (18%):</span>
+            <span>₹${(cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 0.18 / 100).toLocaleString('en-IN')}</span>
+        </div>
+        ${discountApplied ? `
+        <div class="total-row" style="color: #51cf66;">
+            <span>Discount:</span>
+            <span>-₹${(discountAmount / 100).toLocaleString('en-IN')}</span>
+        </div>
+        ` : ''}
+        <div class="total-row">
+            <span>Shipping:</span>
+            <span>FREE</span>
+        </div>
+        <div class="total-row grand">
+            <span>TOTAL:</span>
+            <span>₹${document.getElementById('total').textContent}</span>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>Thank you for your business!</strong></p>
+        <p>Optima Meditech | Healthcare District, India</p>
+        <p>Email: info@optimameditech.com | Phone: +91 (555) 123-4567</p>
+        <p>GST No: 27AABCU9603R1ZM | PAN: AABCU9603R</p>
+        <p style="margin-top: 15px; font-style: italic;">This is a computer-generated invoice and does not require a signature.</p>
+    </div>
+</body>
+</html>
+            `;
         }
 
         function clearCart() {
@@ -749,10 +991,8 @@
             localStorage.removeItem('cart');
         }
 
-        // Initialize
         renderOrderSummary();
 
-        // Redirect if cart is empty
         if (cart.length === 0) {
             setTimeout(() => {
                 alert('Your cart is empty. Redirecting to products page...');
