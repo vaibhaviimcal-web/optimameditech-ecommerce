@@ -3,18 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optima Meditech - Healthcare Made Easy | Premium Medical Equipment</title>
-    <meta name="description" content="Leading provider of premium medical equipment and healthcare solutions worldwide. FDA certified, ISO compliant.">
-    
-    <!-- Fonts -->
+    <title>Optima Meditech - Healthcare Made Easy</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- AOS Animation Library -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
-    <!-- Swiper Slider -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     
     <style>
         * {
@@ -29,80 +20,26 @@
             --dark: #1a1a2e;
             --light: #f8f9fa;
             --accent: #ff6b6b;
-            --success: #51cf66;
-        }
-
-        html {
-            scroll-behavior: smooth;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            color: var(--dark);
             overflow-x: hidden;
         }
 
-        /* Loading Screen - Simplified */
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 99999;
-            transition: opacity 0.5s, visibility 0.5s;
-        }
-
-        .loader.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .loader-content {
-            text-align: center;
-            color: white;
-        }
-
-        .loader-logo {
-            width: 60px;
-            height: 60px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 15px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Sticky Header */
+        /* Header */
         header {
-            position: fixed;
+            background: white;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            padding: 1.5rem 2rem;
+            position: sticky;
             top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 2px 30px rgba(0,0,0,0.1);
             z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        header.scrolled {
-            padding: 0.5rem 0;
-            box-shadow: 0 5px 40px rgba(0,0,0,0.15);
         }
 
         nav {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -113,22 +50,11 @@
             align-items: center;
             gap: 0.5rem;
             text-decoration: none;
-            transition: transform 0.3s;
-        }
-
-        .logo-container:hover {
-            transform: scale(1.05);
         }
 
         .logo-svg {
             width: 50px;
             height: 50px;
-        }
-
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.2;
         }
 
         .logo-text .brand-name {
@@ -137,7 +63,6 @@
             background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
         }
 
         .logo-text .brand-tagline {
@@ -174,12 +99,139 @@
             border-radius: 2px;
         }
 
-        .nav-links a:hover::after, .nav-links a.active::after {
+        .nav-links a:hover::after {
             width: 100%;
         }
 
         .nav-links a:hover {
             color: var(--primary-blue);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        /* User Menu */
+        .user-menu {
+            position: relative;
+        }
+
+        .user-icon {
+            cursor: pointer;
+            font-size: 1.4rem;
+            color: var(--dark);
+            transition: all 0.3s;
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: var(--light);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-icon:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            min-width: 250px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .user-dropdown.active {
+            display: block;
+        }
+
+        .user-dropdown-header {
+            padding: 1.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .user-dropdown-header.logged-in {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .user-dropdown-menu {
+            list-style: none;
+            padding: 0.5rem 0;
+        }
+
+        .user-dropdown-menu li {
+            padding: 0;
+        }
+
+        .user-dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            color: var(--dark);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .user-dropdown-menu a:hover {
+            background: var(--light);
+            color: var(--primary-blue);
+        }
+
+        .user-dropdown-menu i {
+            font-size: 1.2rem;
+            width: 20px;
+        }
+
+        .auth-buttons {
+            padding: 1rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .btn-login, .btn-register {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+
+        .btn-login {
+            background: white;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+
+        .btn-login:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            color: white;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(74, 159, 216, 0.4);
         }
 
         .cart-icon {
@@ -210,94 +262,61 @@
             justify-content: center;
             font-size: 0.7rem;
             font-weight: 700;
-            animation: pulse 2s infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        /* Hero Section - Optimized without video */
+        /* Hero Section */
         .hero {
-            margin-top: 80px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            color: white;
+            padding: 8rem 2rem;
+            text-align: center;
             position: relative;
-            height: 90vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             overflow: hidden;
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-green) 100%);
         }
 
         .hero::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
-            opacity: 0.3;
-        }
-
-        .hero-particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            background: rgba(255,255,255,0.3);
+            width: 500px;
+            height: 500px;
+            background: rgba(255,255,255,0.1);
             border-radius: 50%;
-            animation: float 20s infinite;
+            top: -200px;
+            right: -200px;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            25% { transform: translateY(-100px) translateX(50px); }
-            50% { transform: translateY(-200px) translateX(-50px); }
-            75% { transform: translateY(-100px) translateX(100px); }
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            bottom: -100px;
+            left: -100px;
         }
 
         .hero-content {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
             position: relative;
             z-index: 1;
-            text-align: center;
-            color: white;
         }
 
         .hero h1 {
-            font-size: 4.5rem;
+            font-size: 4rem;
             font-weight: 900;
-            margin-bottom: 1rem;
-            line-height: 1.1;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        }
-
-        .hero .tagline {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            font-weight: 300;
-            font-style: italic;
-            opacity: 0.95;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
         .hero p {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             margin-bottom: 3rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
+            opacity: 0.95;
         }
 
-        .cta-buttons {
+        .hero-buttons {
             display: flex;
             gap: 2rem;
             justify-content: center;
@@ -316,37 +335,16 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .btn:hover::before {
-            width: 300px;
-            height: 300px;
         }
 
         .btn-primary {
             background: white;
             color: var(--primary-blue);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
 
         .btn-primary:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
 
         .btn-secondary {
@@ -358,34 +356,30 @@
         .btn-secondary:hover {
             background: white;
             color: var(--primary-blue);
-            transform: translateY(-5px);
         }
 
-        /* Live Activity Feed */
-        .live-activity {
-            position: fixed;
-            bottom: 280px;
-            left: 30px;
+        /* Social Proof */
+        .social-proof {
             background: white;
-            padding: 1rem 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            z-index: 999;
+            padding: 2rem;
+            margin: -3rem auto 0;
+            max-width: 800px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .purchase-notification {
             display: flex;
             align-items: center;
             gap: 1rem;
-            max-width: 350px;
-            opacity: 0;
-            transform: translateX(-400px);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 15px;
         }
 
-        .live-activity.show {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .live-activity-icon {
+        .purchase-icon {
             width: 50px;
             height: 50px;
             background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
@@ -397,72 +391,20 @@
             font-size: 1.5rem;
         }
 
-        .live-activity-text {
-            flex: 1;
-        }
-
-        .live-activity-text strong {
-            color: var(--dark);
-            display: block;
-            margin-bottom: 0.2rem;
-        }
-
-        .live-activity-text small {
-            color: #666;
-            font-size: 0.85rem;
-        }
-
-        /* Trust Badges */
-        .trust-badges {
-            background: white;
-            padding: 3rem 2rem;
-            box-shadow: 0 -5px 30px rgba(0,0,0,0.1);
-        }
-
-        .trust-grid {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            text-align: center;
-        }
-
-        .trust-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .trust-icon {
-            font-size: 3rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .trust-item h3 {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--dark);
-        }
-
-        .trust-item p {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
         /* Features Section */
         .features {
-            padding: 8rem 2rem;
+            padding: 6rem 2rem;
             background: var(--light);
-            position: relative;
+        }
+
+        .features-container {
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .section-title {
             text-align: center;
-            font-size: 3.5rem;
+            font-size: 3rem;
             font-weight: 900;
             margin-bottom: 1rem;
             background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
@@ -472,763 +414,93 @@
 
         .section-subtitle {
             text-align: center;
-            font-size: 1.3rem;
             color: #666;
-            margin-bottom: 5rem;
+            font-size: 1.2rem;
+            margin-bottom: 4rem;
         }
 
         .features-grid {
-            max-width: 1400px;
-            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 3rem;
         }
 
         .feature-card {
             background: white;
             padding: 3rem;
-            border-radius: 25px;
+            border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary-blue), var(--primary-green));
-            transform: scaleX(0);
-            transition: transform 0.3s;
-        }
-
-        .feature-card:hover::before {
-            transform: scaleX(1);
+            transition: all 0.3s;
+            text-align: center;
         }
 
         .feature-card:hover {
-            transform: translateY(-15px) scale(1.02);
+            transform: translateY(-10px);
             box-shadow: 0 20px 60px rgba(74, 159, 216, 0.2);
-            border-color: var(--primary-blue);
         }
 
         .feature-icon {
-            font-size: 4rem;
-            margin-bottom: 2rem;
+            width: 80px;
+            height: 80px;
             background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-            transition: transform 0.3s;
-        }
-
-        .feature-card:hover .feature-icon {
-            transform: scale(1.1) rotate(5deg);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 2.5rem;
+            color: white;
         }
 
         .feature-card h3 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             margin-bottom: 1rem;
             color: var(--dark);
-            font-weight: 700;
         }
 
         .feature-card p {
             color: #666;
             line-height: 1.8;
-            font-size: 1.05rem;
         }
 
-        /* Products Section */
-        .products {
-            padding: 8rem 2rem;
-            background: white;
-        }
-
-        .products-grid {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 3rem;
-        }
-
-        .product-card {
-            background: white;
-            border-radius: 25px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 2px solid transparent;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .product-card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 25px 70px rgba(74, 159, 216, 0.25);
-            border-color: var(--primary-blue);
-        }
-
-        .product-image {
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 5rem;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .product-image::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        .product-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, var(--accent), #ff5252);
-            color: white;
-            padding: 0.5rem 1.2rem;
-            border-radius: 25px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        .quick-view-btn {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            background: white;
-            color: var(--primary-blue);
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            opacity: 0;
-        }
-
-        .product-card:hover .quick-view-btn {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-        }
-
-        .product-info {
-            padding: 2rem;
-        }
-
-        .product-category {
-            color: var(--primary-blue);
-            font-size: 0.9rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 0.8rem;
-        }
-
-        .product-name {
-            font-size: 1.6rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            color: var(--dark);
-        }
-
-        .product-description {
-            color: #666;
-            line-height: 1.7;
-            margin-bottom: 1.5rem;
-            font-size: 1rem;
-        }
-
-        .product-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 2px solid var(--light);
-        }
-
-        .product-price {
-            font-size: 2rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .add-to-cart {
+        /* CTA Section */
+        .cta {
             background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
             color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .add-to-cart:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(74, 159, 216, 0.4);
-        }
-
-        /* Quick View Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 10000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 30px;
-            max-width: 900px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            animation: modalSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: scale(0.8) translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            background: var(--accent);
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            z-index: 10;
-        }
-
-        .modal-close:hover {
-            transform: rotate(90deg);
-            background: #ff5252;
-        }
-
-        .modal-body {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            padding: 3rem;
-        }
-
-        .modal-image {
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            border-radius: 20px;
-            height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 8rem;
-            color: white;
-        }
-
-        .modal-details h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .modal-details .price {
-            font-size: 2.5rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-details p {
-            color: #666;
-            line-height: 1.8;
-            margin-bottom: 2rem;
-        }
-
-        /* Reviews Carousel */
-        .reviews-section {
-            padding: 8rem 2rem;
-            background: var(--light);
-        }
-
-        .reviews-carousel {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .review-card {
-            background: white;
-            padding: 3rem;
-            border-radius: 25px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            padding: 6rem 2rem;
             text-align: center;
         }
 
-        .review-stars {
-            color: #ffc107;
-            font-size: 1.5rem;
+        .cta h2 {
+            font-size: 3rem;
             margin-bottom: 1.5rem;
         }
 
-        .review-text {
-            font-size: 1.1rem;
-            color: #666;
-            line-height: 1.8;
-            margin-bottom: 2rem;
-            font-style: italic;
-        }
-
-        .review-author {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        .review-avatar {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .review-info h4 {
-            font-size: 1.2rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .review-info p {
-            color: #999;
-            font-size: 0.9rem;
-        }
-
-        /* WhatsApp Floating Button */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 65px;
-            height: 65px;
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 35px;
-            color: white;
-            box-shadow: 0 10px 40px rgba(37, 211, 102, 0.5);
-            z-index: 9999;
-            transition: all 0.3s;
-            animation: pulse 2s infinite;
-        }
-
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-            box-shadow: 0 15px 50px rgba(37, 211, 102, 0.6);
-        }
-
-        /* Call Button */
-        .call-float {
-            position: fixed;
-            bottom: 110px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #4A9FD8, #7BC043);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            color: white;
-            box-shadow: 0 10px 40px rgba(74, 159, 216, 0.5);
-            z-index: 9999;
-            transition: all 0.3s;
-        }
-
-        .call-float:hover {
-            transform: scale(1.1);
-        }
-
-        /* Live Chat Widget */
-        .chat-widget {
-            position: fixed;
-            bottom: 190px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            color: white;
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.5);
-            z-index: 9999;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .chat-widget:hover {
-            transform: scale(1.1);
-        }
-
-        .chat-box {
-            position: fixed;
-            bottom: 260px;
-            right: 30px;
-            width: 350px;
-            height: 500px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            z-index: 9998;
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .chat-box.active {
-            display: flex;
-        }
-
-        .chat-header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .chat-header h3 {
-            font-size: 1.2rem;
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 1.5rem;
-            overflow-y: auto;
-            background: var(--light);
-        }
-
-        .chat-message {
-            background: white;
-            padding: 1rem;
-            border-radius: 15px;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .chat-message.bot {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-        }
-
-        .chat-input {
-            padding: 1rem;
-            border-top: 1px solid #ddd;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .chat-input input {
-            flex: 1;
-            padding: 0.8rem;
-            border: 2px solid #ddd;
-            border-radius: 25px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .chat-input button {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        /* Cart Sidebar */
-        .cart-sidebar {
-            position: fixed;
-            right: -500px;
-            top: 0;
-            width: 500px;
-            height: 100vh;
-            background: white;
-            box-shadow: -10px 0 50px rgba(0,0,0,0.3);
-            transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 2000;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .cart-sidebar.active {
-            right: 0;
-        }
-
-        .cart-header {
-            padding: 2rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cart-header h2 {
-            font-size: 2rem;
-            font-weight: 800;
-        }
-
-        .close-cart {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: white;
-            transition: all 0.3s;
-        }
-
-        .close-cart:hover {
-            background: rgba(255,255,255,0.3);
-            transform: rotate(90deg);
-        }
-
-        .cart-items {
-            flex: 1;
-            overflow-y: auto;
-            padding: 2rem;
-        }
-
-        .cart-item {
-            display: flex;
-            gap: 1.5rem;
-            padding: 1.5rem;
-            background: var(--light);
-            border-radius: 20px;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s;
-        }
-
-        .cart-item:hover {
-            transform: translateX(-5px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .cart-item-image {
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: white;
-        }
-
-        .cart-item-details {
-            flex: 1;
-        }
-
-        .cart-item-name {
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-            font-size: 1.1rem;
-        }
-
-        .cart-item-price {
-            color: var(--primary-blue);
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
-
-        .cart-item-quantity {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .qty-btn {
-            background: white;
-            border: 2px solid var(--primary-blue);
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 700;
-            color: var(--primary-blue);
-        }
-
-        .qty-btn:hover {
-            background: var(--primary-blue);
-            color: white;
-            transform: scale(1.1);
-        }
-
-        .remove-item {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.5rem 1.2rem;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .remove-item:hover {
-            background: #ff5252;
-            transform: scale(1.05);
-        }
-
-        .cart-footer {
-            padding: 2rem;
-            border-top: 2px solid var(--light);
-            background: white;
-        }
-
-        .cart-total {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            font-size: 1.8rem;
-            font-weight: 800;
-        }
-
-        .checkout-btn {
-            width: 100%;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            color: white;
-            border: none;
-            padding: 1.5rem;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: block;
-            text-align: center;
-        }
-
-        .checkout-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(74, 159, 216, 0.4);
-        }
-
-        .empty-cart {
-            text-align: center;
-            padding: 5rem 2rem;
-            color: #999;
-        }
-
-        .empty-cart i {
-            font-size: 5rem;
-            margin-bottom: 1.5rem;
-            opacity: 0.3;
+        .cta p {
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+            opacity: 0.95;
         }
 
         /* Footer */
         footer {
             background: var(--dark);
             color: white;
-            padding: 5rem 2rem 2rem;
+            padding: 4rem 2rem 2rem;
         }
 
         .footer-content {
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 4rem;
-            margin-bottom: 4rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
         }
 
         .footer-section h3 {
-            margin-bottom: 2rem;
-            font-size: 1.5rem;
-            font-weight: 800;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
         }
 
         .footer-section ul {
@@ -1236,180 +508,42 @@
         }
 
         .footer-section ul li {
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
 
         .footer-section a {
             color: rgba(255,255,255,0.7);
             text-decoration: none;
             transition: all 0.3s;
-            display: inline-block;
         }
 
         .footer-section a:hover {
-            color: var(--primary-green);
-            transform: translateX(5px);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .social-links a {
-            width: 45px;
-            height: 45px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-
-        .social-links a:hover {
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            transform: translateY(-5px);
+            color: white;
+            padding-left: 5px;
         }
 
         .footer-bottom {
             text-align: center;
             padding-top: 2rem;
             border-top: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.7);
         }
 
-        /* Notification Toast */
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: -400px;
-            background: white;
-            padding: 1.5rem 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            z-index: 10000;
-            transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            border-left: 5px solid var(--success);
-        }
-
-        .notification.show {
-            right: 30px;
-        }
-
-        .notification i {
-            font-size: 2rem;
-            color: var(--success);
-        }
-
-        /* Scroll to Top Button */
-        .scroll-top {
-            position: fixed;
-            bottom: 270px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-            z-index: 999;
-        }
-
-        .scroll-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .scroll-top:hover {
-            transform: translateY(-5px);
-        }
-
-        /* Mobile Responsive */
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            .hero .tagline {
-                font-size: 1.3rem;
-            }
             .nav-links {
                 display: none;
             }
-            .cart-sidebar {
-                width: 100%;
-                right: -100%;
+            .hero h1 {
+                font-size: 2.5rem;
             }
-            .products-grid, .features-grid {
-                grid-template-columns: 1fr;
-            }
-            .modal-body {
-                grid-template-columns: 1fr;
-            }
-            .live-activity {
-                display: none;
-            }
-            .whatsapp-float {
-                bottom: 20px;
-                right: 20px;
-                width: 55px;
-                height: 55px;
-                font-size: 28px;
-            }
-            .call-float {
-                bottom: 90px;
-                right: 20px;
-                width: 50px;
-                height: 50px;
-                font-size: 24px;
-            }
-            .chat-widget {
-                bottom: 160px;
-                right: 20px;
-                width: 50px;
-                height: 50px;
-                font-size: 24px;
-            }
-            .chat-box {
-                width: 90%;
-                right: 5%;
+            .hero p {
+                font-size: 1.2rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loader">
-        <div class="loader-content">
-            <div class="loader-logo"></div>
-            <h2>Loading...</h2>
-        </div>
-    </div>
-
-    <!-- Live Activity Feed -->
-    <div class="live-activity" id="liveActivity">
-        <div class="live-activity-icon">
-            <i class="fas fa-shopping-bag"></i>
-        </div>
-        <div class="live-activity-text">
-            <strong id="activityName">John from Mumbai</strong>
-            <small id="activityAction">just purchased Digital X-Ray System</small>
-        </div>
-    </div>
-
-    <!-- Header -->
-    <header id="header">
+    <header>
         <nav>
             <a href="index.html" class="logo-container">
                 <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -1427,27 +561,70 @@
                 </div>
             </a>
             <ul class="nav-links">
-                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="products.html">Products</a></li>
                 <li><a href="order-tracking.html">Track Order</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
-            <div class="cart-icon" onclick="toggleCart()">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="cart-count" id="cartCount">0</span>
+            <div class="nav-right">
+                <!-- User Menu -->
+                <div class="user-menu">
+                    <div class="user-icon" onclick="toggleUserMenu()">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <!-- Logged Out State -->
+                        <div id="loggedOutMenu">
+                            <div class="user-dropdown-header">
+                                <h4>Welcome to Optima Meditech</h4>
+                                <p style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8;">Sign in to access your account</p>
+                            </div>
+                            <div class="auth-buttons">
+                                <a href="login.html" class="btn-login">
+                                    <i class="fas fa-sign-in-alt"></i> Sign In
+                                </a>
+                                <a href="register.html" class="btn-register">
+                                    <i class="fas fa-user-plus"></i> Create Account
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Logged In State -->
+                        <div id="loggedInMenu" style="display: none;">
+                            <div class="user-dropdown-header logged-in">
+                                <h4 id="userDisplayName">User Name</h4>
+                                <p style="font-size: 0.9rem; margin-top: 0.5rem;" id="userDisplayEmail">user@email.com</p>
+                            </div>
+                            <ul class="user-dropdown-menu">
+                                <li><a href="account.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                                <li><a href="account.html"><i class="fas fa-shopping-bag"></i> My Orders</a></li>
+                                <li><a href="account.html"><i class="fas fa-heart"></i> Wishlist</a></li>
+                                <li><a href="account.html"><i class="fas fa-map-marker-alt"></i> Addresses</a></li>
+                                <li><a href="account.html"><i class="fas fa-user-edit"></i> Edit Profile</a></li>
+                                <li><a href="account.html"><i class="fas fa-star"></i> Loyalty Points</a></li>
+                                <li><a href="#" onclick="handleLogout()" style="color: var(--accent);"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cart Icon -->
+                <div class="cart-icon" onclick="window.location.href='checkout.html'">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
             </div>
         </nav>
     </header>
 
-    <!-- Hero Section - Optimized -->
     <section class="hero">
-        <div class="hero-particles" id="particles"></div>
-        <div class="hero-content" data-aos="fade-up">
+        <div class="hero-content">
             <h1>OPTIMA MEDITECH</h1>
-            <p class="tagline">Healthcare Made Easy</p>
-            <p>Delivering cutting-edge medical technology and equipment for healthcare professionals worldwide. Quality, precision, and innovation in every product.</p>
-            <div class="cta-buttons">
+            <p>Healthcare Made Easy</p>
+            <p style="font-size: 1.2rem;">Delivering cutting-edge medical technology and equipment for healthcare professionals worldwide. Quality, precision, and innovation in every product.</p>
+            
+            <div class="hero-buttons">
                 <a href="products.html" class="btn btn-primary">
                     <i class="fas fa-box"></i> Explore Products
                 </a>
@@ -1458,598 +635,184 @@
         </div>
     </section>
 
-    <!-- Trust Badges -->
-    <section class="trust-badges" data-aos="fade-up">
-        <div class="trust-grid">
-            <div class="trust-item">
-                <div class="trust-icon"><i class="fas fa-award"></i></div>
-                <h3 class="counter" data-target="15">0</h3>
-                <p>Years of Excellence</p>
+    <div class="social-proof">
+        <div class="purchase-notification">
+            <div class="purchase-icon">
+                <i class="fas fa-shopping-bag"></i>
             </div>
-            <div class="trust-item">
-                <div class="trust-icon"><i class="fas fa-users"></i></div>
-                <h3 class="counter" data-target="5000">0</h3>
-                <p>Happy Clients</p>
-            </div>
-            <div class="trust-item">
-                <div class="trust-icon"><i class="fas fa-globe"></i></div>
-                <h3 class="counter" data-target="50">0</h3>
-                <p>Countries Served</p>
-            </div>
-            <div class="trust-item">
-                <div class="trust-icon"><i class="fas fa-box-open"></i></div>
-                <h3 class="counter" data-target="200">0</h3>
-                <p>Product Range</p>
+            <div>
+                <strong>Amit from Bangalore</strong>
+                <p style="color: #666; margin-top: 0.3rem;">just purchased Ultrasound Scanner</p>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Features Section -->
     <section class="features">
-        <h2 class="section-title" data-aos="fade-up">Why Choose Optima Meditech</h2>
-        <p class="section-subtitle" data-aos="fade-up">Industry-leading medical equipment with unmatched quality and support</p>
-        <div class="features-grid">
-            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
-                <div class="feature-icon"><i class="fas fa-certificate"></i></div>
-                <h3>Certified Quality</h3>
-                <p>All products meet international medical standards and certifications including FDA, CE, and ISO compliance.</p>
-            </div>
-            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
-                <div class="feature-icon"><i class="fas fa-shipping-fast"></i></div>
-                <h3>Fast Delivery</h3>
-                <p>Express shipping worldwide with real-time tracking and secure packaging for all medical equipment.</p>
-            </div>
-            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
-                <div class="feature-icon"><i class="fas fa-headset"></i></div>
-                <h3>24/7 Support</h3>
-                <p>Dedicated technical support team available round the clock for installation, training, and troubleshooting.</p>
-            </div>
-            <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
-                <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-                <h3>Warranty Protection</h3>
-                <p>Comprehensive warranty coverage with extended service plans and replacement guarantees.</p>
-            </div>
-            <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
-                <div class="feature-icon"><i class="fas fa-tools"></i></div>
-                <h3>Maintenance Services</h3>
-                <p>Regular maintenance programs and calibration services to ensure optimal equipment performance.</p>
-            </div>
-            <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
-                <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
-                <h3>Training Programs</h3>
-                <p>Comprehensive training for medical staff on equipment operation and best practices.</p>
+        <div class="features-container">
+            <h2 class="section-title">Why Choose Us</h2>
+            <p class="section-subtitle">Premium medical equipment with unmatched quality and service</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3>Certified Quality</h3>
+                    <p>All products are CE, FDA, and ISO certified ensuring the highest quality standards</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <h3>Fast Delivery</h3>
+                    <p>Free shipping on orders above ₹1,00,000 with professional installation included</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>24/7 Support</h3>
+                    <p>Round-the-clock technical support and customer service for all your needs</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>2-Year Warranty</h3>
+                    <p>Comprehensive warranty coverage with free on-site service and maintenance</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <h3>Best Prices</h3>
+                    <p>Competitive pricing with exclusive discounts and loyalty rewards program</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Expert Team</h3>
+                    <p>Experienced professionals providing consultation and training for all equipment</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Products Section -->
-    <section class="products">
-        <h2 class="section-title" data-aos="fade-up">Our Premium Products</h2>
-        <p class="section-subtitle" data-aos="fade-up">State-of-the-art medical equipment for modern healthcare facilities</p>
-        <div class="products-grid" id="productsGrid"></div>
-    </section>
-
-    <!-- Reviews Section -->
-    <section class="reviews-section">
-        <h2 class="section-title" data-aos="fade-up">What Our Clients Say</h2>
-        <p class="section-subtitle" data-aos="fade-up">Trusted by healthcare professionals worldwide</p>
-        <div class="reviews-carousel swiper" data-aos="fade-up">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <div class="review-card">
-                        <div class="review-stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <p class="review-text">"Optima Meditech has been our trusted partner for over 5 years. Their equipment quality and after-sales support are exceptional. Highly recommended!"</p>
-                        <div class="review-author">
-                            <div class="review-avatar">DR</div>
-                            <div class="review-info">
-                                <h4>Dr. Rajesh Kumar</h4>
-                                <p>Apollo Hospital, Mumbai</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="review-card">
-                        <div class="review-stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <p class="review-text">"The digital X-ray system we purchased has transformed our diagnostic capabilities. The image quality is outstanding and the training provided was comprehensive."</p>
-                        <div class="review-author">
-                            <div class="review-avatar">PS</div>
-                            <div class="review-info">
-                                <h4>Dr. Priya Sharma</h4>
-                                <p>Max Healthcare, Delhi</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="review-card">
-                        <div class="review-stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <p class="review-text">"Excellent service and premium quality equipment. The 24/7 support team is always responsive and helpful. Best investment for our hospital!"</p>
-                        <div class="review-author">
-                            <div class="review-avatar">AP</div>
-                            <div class="review-info">
-                                <h4>Dr. Amit Patel</h4>
-                                <p>Fortis Hospital, Bangalore</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="swiper-pagination"></div>
-        </div>
-    </section>
-
-    <!-- Quick View Modal -->
-    <div class="modal" id="quickViewModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeQuickView()"><i class="fas fa-times"></i></button>
-            <div class="modal-body">
-                <div class="modal-image" id="modalImage">
-                    <i class="fas fa-x-ray"></i>
-                </div>
-                <div class="modal-details">
-                    <h2 id="modalName">Product Name</h2>
-                    <div class="price" id="modalPrice">₹45,999</div>
-                    <p id="modalDescription">Product description goes here...</p>
-                    <button class="btn btn-primary" onclick="addToCartFromModal()">
-                        <i class="fas fa-cart-plus"></i> Add to Cart
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/919876543210?text=Hi%20Optima%20Meditech,%20I'm%20interested%20in%20your%20products" 
-       class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <!-- Call Float Button -->
-    <a href="tel:+919876543210" class="call-float" title="Call Us">
-        <i class="fas fa-phone-alt"></i>
-    </a>
-
-    <!-- Live Chat Widget -->
-    <div class="chat-widget" onclick="toggleChat()">
-        <i class="fas fa-comments"></i>
-    </div>
-
-    <div class="chat-box" id="chatBox">
-        <div class="chat-header">
-            <h3>Live Chat Support</h3>
-            <button class="modal-close" onclick="toggleChat()" style="position: static; width: 30px; height: 30px; font-size: 1rem;">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="chat-messages" id="chatMessages">
-            <div class="chat-message bot">
-                <strong>Support Team</strong>
-                <p>Hello! How can we help you today?</p>
-            </div>
-        </div>
-        <div class="chat-input">
-            <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="handleChatEnter(event)">
-            <button onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </div>
-
-    <!-- Scroll to Top -->
-    <div class="scroll-top" id="scrollTop" onclick="scrollToTop()">
-        <i class="fas fa-arrow-up"></i>
-    </div>
-
-    <!-- Cart Sidebar -->
-    <div class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h2>Shopping Cart</h2>
-            <button class="close-cart" onclick="toggleCart()"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="cart-items" id="cartItems">
-            <div class="empty-cart">
-                <i class="fas fa-shopping-cart"></i>
-                <p>Your cart is empty</p>
-            </div>
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <span>Total:</span>
-                <span id="cartTotal">₹0.00</span>
-            </div>
-            <a href="checkout.html" class="checkout-btn">
-                <i class="fas fa-lock"></i> Proceed to Checkout
+    <section class="cta">
+        <h2>Ready to Upgrade Your Healthcare Facility?</h2>
+        <p>Join thousands of satisfied healthcare professionals worldwide</p>
+        <div class="hero-buttons">
+            <a href="products.html" class="btn btn-primary">
+                <i class="fas fa-box"></i> Browse Products
+            </a>
+            <a href="register.html" class="btn btn-secondary">
+                <i class="fas fa-user-plus"></i> Create Account
             </a>
         </div>
-    </div>
+    </section>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h3>Optima Meditech</h3>
-                <p>Healthcare Made Easy - Leading provider of premium medical equipment and healthcare solutions worldwide.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
+                <h3>OPTIMA MEDITECH</h3>
+                <p style="color: rgba(255,255,255,0.7); line-height: 1.8;">
+                    Leading provider of premium medical equipment and technology for healthcare professionals worldwide.
+                </p>
             </div>
+            
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="products.html">Products</a></li>
-                    <li><a href="order-tracking.html">Track Order</a></li>
                     <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="order-tracking.html">Track Order</a></li>
                 </ul>
             </div>
+            
             <div class="footer-section">
-                <h3>Support</h3>
+                <h3>Account</h3>
                 <ul>
-                    <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Warranty Info</a></li>
-                    <li><a href="#">Shipping Policy</a></li>
-                    <li><a href="#">Returns</a></li>
+                    <li><a href="login.html">Sign In</a></li>
+                    <li><a href="register.html">Create Account</a></li>
+                    <li><a href="account.html">My Account</a></li>
+                    <li><a href="account.html">My Orders</a></li>
+                    <li><a href="account.html">Wishlist</a></li>
                 </ul>
             </div>
+            
             <div class="footer-section">
-                <h3>Contact</h3>
+                <h3>Contact Us</h3>
                 <ul>
-                    <li><i class="fas fa-phone"></i> +91 (555) 123-4567</li>
                     <li><i class="fas fa-envelope"></i> info@optimameditech.com</li>
-                    <li><i class="fas fa-map-marker-alt"></i> Healthcare District, India</li>
+                    <li><i class="fas fa-phone"></i> +91 (555) 123-4567</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Mumbai, India</li>
                 </ul>
             </div>
         </div>
+        
         <div class="footer-bottom">
-            <p>&copy; 2025 Optima Meditech. All rights reserved. | Healthcare Made Easy</p>
+            <p>&copy; 2024 Optima Meditech. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- AOS Library -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <!-- Swiper Library -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    
     <script>
-        // Initialize AOS
-        AOS.init({
-            duration: 1000,
-            once: true,
-            offset: 100
-        });
-
-        // Initialize Swiper
-        const swiper = new Swiper('.swiper', {
-            slidesPerView: 1,
-            spaceBetween: 30,
-            loop: true,
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            breakpoints: {
-                768: {
-                    slidesPerView: 2,
-                },
-                1024: {
-                    slidesPerView: 3,
-                }
-            }
-        });
-
-        // Loading Screen - Faster
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                document.querySelector('.loader').classList.add('hidden');
-            }, 800);
-        });
-
-        // Sticky Header
-        window.addEventListener('scroll', function() {
-            const header = document.getElementById('header');
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-
-            // Scroll to Top Button
-            const scrollTop = document.getElementById('scrollTop');
-            if (window.scrollY > 500) {
-                scrollTop.classList.add('visible');
-            } else {
-                scrollTop.classList.remove('visible');
-            }
-        });
-
-        // Scroll to Top Function
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Animated Counters
-        const counters = document.querySelectorAll('.counter');
-        let counted = false;
-
-        window.addEventListener('scroll', function() {
-            if (counted) return;
-            
-            counters.forEach(counter => {
-                const rect = counter.getBoundingClientRect();
-                if (rect.top < window.innerHeight) {
-                    counted = true;
-                    const target = parseInt(counter.dataset.target);
-                    let count = 0;
-                    const increment = target / 100;
-                    const timer = setInterval(() => {
-                        count += increment;
-                        if (count >= target) {
-                            counter.textContent = target + '+';
-                            clearInterval(timer);
-                        } else {
-                            counter.textContent = Math.ceil(count);
-                        }
-                    }, 20);
-                }
-            });
-        });
-
-        // Particles Animation - Reduced for performance
-        const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 20; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.width = Math.random() * 10 + 5 + 'px';
-            particle.style.height = particle.style.width;
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 20 + 's';
-            particlesContainer.appendChild(particle);
-        }
-
-        // Live Activity Feed
-        const activities = [
-            { name: 'John from Mumbai', action: 'just purchased Digital X-Ray System' },
-            { name: 'Sarah from Delhi', action: 'just purchased Patient Monitor' },
-            { name: 'Amit from Bangalore', action: 'just purchased Ultrasound Scanner' },
-            { name: 'Priya from Chennai', action: 'just purchased ECG Machine' },
-            { name: 'Raj from Pune', action: 'just purchased ICU Ventilator' }
-        ];
-
-        let activityIndex = 0;
-        function showLiveActivity() {
-            const activity = activities[activityIndex];
-            document.getElementById('activityName').textContent = activity.name;
-            document.getElementById('activityAction').textContent = activity.action;
-            document.getElementById('liveActivity').classList.add('show');
-            
-            setTimeout(() => {
-                document.getElementById('liveActivity').classList.remove('show');
-            }, 5000);
-            
-            activityIndex = (activityIndex + 1) % activities.length;
-        }
-
-        setInterval(showLiveActivity, 10000);
-        setTimeout(showLiveActivity, 3000);
-
-        // Products Data
-        const products = [
-            {id: 1, name: "Digital X-Ray System", category: "Diagnostic Imaging", price: 4599900, description: "High-resolution digital radiography system with advanced image processing and PACS integration", icon: "fa-x-ray", badge: "Best Seller"},
-            {id: 2, name: "Patient Monitor", category: "Patient Monitoring", price: 1299900, description: "Multi-parameter vital signs monitor with touchscreen interface and wireless connectivity", icon: "fa-heartbeat", badge: "New"},
-            {id: 3, name: "Ultrasound Scanner", category: "Diagnostic Imaging", price: 3850000, description: "4D color doppler ultrasound with advanced imaging capabilities and multiple probes", icon: "fa-wave-square", badge: "Premium"},
-            {id: 4, name: "Surgical LED Lights", category: "OT Equipment", price: 899900, description: "Shadowless LED surgical lights with adjustable intensity and color temperature", icon: "fa-lightbulb", badge: null},
-            {id: 5, name: "Anesthesia Workstation", category: "OT Equipment", price: 2999900, description: "Advanced anesthesia machine with integrated ventilator and monitoring system", icon: "fa-lungs", badge: "Featured"},
-            {id: 6, name: "ECG Machine", category: "Cardiology", price: 599900, description: "12-lead ECG with automatic interpretation, thermal printer and PC connectivity", icon: "fa-heart", badge: null},
-            {id: 7, name: "Defibrillator AED", category: "Emergency Care", price: 349900, description: "Automated external defibrillator with voice prompts and CPR coaching", icon: "fa-bolt", badge: "Essential"},
-            {id: 8, name: "Infusion Pump", category: "IV Therapy", price: 279900, description: "Smart infusion pump with drug library, dose error reduction and wireless monitoring", icon: "fa-syringe", badge: null},
-            {id: 9, name: "ICU Ventilator", category: "Critical Care", price: 3499900, description: "Advanced ICU ventilator with multiple modes, lung protective strategies and monitoring", icon: "fa-wind", badge: "Premium"}
-        ];
-
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let currentProduct = null;
-
-        function renderProducts() {
-            const grid = document.getElementById('productsGrid');
-            grid.innerHTML = products.map((product, index) => `
-                <div class="product-card" data-aos="fade-up" data-aos-delay="${index * 100}">
-                    <div class="product-image">
-                        <i class="fas ${product.icon}"></i>
-                        ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
-                        <button class="quick-view-btn" onclick="openQuickView(${product.id})">
-                            <i class="fas fa-eye"></i> Quick View
-                        </button>
-                    </div>
-                    <div class="product-info">
-                        <div class="product-category">${product.category}</div>
-                        <h3 class="product-name">${product.name}</h3>
-                        <p class="product-description">${product.description}</p>
-                        <div class="product-footer">
-                            <div class="product-price">₹${(product.price / 100).toLocaleString('en-IN')}</div>
-                            <button class="add-to-cart" onclick="addToCart(${product.id})">
-                                <i class="fas fa-cart-plus"></i> Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
+        
+        function updateCartCount() {
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
         }
 
-        function openQuickView(productId) {
-            currentProduct = products.find(p => p.id === productId);
-            document.getElementById('modalImage').innerHTML = `<i class="fas ${currentProduct.icon}"></i>`;
-            document.getElementById('modalName').textContent = currentProduct.name;
-            document.getElementById('modalPrice').textContent = `₹${(currentProduct.price / 100).toLocaleString('en-IN')}`;
-            document.getElementById('modalDescription').textContent = currentProduct.description;
-            document.getElementById('quickViewModal').classList.add('active');
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('active');
         }
 
-        function closeQuickView() {
-            document.getElementById('quickViewModal').classList.remove('active');
-        }
+        function checkUserLogin() {
+            const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+            const userName = localStorage.getItem('userName');
+            const userEmail = localStorage.getItem('userEmail');
 
-        function addToCartFromModal() {
-            if (currentProduct) {
-                addToCart(currentProduct.id);
-                closeQuickView();
-            }
-        }
-
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            const existingItem = cart.find(item => item.id === productId);
-            if (existingItem) {
-                existingItem.quantity++;
+            if (isLoggedIn) {
+                document.getElementById('loggedOutMenu').style.display = 'none';
+                document.getElementById('loggedInMenu').style.display = 'block';
+                document.getElementById('userDisplayName').textContent = userName || 'User';
+                document.getElementById('userDisplayEmail').textContent = userEmail || '';
             } else {
-                cart.push({ ...product, quantity: 1 });
-            }
-            updateCart();
-            showNotification('Product added to cart!');
-            saveCart();
-        }
-
-        function updateCart() {
-            const cartCount = document.getElementById('cartCount');
-            const cartItems = document.getElementById('cartItems');
-            const cartTotal = document.getElementById('cartTotal');
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            cartCount.textContent = totalItems;
-            cartTotal.textContent = `₹${(totalPrice / 100).toLocaleString('en-IN')}`;
-            if (cart.length === 0) {
-                cartItems.innerHTML = `<div class="empty-cart"><i class="fas fa-shopping-cart"></i><p>Your cart is empty</p></div>`;
-            } else {
-                cartItems.innerHTML = cart.map(item => `
-                    <div class="cart-item">
-                        <div class="cart-item-image"><i class="fas ${item.icon}"></i></div>
-                        <div class="cart-item-details">
-                            <div class="cart-item-name">${item.name}</div>
-                            <div class="cart-item-price">₹${(item.price / 100).toLocaleString('en-IN')}</div>
-                            <div class="cart-item-quantity">
-                                <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-                                <span>${item.quantity}</span>
-                                <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
-                                <button class="remove-item" onclick="removeFromCart(${item.id})">Remove</button>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
+                document.getElementById('loggedOutMenu').style.display = 'block';
+                document.getElementById('loggedInMenu').style.display = 'none';
             }
         }
 
-        function updateQuantity(productId, change) {
-            const item = cart.find(item => item.id === productId);
-            if (item) {
-                item.quantity += change;
-                if (item.quantity <= 0) {
-                    removeFromCart(productId);
-                } else {
-                    updateCart();
-                    saveCart();
-                }
+        function handleLogout() {
+            localStorage.removeItem('userLoggedIn');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('customerId');
+            window.location.reload();
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const userMenu = document.querySelector('.user-menu');
+            const dropdown = document.getElementById('userDropdown');
+            
+            if (!userMenu.contains(event.target)) {
+                dropdown.classList.remove('active');
             }
-        }
-
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            updateCart();
-            saveCart();
-        }
-
-        function toggleCart() {
-            document.getElementById('cartSidebar').classList.toggle('active');
-        }
-
-        function saveCart() {
-            localStorage.setItem('cart', JSON.stringify(cart));
-        }
-
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.innerHTML = `<i class="fas fa-check-circle"></i><span>${message}</span>`;
-            document.body.appendChild(notification);
-            setTimeout(() => notification.classList.add('show'), 100);
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => notification.remove(), 400);
-            }, 3000);
-        }
-
-        // Live Chat Functions
-        function toggleChat() {
-            document.getElementById('chatBox').classList.toggle('active');
-        }
-
-        function sendChatMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            if (!message) return;
-
-            const messagesContainer = document.getElementById('chatMessages');
-            messagesContainer.innerHTML += `
-                <div class="chat-message">
-                    <strong>You</strong>
-                    <p>${message}</p>
-                </div>
-            `;
-
-            input.value = '';
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-            // Simulate bot response
-            setTimeout(() => {
-                messagesContainer.innerHTML += `
-                    <div class="chat-message bot">
-                        <strong>Support Team</strong>
-                        <p>Thank you for your message! Our team will respond shortly. For immediate assistance, please call +91 (555) 123-4567 or WhatsApp us.</p>
-                    </div>
-                `;
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }, 1000);
-        }
-
-        function handleChatEnter(event) {
-            if (event.key === 'Enter') {
-                sendChatMessage();
-            }
-        }
-
-        // Close modal on outside click
-        window.onclick = function(event) {
-            const modal = document.getElementById('quickViewModal');
-            if (event.target === modal) {
-                closeQuickView();
-            }
-        }
+        });
 
         // Initialize
-        renderProducts();
-        updateCart();
+        updateCartCount();
+        checkUserLogin();
     </script>
 </body>
 </html>
