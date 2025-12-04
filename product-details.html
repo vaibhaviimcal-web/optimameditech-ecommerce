@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - Optima Meditech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #4A9FD8;
+            --primary-green: #7BC043;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --accent: #ff6b6b;
+            --success: #51cf66;
+            --warning: #ffc107;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .logo-svg { width: 50px; height: 50px; }
+        .brand-name {
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .nav-links a:hover { color: var(--primary-blue); }
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.4rem;
+        }
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 0.5rem;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+        
+        /* Product Container */
+        .product-container {
+            max-width: 1400px;
+            margin: 0 auto 4rem;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+        
+        /* Product Images */
+        .product-images {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+        .main-image {
+            width: 100%;
+            height: 500px;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .thumbnail-images {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .thumbnail {
+            height: 100px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .thumbnail:hover, .thumbnail.active {
+            border-color: var(--primary-blue);
+        }
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Product Info */
+        .product-info {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .product-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), #ff5252);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .product-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .stars {
+            color: var(--warning);
+            font-size: 1.2rem;
+        }
+        .rating-text {
+            color: #666;
+        }
+        .product-price {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        .price-details {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        .stock-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+        .stock-status.low {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .stock-status.out {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .product-description {
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        /* Quantity Selector */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .quantity-selector label {
+            font-weight: 700;
+        }
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .quantity-controls button {
+            background: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        .quantity-controls button:hover {
+            background: var(--light);
+        }
+        .quantity-controls input {
+            border: none;
+            width: 60px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .btn {
+            flex: 1;
+            padding: 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(74, 159, 216, 0.4);
+        }
+        .btn-secondary {
+            background: white;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+        .btn-secondary:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+        
+        /* Features */
+        .product-features {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+        .product-features h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        .features-list {
+            list-style: none;
+        }
+        .features-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .features-list i {
+            color: var(--success);
+        }
+        
+        /* Tabs */
+        .product-tabs {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+        .tab-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #ddd;
+        }
+        .tab-button {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .tab-button.active {
+            color: var(--primary-blue);
+            border-bottom-color: var(--primary-blue);
+        }
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Specifications */
+        .specs-table {
+            width: 100%;
+        }
+        .specs-table tr {
+            border-bottom: 1px solid #ddd;
+        }
+        .specs-table td {
+            padding: 1rem;
+        }
+        .specs-table td:first-child {
+            font-weight: 700;
+            width: 30%;
+        }
+        
+        /* Reviews */
+        .review-summary {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 2px solid var(--light);
+        }
+        .rating-overview {
+            text-align: center;
+        }
+        .rating-number {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .rating-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .rating-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .bar {
+            flex: 1;
+            height: 8px;
+            background: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+        }
+        .review-item {
+            padding: 2rem;
+            background: var(--light);
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .reviewer-name {
+            font-weight: 700;
+        }
+        .review-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Related Products */
+        .related-products {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+        .related-products h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(74, 159, 216, 0.2);
+        }
+        .product-card-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+        }
+        .product-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .product-card-info {
+            padding: 1.5rem;
+        }
+        .product-card-name {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .product-card-price {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .product-container {
+                grid-template-columns: 1fr;
+            }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo-container">
+                <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4A9FD8;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#7BC043;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="url(#logoGradient)" stroke-width="8"/>
+                </svg>
+                <span class="brand-name">OPTIMA MEDITECH</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="account.html">My Account</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="cart-icon" onclick="window.location.href='checkout.html'">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </nav>
+    </header>
+
+    <div class="breadcrumb">
+        <a href="index.html">Home</a> / 
+        <a href="products.html">Products</a> / 
+        <span id="breadcrumbProduct">Product</span>
+    </div>
+
+    <div class="product-container">
+        <div class="product-images">
+            <div class="main-image" id="mainImage">
+                <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80" alt="Product">
+            </div>
+            <div class="thumbnail-images">
+                <div class="thumbnail active" onclick="changeImage(0)">
+                    <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80" alt="Thumbnail 1">
+                </div>
+                <div class="thumbnail" onclick="changeImage(1)">
+                    <img src="https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=800&q=80" alt="Thumbnail 2">
+                </div>
+                <div class="thumbnail" onclick="changeImage(2)">
+                    <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80" alt="Thumbnail 3">
+                </div>
+                <div class="thumbnail" onclick="changeImage(3)">
+                    <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80" alt="Thumbnail 4">
+                </div>
+            </div>
+        </div>
+
+        <div class="product-info">
+            <span class="product-badge" id="productBadge">Best Seller</span>
+            <h1 class="product-title" id="productTitle">Digital X-Ray System</h1>
+            
+            <div class="product-rating">
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <span class="rating-text">4.5 (127 reviews)</span>
+            </div>
+
+            <div class="product-price" id="productPrice">₹45,99,900</div>
+            <div class="price-details">
+                <p>Inclusive of all taxes</p>
+                <p>EMI starting from ₹38,332/month</p>
+            </div>
+
+            <div class="stock-status" id="stockStatus">
+                <i class="fas fa-check-circle"></i>
+                <span>In Stock - 10 units available</span>
+            </div>
+
+            <p class="product-description" id="productDescription">
+                High-resolution digital radiography system with advanced image processing and PACS integration. 
+                Perfect for modern healthcare facilities requiring precision diagnostics and seamless workflow integration.
+            </p>
+
+            <div class="product-features">
+                <h3>Key Features</h3>
+                <ul class="features-list">
+                    <li><i class="fas fa-check"></i> High-resolution imaging (up to 4K)</li>
+                    <li><i class="fas fa-check"></i> PACS integration ready</li>
+                    <li><i class="fas fa-check"></i> Low radiation dose technology</li>
+                    <li><i class="fas fa-check"></i> Fast image processing</li>
+                    <li><i class="fas fa-check"></i> 2-year comprehensive warranty</li>
+                    <li><i class="fas fa-check"></i> Free installation & training</li>
+                </ul>
+            </div>
+
+            <div class="quantity-selector">
+                <label>Quantity:</label>
+                <div class="quantity-controls">
+                    <button onclick="decreaseQuantity()">-</button>
+                    <input type="number" id="quantity" value="1" min="1" max="10" readonly>
+                    <button onclick="increaseQuantity()">+</button>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="addToCart()">
+                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                </button>
+                <button class="btn btn-secondary" onclick="addToWishlist()">
+                    <i class="fas fa-heart"></i> Wishlist
+                </button>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button class="btn btn-primary" onclick="buyNow()" style="flex: 1;">
+                    <i class="fas fa-bolt"></i> Buy Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-tabs">
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="showTab('specifications')">Specifications</button>
+            <button class="tab-button" onclick="showTab('reviews')">Reviews (127)</button>
+            <button class="tab-button" onclick="showTab('shipping')">Shipping & Returns</button>
+            <button class="tab-button" onclick="showTab('warranty')">Warranty</button>
+        </div>
+
+        <div id="specifications" class="tab-content active">
+            <h2>Technical Specifications</h2>
+            <table class="specs-table">
+                <tr>
+                    <td>Model Number</td>
+                    <td>DXR-2024-PRO</td>
+                </tr>
+                <tr>
+                    <td>Resolution</td>
+                    <td>4096 x 4096 pixels</td>
+                </tr>
+                <tr>
+                    <td>Detector Type</td>
+                    <td>Flat Panel Digital Detector</td>
+                </tr>
+                <tr>
+                    <td>Power Supply</td>
+                    <td>220V AC, 50/60 Hz</td>
+                </tr>
+                <tr>
+                    <td>Dimensions</td>
+                    <td>180 x 80 x 220 cm</td>
+                </tr>
+                <tr>
+                    <td>Weight</td>
+                    <td>150 kg</td>
+                </tr>
+                <tr>
+                    <td>Certification</td>
+                    <td>CE, FDA, ISO 13485</td>
+                </tr>
+                <tr>
+                    <td>Warranty</td>
+                    <td>2 Years Comprehensive</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="reviews" class="tab-content">
+            <h2>Customer Reviews</h2>
+            
+            <div class="review-summary">
+                <div class="rating-overview">
+                    <div class="rating-number">4.5</div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p>Based on 127 reviews</p>
+                </div>
+                
+                <div class="rating-bars">
+                    <div class="rating-bar">
+                        <span>5 ★</span>
+                        <div class="bar"><div class="bar-fill" style="width: 75%"></div></div>
+                        <span>95</span>
+                    </div>
+                    <div class="rating-bar">
+                        <span>4 ★</span>
+                        <div class="bar"><div class="bar-fill" style="width: 15%"></div></div>
+                        <span>19</span>
+                    </div>
+                    <div class="rating-bar">
+                        <span>3 ★</span>
+                        <div class="bar"><div class="bar-fill" style="width: 7%"></div></div>
+                        <span>9</span>
+                    </div>
+                    <div class="rating-bar">
+                        <span>2 ★</span>
+                        <div class="bar"><div class="bar-fill" style="width: 2%"></div></div>
+                        <span>3</span>
+                    </div>
+                    <div class="rating-bar">
+                        <span>1 ★</span>
+                        <div class="bar"><div class="bar-fill" style="width: 1%"></div></div>
+                        <span>1</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="review-item">
+                <div class="review-header">
+                    <div>
+                        <div class="reviewer-name">Dr. Rajesh Kumar</div>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="review-date">2 weeks ago</div>
+                </div>
+                <p><strong>Excellent imaging quality!</strong></p>
+                <p>The image quality is outstanding. Installation was smooth and the training provided was comprehensive. Highly recommended for any diagnostic center.</p>
+            </div>
+
+            <div class="review-item">
+                <div class="review-header">
+                    <div>
+                        <div class="reviewer-name">Dr. Priya Sharma</div>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="review-date">1 month ago</div>
+                </div>
+                <p><strong>Great value for money</strong></p>
+                <p>Perfect for our hospital. The PACS integration works flawlessly. Customer support is very responsive.</p>
+            </div>
+        </div>
+
+        <div id="shipping" class="tab-content">
+            <h2>Shipping & Returns</h2>
+            <h3>Shipping Information</h3>
+            <ul>
+                <li>Free shipping on all orders above ₹1,00,000</li>
+                <li>Standard delivery: 7-10 business days</li>
+                <li>Express delivery: 3-5 business days (additional charges apply)</li>
+                <li>Installation included in the price</li>
+                <li>Professional installation team will contact you within 24 hours</li>
+            </ul>
+            
+            <h3 style="margin-top: 2rem;">Return Policy</h3>
+            <ul>
+                <li>30-day return policy</li>
+                <li>Product must be unused and in original packaging</li>
+                <li>Free return pickup</li>
+                <li>Full refund within 7-10 business days</li>
+            </ul>
+        </div>
+
+        <div id="warranty" class="tab-content">
+            <h2>Warranty Information</h2>
+            <h3>2-Year Comprehensive Warranty</h3>
+            <ul>
+                <li>Covers all manufacturing defects</li>
+                <li>Free parts replacement</li>
+                <li>Free on-site service</li>
+                <li>24/7 technical support</li>
+                <li>Annual preventive maintenance included</li>
+            </ul>
+            
+            <h3 style="margin-top: 2rem;">Extended Warranty Available</h3>
+            <ul>
+                <li>3-year extended warranty: ₹2,50,000</li>
+                <li>5-year extended warranty: ₹4,00,000</li>
+                <li>Lifetime support: ₹7,50,000</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="related-products">
+        <h2>Related Products</h2>
+        <div class="products-grid" id="relatedProducts">
+            <!-- Related products will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        let currentProduct = {
+            id: 1,
+            name: "Digital X-Ray System",
+            price: 4599900,
+            image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80",
+            icon: "fa-x-ray"
+        };
+
+        const images = [
+            "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80",
+            "https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=800&q=80",
+            "https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80",
+            "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80"
+        ];
+
+        function changeImage(index) {
+            document.querySelector('#mainImage img').src = images[index];
+            document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+        }
+
+        function increaseQuantity() {
+            const input = document.getElementById('quantity');
+            if (parseInt(input.value) < parseInt(input.max)) {
+                input.value = parseInt(input.value) + 1;
+            }
+        }
+
+        function decreaseQuantity() {
+            const input = document.getElementById('quantity');
+            if (parseInt(input.value) > parseInt(input.min)) {
+                input.value = parseInt(input.value) - 1;
+            }
+        }
+
+        function addToCart() {
+            const quantity = parseInt(document.getElementById('quantity').value);
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            const existingItem = cart.find(item => item.id === currentProduct.id);
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({ ...currentProduct, quantity });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            alert('Product added to cart!');
+        }
+
+        function addToWishlist() {
+            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            if (!wishlist.find(item => item.id === currentProduct.id)) {
+                wishlist.push(currentProduct);
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                alert('Added to wishlist!');
+            } else {
+                alert('Already in wishlist!');
+            }
+        }
+
+        function buyNow() {
+            addToCart();
+            window.location.href = 'checkout.html';
+        }
+
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
+        }
+
+        function loadRelatedProducts() {
+            const relatedProducts = [
+                { name: "Patient Monitor", price: 1299900, image: "https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=800&q=80" },
+                { name: "Ultrasound Scanner", price: 3850000, image: "https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80" },
+                { name: "ECG Machine", price: 599900, image: "https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=800&q=80" },
+                { name: "Defibrillator AED", price: 349900, image: "https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80" }
+            ];
+
+            const grid = document.getElementById('relatedProducts');
+            grid.innerHTML = relatedProducts.map(product => `
+                <div class="product-card" onclick="window.location.href='product-details.html'">
+                    <div class="product-card-image">
+                        <img src="${product.image}" alt="${product.name}">
+                    </div>
+                    <div class="product-card-info">
+                        <div class="product-card-name">${product.name}</div>
+                        <div class="product-card-price">₹${(product.price / 100).toLocaleString('en-IN')}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize
+        updateCartCount();
+        loadRelatedProducts();
+
+        // Get product ID from URL if available
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+        if (productId) {
+            // Load product details from Supabase
+            console.log('Loading product:', productId);
+        }
+    </script>
+</body>
+</html>
