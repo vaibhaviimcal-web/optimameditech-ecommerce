@@ -3,17 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optima Meditech - Healthcare Made Easy</title>
+    <title>Optima Meditech - Premium Medical Equipment & Healthcare Solutions</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --primary-blue: #4A9FD8;
             --primary-green: #7BC043;
@@ -21,474 +16,362 @@
             --light: #f8f9fa;
             --accent: #ff6b6b;
         }
-
         body {
             font-family: 'Inter', sans-serif;
+            color: var(--dark);
             overflow-x: hidden;
         }
-
+        
         /* Header */
         header {
             background: white;
             box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-            padding: 1.5rem 2rem;
             position: sticky;
             top: 0;
             z-index: 1000;
         }
-
         nav {
             max-width: 1400px;
             margin: 0 auto;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1rem;
             text-decoration: none;
         }
-
-        .logo-svg {
-            width: 50px;
-            height: 50px;
+        .logo {
+            width: 60px;
+            height: 60px;
+            position: relative;
         }
-
-        .logo-text .brand-name {
-            font-size: 1.4rem;
-            font-weight: 800;
+        .logo-svg {
+            width: 100%;
+            height: 100%;
+        }
+        .brand-text h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
             background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            line-height: 1.2;
         }
-
-        .logo-text .brand-tagline {
-            font-size: 0.7rem;
+        .brand-text p {
+            font-size: 0.75rem;
             color: #666;
             font-style: italic;
+            font-weight: 500;
         }
-
         .nav-links {
             display: flex;
             gap: 2.5rem;
             list-style: none;
-            align-items: center;
         }
-
         .nav-links a {
             text-decoration: none;
             color: var(--dark);
             font-weight: 600;
+            font-size: 1.05rem;
             transition: all 0.3s;
             position: relative;
-            padding: 0.5rem 0;
         }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary-blue), var(--primary-green));
-            transition: width 0.3s;
-            border-radius: 2px;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
         .nav-links a:hover {
             color: var(--primary-blue);
         }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        /* User Menu */
-        .user-menu {
-            position: relative;
-        }
-
-        .user-icon {
-            cursor: pointer;
-            font-size: 1.4rem;
-            color: var(--dark);
-            transition: all 0.3s;
-            padding: 0.5rem;
-            border-radius: 50%;
-            background: var(--light);
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .user-icon:hover {
-            background: var(--primary-blue);
-            color: white;
-        }
-
-        .user-dropdown {
+        .nav-links a::after {
+            content: '';
             position: absolute;
-            top: 60px;
-            right: 0;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            min-width: 250px;
-            display: none;
-            z-index: 1000;
-        }
-
-        .user-dropdown.active {
-            display: block;
-        }
-
-        .user-dropdown-header {
-            padding: 1.5rem;
-            border-bottom: 2px solid var(--light);
-        }
-
-        .user-dropdown-header.logged-in {
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
             background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            color: white;
-            border-radius: 15px 15px 0 0;
+            transition: width 0.3s;
         }
-
-        .user-dropdown-menu {
-            list-style: none;
-            padding: 0.5rem 0;
+        .nav-links a:hover::after {
+            width: 100%;
         }
-
-        .user-dropdown-menu li {
-            padding: 0;
-        }
-
-        .user-dropdown-menu a {
+        .nav-actions {
             display: flex;
+            gap: 1.5rem;
             align-items: center;
-            gap: 1rem;
-            padding: 1rem 1.5rem;
+        }
+        .nav-actions a {
             color: var(--dark);
-            text-decoration: none;
+            font-size: 1.5rem;
             transition: all 0.3s;
-        }
-
-        .user-dropdown-menu a:hover {
-            background: var(--light);
-            color: var(--primary-blue);
-        }
-
-        .user-dropdown-menu i {
-            font-size: 1.2rem;
-            width: 20px;
-        }
-
-        .auth-buttons {
-            padding: 1rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .btn-login, .btn-register {
-            padding: 0.8rem 1.5rem;
-            border: none;
-            border-radius: 25px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-            text-decoration: none;
-            display: block;
-        }
-
-        .btn-login {
-            background: white;
-            color: var(--primary-blue);
-            border: 2px solid var(--primary-blue);
-        }
-
-        .btn-login:hover {
-            background: var(--primary-blue);
-            color: white;
-        }
-
-        .btn-register {
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            color: white;
-        }
-
-        .btn-register:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(74, 159, 216, 0.4);
-        }
-
-        .cart-icon {
             position: relative;
-            cursor: pointer;
-            font-size: 1.4rem;
-            color: var(--dark);
-            transition: all 0.3s;
-            padding: 0.5rem;
         }
-
-        .cart-icon:hover {
+        .nav-actions a:hover {
             color: var(--primary-blue);
             transform: scale(1.1);
         }
-
-        .cart-count {
+        .cart-badge {
             position: absolute;
-            top: 0;
-            right: 0;
-            background: linear-gradient(135deg, var(--accent), #ff5252);
+            top: -8px;
+            right: -8px;
+            background: var(--accent);
             color: white;
             border-radius: 50%;
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 0.7rem;
             font-weight: 700;
         }
-
+        
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            background: linear-gradient(135deg, rgba(74, 159, 216, 0.95), rgba(123, 192, 67, 0.95)),
+                        url('https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=1920') center/cover;
             color: white;
             padding: 8rem 2rem;
             text-align: center;
             position: relative;
             overflow: hidden;
         }
-
         .hero::before {
             content: '';
             position: absolute;
-            width: 500px;
-            height: 500px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            top: -200px;
-            right: -200px;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(74, 159, 216, 0.9), rgba(123, 192, 67, 0.9));
         }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            bottom: -100px;
-            left: -100px;
-        }
-
         .hero-content {
-            max-width: 1200px;
-            margin: 0 auto;
             position: relative;
             z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-
         .hero h1 {
-            font-size: 4rem;
+            font-size: 4.5rem;
             font-weight: 900;
             margin-bottom: 1.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease;
         }
-
         .hero p {
             font-size: 1.5rem;
-            margin-bottom: 3rem;
+            margin-bottom: 2.5rem;
             opacity: 0.95;
+            animation: fadeInUp 1s ease 0.2s both;
         }
-
         .hero-buttons {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
             justify-content: center;
-            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.4s both;
         }
-
         .btn {
             padding: 1.2rem 3rem;
-            border: none;
             border-radius: 50px;
-            font-size: 1.1rem;
             font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
+            font-size: 1.1rem;
             text-decoration: none;
+            transition: all 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
         }
-
         .btn-primary {
             background: white;
             color: var(--primary-blue);
         }
-
         .btn-primary:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
-
         .btn-secondary {
             background: transparent;
             color: white;
             border: 3px solid white;
         }
-
         .btn-secondary:hover {
             background: white;
             color: var(--primary-blue);
         }
-
-        /* Social Proof */
-        .social-proof {
-            background: white;
-            padding: 2rem;
-            margin: -3rem auto 0;
-            max-width: 800px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            position: relative;
-            z-index: 2;
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-
-        .purchase-notification {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--light);
-            border-radius: 15px;
-        }
-
-        .purchase-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        
+        /* Stats Section */
+        .stats-section {
+            background: var(--dark);
             color: white;
-            font-size: 1.5rem;
+            padding: 3rem 2rem;
         }
-
-        /* Features Section */
-        .features {
-            padding: 6rem 2rem;
-            background: var(--light);
-        }
-
-        .features-container {
+        .stats-grid {
             max-width: 1400px;
             margin: 0 auto;
-        }
-
-        .section-title {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
             text-align: center;
-            font-size: 3rem;
+        }
+        .stat-item h3 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .stat-item p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Features Section */
+        .features-section {
+            padding: 6rem 2rem;
+            background: white;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .section-header h2 {
+            font-size: 3.5rem;
             font-weight: 900;
             margin-bottom: 1rem;
             background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
-        .section-subtitle {
-            text-align: center;
+        .section-header p {
+            font-size: 1.3rem;
             color: #666;
-            font-size: 1.2rem;
-            margin-bottom: 4rem;
         }
-
         .features-grid {
+            max-width: 1400px;
+            margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
+            gap: 2.5rem;
         }
-
         .feature-card {
             background: white;
-            padding: 3rem;
+            padding: 2.5rem;
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.08);
             transition: all 0.3s;
             text-align: center;
         }
-
         .feature-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 60px rgba(74, 159, 216, 0.2);
         }
-
         .feature-icon {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
             background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            border-radius: 20px;
+            border-radius: 25px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 2rem;
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: white;
+            box-shadow: 0 10px 30px rgba(74, 159, 216, 0.3);
         }
-
         .feature-card h3 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             margin-bottom: 1rem;
             color: var(--dark);
         }
-
         .feature-card p {
             color: #666;
             line-height: 1.8;
         }
-
+        
+        /* Products Section */
+        .products-section {
+            padding: 6rem 2rem;
+            background: var(--light);
+        }
+        .products-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(74, 159, 216, 0.2);
+        }
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .product-info {
+            padding: 2rem;
+        }
+        .product-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: var(--dark);
+        }
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+        .product-rating {
+            color: #ffc107;
+            margin-bottom: 1rem;
+        }
+        
         /* CTA Section */
-        .cta {
+        .cta-section {
             background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
             color: white;
             padding: 6rem 2rem;
             text-align: center;
         }
-
-        .cta h2 {
-            font-size: 3rem;
+        .cta-section h2 {
+            font-size: 3.5rem;
+            font-weight: 900;
             margin-bottom: 1.5rem;
         }
-
-        .cta p {
-            font-size: 1.3rem;
-            margin-bottom: 3rem;
+        .cta-section p {
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
             opacity: 0.95;
         }
-
+        
         /* Footer */
         footer {
             background: var(--dark);
             color: white;
             padding: 4rem 2rem 2rem;
         }
-
         .footer-content {
             max-width: 1400px;
             margin: 0 auto;
@@ -497,322 +380,304 @@
             gap: 3rem;
             margin-bottom: 3rem;
         }
-
         .footer-section h3 {
+            font-size: 1.5rem;
             margin-bottom: 1.5rem;
-            font-size: 1.3rem;
+            color: var(--primary-green);
         }
-
         .footer-section ul {
             list-style: none;
         }
-
         .footer-section ul li {
             margin-bottom: 0.8rem;
         }
-
         .footer-section a {
-            color: rgba(255,255,255,0.7);
+            color: rgba(255,255,255,0.8);
             text-decoration: none;
             transition: all 0.3s;
         }
-
         .footer-section a:hover {
-            color: white;
-            padding-left: 5px;
+            color: var(--primary-blue);
         }
-
         .footer-bottom {
             text-align: center;
             padding-top: 2rem;
             border-top: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.7);
+            color: rgba(255,255,255,0.6);
         }
-
+        
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            .hero p {
-                font-size: 1.2rem;
-            }
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header>
         <nav>
             <a href="index.html" class="logo-container">
-                <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#4A9FD8;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#7BC043;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <circle cx="50" cy="50" r="35" fill="none" stroke="url(#logoGradient)" stroke-width="8"/>
-                </svg>
-                <div class="logo-text">
-                    <span class="brand-name">OPTIMA MEDITECH</span>
-                    <span class="brand-tagline">Healthcare Made Easy</span>
+                <div class="logo">
+                    <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#4A9FD8;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#7BC043;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Medical Cross -->
+                        <rect x="85" y="40" width="30" height="120" rx="5" fill="url(#logoGradient)"/>
+                        <rect x="40" y="85" width="120" height="30" rx="5" fill="url(#logoGradient)"/>
+                        <!-- Heartbeat Line -->
+                        <path d="M 20 100 L 40 100 L 50 80 L 70 120 L 90 100 L 110 100 L 130 80 L 150 120 L 170 100 L 180 100" 
+                              stroke="url(#logoGradient)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                        <!-- Outer Circle -->
+                        <circle cx="100" cy="100" r="90" fill="none" stroke="url(#logoGradient)" stroke-width="8"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h1>OPTIMA MEDITECH</h1>
+                    <p>Healthcare Made Easy</p>
                 </div>
             </a>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="products.html">Products</a></li>
-                <li><a href="order-tracking.html">Track Order</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
-            <div class="nav-right">
-                <!-- User Menu -->
-                <div class="user-menu">
-                    <div class="user-icon" onclick="toggleUserMenu()">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="user-dropdown" id="userDropdown">
-                        <!-- Logged Out State -->
-                        <div id="loggedOutMenu">
-                            <div class="user-dropdown-header">
-                                <h4>Welcome to Optima Meditech</h4>
-                                <p style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8;">Sign in to access your account</p>
-                            </div>
-                            <div class="auth-buttons">
-                                <a href="login.html" class="btn-login">
-                                    <i class="fas fa-sign-in-alt"></i> Sign In
-                                </a>
-                                <a href="register.html" class="btn-register">
-                                    <i class="fas fa-user-plus"></i> Create Account
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Logged In State -->
-                        <div id="loggedInMenu" style="display: none;">
-                            <div class="user-dropdown-header logged-in">
-                                <h4 id="userDisplayName">User Name</h4>
-                                <p style="font-size: 0.9rem; margin-top: 0.5rem;" id="userDisplayEmail">user@email.com</p>
-                            </div>
-                            <ul class="user-dropdown-menu">
-                                <li><a href="account.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-                                <li><a href="account.html"><i class="fas fa-shopping-bag"></i> My Orders</a></li>
-                                <li><a href="account.html"><i class="fas fa-heart"></i> Wishlist</a></li>
-                                <li><a href="account.html"><i class="fas fa-map-marker-alt"></i> Addresses</a></li>
-                                <li><a href="account.html"><i class="fas fa-user-edit"></i> Edit Profile</a></li>
-                                <li><a href="account.html"><i class="fas fa-star"></i> Loyalty Points</a></li>
-                                <li><a href="#" onclick="handleLogout()" style="color: var(--accent);"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Cart Icon -->
-                <div class="cart-icon" onclick="window.location.href='checkout.html'">
+            <div class="nav-actions">
+                <a href="login.html"><i class="fas fa-user"></i></a>
+                <a href="#cart">
                     <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count" id="cartCount">0</span>
-                </div>
+                    <span class="cart-badge">0</span>
+                </a>
             </div>
         </nav>
     </header>
 
+    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1>OPTIMA MEDITECH</h1>
-            <p>Healthcare Made Easy</p>
-            <p style="font-size: 1.2rem;">Delivering cutting-edge medical technology and equipment for healthcare professionals worldwide. Quality, precision, and innovation in every product.</p>
-            
+            <h1>Premium Medical Equipment</h1>
+            <p>Trusted by 1000+ Healthcare Professionals Across India</p>
             <div class="hero-buttons">
                 <a href="products.html" class="btn btn-primary">
-                    <i class="fas fa-box"></i> Explore Products
+                    <i class="fas fa-shopping-bag"></i> Shop Now
                 </a>
-                <a href="contact.html" class="btn btn-secondary">
-                    <i class="fas fa-phone"></i> Get in Touch
+                <a href="#features" class="btn btn-secondary">
+                    <i class="fas fa-play-circle"></i> Learn More
                 </a>
             </div>
         </div>
     </section>
 
-    <div class="social-proof">
-        <div class="purchase-notification">
-            <div class="purchase-icon">
-                <i class="fas fa-shopping-bag"></i>
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>1000+</h3>
+                <p>Happy Customers</p>
             </div>
-            <div>
-                <strong>Amit from Bangalore</strong>
-                <p style="color: #666; margin-top: 0.3rem;">just purchased Ultrasound Scanner</p>
+            <div class="stat-item">
+                <h3>500+</h3>
+                <p>Products</p>
             </div>
-        </div>
-    </div>
-
-    <section class="features">
-        <div class="features-container">
-            <h2 class="section-title">Why Choose Us</h2>
-            <p class="section-subtitle">Premium medical equipment with unmatched quality and service</p>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-certificate"></i>
-                    </div>
-                    <h3>Certified Quality</h3>
-                    <p>All products are CE, FDA, and ISO certified ensuring the highest quality standards</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shipping-fast"></i>
-                    </div>
-                    <h3>Fast Delivery</h3>
-                    <p>Free shipping on orders above ₹1,00,000 with professional installation included</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-headset"></i>
-                    </div>
-                    <h3>24/7 Support</h3>
-                    <p>Round-the-clock technical support and customer service for all your needs</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>2-Year Warranty</h3>
-                    <p>Comprehensive warranty coverage with free on-site service and maintenance</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-tags"></i>
-                    </div>
-                    <h3>Best Prices</h3>
-                    <p>Competitive pricing with exclusive discounts and loyalty rewards program</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>Expert Team</h3>
-                    <p>Experienced professionals providing consultation and training for all equipment</p>
-                </div>
+            <div class="stat-item">
+                <h3>50+</h3>
+                <p>Cities Served</p>
+            </div>
+            <div class="stat-item">
+                <h3>24/7</h3>
+                <p>Support</p>
             </div>
         </div>
     </section>
 
-    <section class="cta">
-        <h2>Ready to Upgrade Your Healthcare Facility?</h2>
-        <p>Join thousands of satisfied healthcare professionals worldwide</p>
-        <div class="hero-buttons">
-            <a href="products.html" class="btn btn-primary">
-                <i class="fas fa-box"></i> Browse Products
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="section-header">
+            <h2>Why Choose Us?</h2>
+            <p>Experience excellence in medical equipment supply</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <h3>Certified Quality</h3>
+                <p>All products are CE, FDA, and ISO certified ensuring the highest quality standards</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shipping-fast"></i>
+                </div>
+                <h3>Fast Delivery</h3>
+                <p>Free shipping on orders above ₹1,00,000 with professional installation included</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>24/7 Support</h3>
+                <p>Round-the-clock technical support and customer service for all your needs</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>2-Year Warranty</h3>
+                <p>Comprehensive warranty coverage with free on-site service and maintenance</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <h3>Best Prices</h3>
+                <p>Competitive pricing with exclusive discounts and loyalty rewards program</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Expert Team</h3>
+                <p>Experienced professionals providing consultation and training for all equipment</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section">
+        <div class="section-header">
+            <h2>Featured Products</h2>
+            <p>Explore our premium medical equipment collection</p>
+        </div>
+        <div class="products-grid">
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=500" alt="Patient Monitor" class="product-image">
+                <div class="product-info">
+                    <h3>Patient Monitor</h3>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        (4.9)
+                    </div>
+                    <div class="product-price">₹2,45,000</div>
+                    <a href="product-details.html" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        <i class="fas fa-eye"></i> View Details
+                    </a>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=500" alt="Ultrasound Machine" class="product-image">
+                <div class="product-info">
+                    <h3>Ultrasound Machine</h3>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        (4.8)
+                    </div>
+                    <div class="product-price">₹8,50,000</div>
+                    <a href="product-details.html" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        <i class="fas fa-eye"></i> View Details
+                    </a>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1584362917165-526a968579e8?w=500" alt="Ventilator" class="product-image">
+                <div class="product-info">
+                    <h3>ICU Ventilator</h3>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        (5.0)
+                    </div>
+                    <div class="product-price">₹12,50,000</div>
+                    <a href="product-details.html" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        <i class="fas fa-eye"></i> View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="products.html" class="btn btn-primary" style="font-size: 1.2rem; padding: 1.3rem 3.5rem;">
+                <i class="fas fa-th"></i> View All Products
             </a>
-            <a href="register.html" class="btn btn-secondary">
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Ready to Upgrade Your Healthcare Facility?</h2>
+        <p>Get in touch with our experts for personalized consultation</p>
+        <div class="hero-buttons">
+            <a href="register.html" class="btn btn-primary">
                 <i class="fas fa-user-plus"></i> Create Account
             </a>
+            <a href="#contact" class="btn btn-secondary">
+                <i class="fas fa-phone"></i> Contact Us
+            </a>
         </div>
     </section>
 
-    <footer>
+    <!-- Footer -->
+    <footer id="contact">
         <div class="footer-content">
             <div class="footer-section">
-                <h3>OPTIMA MEDITECH</h3>
-                <p style="color: rgba(255,255,255,0.7); line-height: 1.8;">
-                    Leading provider of premium medical equipment and technology for healthcare professionals worldwide.
-                </p>
+                <h3>About Us</h3>
+                <p>Leading supplier of premium medical equipment across India, committed to excellence in healthcare.</p>
             </div>
-            
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
                     <li><a href="products.html">Products</a></li>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="order-tracking.html">Track Order</a></li>
+                    <li><a href="admin.html">Admin Panel</a></li>
+                    <li><a href="superadmin-login.html">Super Admin</a></li>
+                    <li><a href="sales-presentation.html">Sales Presentation</a></li>
                 </ul>
             </div>
-            
             <div class="footer-section">
-                <h3>Account</h3>
+                <h3>Customer Service</h3>
                 <ul>
-                    <li><a href="login.html">Sign In</a></li>
-                    <li><a href="register.html">Create Account</a></li>
-                    <li><a href="account.html">My Account</a></li>
-                    <li><a href="account.html">My Orders</a></li>
-                    <li><a href="account.html">Wishlist</a></li>
+                    <li><a href="#">Track Order</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Warranty</a></li>
+                    <li><a href="#">Support</a></li>
                 </ul>
             </div>
-            
             <div class="footer-section">
-                <h3>Contact Us</h3>
+                <h3>Contact</h3>
                 <ul>
-                    <li><i class="fas fa-envelope"></i> info@optimameditech.com</li>
                     <li><i class="fas fa-phone"></i> +91 (555) 123-4567</li>
+                    <li><i class="fas fa-envelope"></i> info@optimameditech.com</li>
                     <li><i class="fas fa-map-marker-alt"></i> Mumbai, India</li>
                 </ul>
             </div>
         </div>
-        
         <div class="footer-bottom">
             <p>&copy; 2024 Optima Meditech. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        
+        // Update cart count
         function updateCartCount() {
-            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-            document.getElementById('cartCount').textContent = count;
-        }
-
-        function toggleUserMenu() {
-            const dropdown = document.getElementById('userDropdown');
-            dropdown.classList.toggle('active');
-        }
-
-        function checkUserLogin() {
-            const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
-            const userName = localStorage.getItem('userName');
-            const userEmail = localStorage.getItem('userEmail');
-
-            if (isLoggedIn) {
-                document.getElementById('loggedOutMenu').style.display = 'none';
-                document.getElementById('loggedInMenu').style.display = 'block';
-                document.getElementById('userDisplayName').textContent = userName || 'User';
-                document.getElementById('userDisplayEmail').textContent = userEmail || '';
-            } else {
-                document.getElementById('loggedOutMenu').style.display = 'block';
-                document.getElementById('loggedInMenu').style.display = 'none';
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const badge = document.querySelector('.cart-badge');
+            if (badge) {
+                badge.textContent = cart.length;
             }
         }
-
-        function handleLogout() {
-            localStorage.removeItem('userLoggedIn');
-            localStorage.removeItem('userName');
-            localStorage.removeItem('userEmail');
-            localStorage.removeItem('customerId');
-            window.location.reload();
-        }
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            const userMenu = document.querySelector('.user-menu');
-            const dropdown = document.getElementById('userDropdown');
-            
-            if (!userMenu.contains(event.target)) {
-                dropdown.classList.remove('active');
-            }
-        });
-
-        // Initialize
         updateCartCount();
-        checkUserLogin();
     </script>
 </body>
 </html>
