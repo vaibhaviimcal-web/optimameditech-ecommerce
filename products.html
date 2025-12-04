@@ -6,7 +6,6 @@
     <title>Products - Optima Meditech</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
         * {
@@ -24,32 +23,24 @@
             --success: #51cf66;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
             font-family: 'Inter', sans-serif;
-            color: var(--dark);
-            overflow-x: hidden;
             background: var(--light);
+            color: var(--dark);
         }
 
-        /* Header */
         header {
-            position: fixed;
+            background: white;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            padding: 1.5rem 2rem;
+            position: sticky;
             top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 2px 30px rgba(0,0,0,0.1);
             z-index: 1000;
         }
 
         nav {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -113,6 +104,10 @@
             width: 100%;
         }
 
+        .nav-links a:hover {
+            color: var(--primary-blue);
+        }
+
         .cart-icon {
             position: relative;
             cursor: pointer;
@@ -143,32 +138,32 @@
             font-weight: 700;
         }
 
-        /* Products Section */
-        .products-section {
-            margin-top: 100px;
-            padding: 4rem 2rem;
+        .products-hero {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            color: white;
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            margin-top: 0;
         }
 
-        .section-title {
-            text-align: center;
+        .products-hero h1 {
             font-size: 3.5rem;
             font-weight: 900;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
-        .section-subtitle {
-            text-align: center;
+        .products-hero p {
             font-size: 1.3rem;
-            color: #666;
-            margin-bottom: 3rem;
+            opacity: 0.95;
+        }
+
+        .products-container {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 0 2rem;
         }
 
         .products-grid {
-            max-width: 1400px;
-            margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 3rem;
@@ -181,6 +176,7 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.08);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 2px solid transparent;
+            cursor: pointer;
         }
 
         .product-card:hover {
@@ -196,9 +192,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 5rem;
-            color: white;
             position: relative;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
         }
 
         .product-badge {
@@ -277,178 +283,6 @@
             box-shadow: 0 8px 25px rgba(74, 159, 216, 0.4);
         }
 
-        /* Cart Sidebar */
-        .cart-sidebar {
-            position: fixed;
-            right: -500px;
-            top: 0;
-            width: 500px;
-            height: 100vh;
-            background: white;
-            box-shadow: -10px 0 50px rgba(0,0,0,0.3);
-            transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 2000;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .cart-sidebar.active {
-            right: 0;
-        }
-
-        .cart-header {
-            padding: 2rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cart-header h2 {
-            font-size: 2rem;
-            font-weight: 800;
-        }
-
-        .close-cart {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: white;
-            transition: all 0.3s;
-        }
-
-        .close-cart:hover {
-            background: rgba(255,255,255,0.3);
-            transform: rotate(90deg);
-        }
-
-        .cart-items {
-            flex: 1;
-            overflow-y: auto;
-            padding: 2rem;
-        }
-
-        .cart-item {
-            display: flex;
-            gap: 1.5rem;
-            padding: 1.5rem;
-            background: var(--light);
-            border-radius: 20px;
-            margin-bottom: 1.5rem;
-        }
-
-        .cart-item-image {
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: white;
-        }
-
-        .cart-item-details {
-            flex: 1;
-        }
-
-        .cart-item-name {
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-            font-size: 1.1rem;
-        }
-
-        .cart-item-price {
-            color: var(--primary-blue);
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
-
-        .cart-item-quantity {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .qty-btn {
-            background: white;
-            border: 2px solid var(--primary-blue);
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 700;
-            color: var(--primary-blue);
-        }
-
-        .qty-btn:hover {
-            background: var(--primary-blue);
-            color: white;
-        }
-
-        .remove-item {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.5rem 1.2rem;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .cart-footer {
-            padding: 2rem;
-            border-top: 2px solid var(--light);
-            background: white;
-        }
-
-        .cart-total {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            font-size: 1.8rem;
-            font-weight: 800;
-        }
-
-        .checkout-btn {
-            width: 100%;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            color: white;
-            border: none;
-            padding: 1.5rem;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 800;
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
-            text-align: center;
-        }
-
-        .empty-cart {
-            text-align: center;
-            padding: 5rem 2rem;
-            color: #999;
-        }
-
-        .empty-cart i {
-            font-size: 5rem;
-            margin-bottom: 1.5rem;
-            opacity: 0.3;
-        }
-
-        /* Notification */
         .notification {
             position: fixed;
             top: 100px;
@@ -478,12 +312,11 @@
             .nav-links {
                 display: none;
             }
-            .cart-sidebar {
-                width: 100%;
-                right: -100%;
-            }
             .products-grid {
                 grid-template-columns: 1fr;
+            }
+            .products-hero h1 {
+                font-size: 2.5rem;
             }
         }
     </style>
@@ -509,70 +342,128 @@
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="products.html" class="active">Products</a></li>
-                <li><a href="features.html">Features</a></li>
+                <li><a href="order-tracking.html">Track Order</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
-            <div class="cart-icon" onclick="toggleCart()">
+            <div class="cart-icon" onclick="window.location.href='checkout.html'">
                 <i class="fas fa-shopping-cart"></i>
                 <span class="cart-count" id="cartCount">0</span>
             </div>
         </nav>
     </header>
 
-    <section class="products-section">
-        <h2 class="section-title" data-aos="fade-up">Our Premium Products</h2>
-        <p class="section-subtitle" data-aos="fade-up">State-of-the-art medical equipment for modern healthcare facilities</p>
-        <div class="products-grid" id="productsGrid"></div>
+    <section class="products-hero">
+        <h1>Our Premium Products</h1>
+        <p>State-of-the-art medical equipment for modern healthcare facilities</p>
     </section>
 
-    <!-- Cart Sidebar -->
-    <div class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h2>Shopping Cart</h2>
-            <button class="close-cart" onclick="toggleCart()"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="cart-items" id="cartItems">
-            <div class="empty-cart">
-                <i class="fas fa-shopping-cart"></i>
-                <p>Your cart is empty</p>
-            </div>
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <span>Total:</span>
-                <span id="cartTotal">₹0.00</span>
-            </div>
-            <a href="checkout.html" class="checkout-btn">
-                <i class="fas fa-lock"></i> Proceed to Checkout
-            </a>
-        </div>
+    <div class="products-container">
+        <div class="products-grid" id="productsGrid"></div>
     </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1000, once: true });
-
         const products = [
-            {id: 1, name: "Digital X-Ray System", category: "Diagnostic Imaging", price: 4599900, description: "High-resolution digital radiography system with advanced image processing and PACS integration", icon: "fa-x-ray", badge: "Best Seller"},
-            {id: 2, name: "Patient Monitor", category: "Patient Monitoring", price: 1299900, description: "Multi-parameter vital signs monitor with touchscreen interface and wireless connectivity", icon: "fa-heartbeat", badge: "New"},
-            {id: 3, name: "Ultrasound Scanner", category: "Diagnostic Imaging", price: 3850000, description: "4D color doppler ultrasound with advanced imaging capabilities and multiple probes", icon: "fa-wave-square", badge: "Premium"},
-            {id: 4, name: "Surgical LED Lights", category: "OT Equipment", price: 899900, description: "Shadowless LED surgical lights with adjustable intensity and color temperature", icon: "fa-lightbulb", badge: null},
-            {id: 5, name: "Anesthesia Workstation", category: "OT Equipment", price: 2999900, description: "Advanced anesthesia machine with integrated ventilator and monitoring system", icon: "fa-lungs", badge: "Featured"},
-            {id: 6, name: "ECG Machine", category: "Cardiology", price: 599900, description: "12-lead ECG with automatic interpretation, thermal printer and PC connectivity", icon: "fa-heart", badge: null},
-            {id: 7, name: "Defibrillator AED", category: "Emergency Care", price: 349900, description: "Automated external defibrillator with voice prompts and CPR coaching", icon: "fa-bolt", badge: "Essential"},
-            {id: 8, name: "Infusion Pump", category: "IV Therapy", price: 279900, description: "Smart infusion pump with drug library, dose error reduction and wireless monitoring", icon: "fa-syringe", badge: null},
-            {id: 9, name: "ICU Ventilator", category: "Critical Care", price: 3499900, description: "Advanced ICU ventilator with multiple modes, lung protective strategies and monitoring", icon: "fa-wind", badge: "Premium"}
+            {
+                id: 1, 
+                name: "Digital X-Ray System", 
+                category: "Diagnostic Imaging", 
+                price: 4599900, 
+                description: "High-resolution digital radiography system with advanced image processing and PACS integration", 
+                icon: "fa-x-ray", 
+                badge: "Best Seller",
+                image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80"
+            },
+            {
+                id: 2, 
+                name: "Patient Monitor", 
+                category: "Patient Monitoring", 
+                price: 1299900, 
+                description: "Multi-parameter vital signs monitor with touchscreen interface and wireless connectivity", 
+                icon: "fa-heartbeat", 
+                badge: "New",
+                image: "https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=800&q=80"
+            },
+            {
+                id: 3, 
+                name: "Ultrasound Scanner", 
+                category: "Diagnostic Imaging", 
+                price: 3850000, 
+                description: "4D color doppler ultrasound with advanced imaging capabilities and multiple probes", 
+                icon: "fa-wave-square", 
+                badge: "Premium",
+                image: "https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80"
+            },
+            {
+                id: 4, 
+                name: "Surgical LED Lights", 
+                category: "OT Equipment", 
+                price: 899900, 
+                description: "Shadowless LED surgical lights with adjustable intensity and color temperature", 
+                icon: "fa-lightbulb", 
+                badge: null,
+                image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80"
+            },
+            {
+                id: 5, 
+                name: "Anesthesia Workstation", 
+                category: "OT Equipment", 
+                price: 2999900, 
+                description: "Advanced anesthesia machine with integrated ventilator and monitoring system", 
+                icon: "fa-lungs", 
+                badge: "Featured",
+                image: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=800&q=80"
+            },
+            {
+                id: 6, 
+                name: "ECG Machine", 
+                category: "Cardiology", 
+                price: 599900, 
+                description: "12-lead ECG with automatic interpretation, thermal printer and PC connectivity", 
+                icon: "fa-heart", 
+                badge: null,
+                image: "https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=800&q=80"
+            },
+            {
+                id: 7, 
+                name: "Defibrillator AED", 
+                category: "Emergency Care", 
+                price: 349900, 
+                description: "Automated external defibrillator with voice prompts and CPR coaching", 
+                icon: "fa-bolt", 
+                badge: "Essential",
+                image: "https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80"
+            },
+            {
+                id: 8, 
+                name: "Infusion Pump", 
+                category: "IV Therapy", 
+                price: 279900, 
+                description: "Smart infusion pump with drug library, dose error reduction and wireless monitoring", 
+                icon: "fa-syringe", 
+                badge: null,
+                image: "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=800&q=80"
+            },
+            {
+                id: 9, 
+                name: "ICU Ventilator", 
+                category: "Critical Care", 
+                price: 3499900, 
+                description: "Advanced ICU ventilator with multiple modes, lung protective strategies and monitoring", 
+                icon: "fa-wind", 
+                badge: "Premium",
+                image: "https://images.unsplash.com/photo-1583324113626-70df0f4deaab?w=800&q=80"
+            }
         ];
 
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         function renderProducts() {
             const grid = document.getElementById('productsGrid');
-            grid.innerHTML = products.map((product, index) => `
-                <div class="product-card" data-aos="fade-up" data-aos-delay="${index * 100}">
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
                     <div class="product-image">
-                        <i class="fas ${product.icon}"></i>
+                        <img src="${product.image}" alt="${product.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\\'fas ${product.icon}\\'></i>';">
                         ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
                     </div>
                     <div class="product-info">
@@ -582,7 +473,7 @@
                         <div class="product-footer">
                             <div class="product-price">₹${(product.price / 100).toLocaleString('en-IN')}</div>
                             <button class="add-to-cart" onclick="addToCart(${product.id})">
-                                <i class="fas fa-cart-plus"></i> Add
+                                <i class="fas fa-cart-plus"></i> Add to Cart
                             </button>
                         </div>
                     </div>
@@ -593,11 +484,13 @@
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
             const existingItem = cart.find(item => item.id === productId);
+            
             if (existingItem) {
                 existingItem.quantity++;
             } else {
                 cart.push({ ...product, quantity: 1 });
             }
+            
             updateCart();
             showNotification('Product added to cart!');
             saveCart();
@@ -605,54 +498,8 @@
 
         function updateCart() {
             const cartCount = document.getElementById('cartCount');
-            const cartItems = document.getElementById('cartItems');
-            const cartTotal = document.getElementById('cartTotal');
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             cartCount.textContent = totalItems;
-            cartTotal.textContent = `₹${(totalPrice / 100).toLocaleString('en-IN')}`;
-            if (cart.length === 0) {
-                cartItems.innerHTML = `<div class="empty-cart"><i class="fas fa-shopping-cart"></i><p>Your cart is empty</p></div>`;
-            } else {
-                cartItems.innerHTML = cart.map(item => `
-                    <div class="cart-item">
-                        <div class="cart-item-image"><i class="fas ${item.icon}"></i></div>
-                        <div class="cart-item-details">
-                            <div class="cart-item-name">${item.name}</div>
-                            <div class="cart-item-price">₹${(item.price / 100).toLocaleString('en-IN')}</div>
-                            <div class="cart-item-quantity">
-                                <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-                                <span>${item.quantity}</span>
-                                <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
-                                <button class="remove-item" onclick="removeFromCart(${item.id})">Remove</button>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function updateQuantity(productId, change) {
-            const item = cart.find(item => item.id === productId);
-            if (item) {
-                item.quantity += change;
-                if (item.quantity <= 0) {
-                    removeFromCart(productId);
-                } else {
-                    updateCart();
-                    saveCart();
-                }
-            }
-        }
-
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            updateCart();
-            saveCart();
-        }
-
-        function toggleCart() {
-            document.getElementById('cartSidebar').classList.toggle('active');
         }
 
         function saveCart() {
