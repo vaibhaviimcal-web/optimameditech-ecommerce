@@ -7,6 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- jsPDF Library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -421,6 +425,15 @@
             box-shadow: 0 10px 30px rgba(74, 159, 216, 0.3);
         }
 
+        /* Hidden invoice for PDF generation */
+        #invoiceForPDF {
+            position: absolute;
+            left: -9999px;
+            width: 800px;
+            background: white;
+            padding: 40px;
+        }
+
         @media (max-width: 768px) {
             .checkout-container {
                 grid-template-columns: 1fr;
@@ -618,8 +631,8 @@
                 <a href="#" class="action-btn primary" id="trackOrderBtn">
                     <i class="fas fa-map-marker-alt"></i> Track Order
                 </a>
-                <button class="action-btn secondary" onclick="downloadInvoice()">
-                    <i class="fas fa-file-pdf"></i> Download Invoice
+                <button class="action-btn secondary" onclick="downloadInvoicePDF()">
+                    <i class="fas fa-file-pdf"></i> Download PDF Invoice
                 </button>
                 <a href="index.html" class="action-btn secondary">
                     <i class="fas fa-home"></i> Continue Shopping
@@ -627,6 +640,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Hidden invoice template for PDF generation -->
+    <div id="invoiceForPDF"></div>
 
     <script>
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -728,7 +744,7 @@
                 pincode: document.getElementById('pincode').value,
                 gst: document.getElementById('gst').value,
                 instructions: document.getElementById('instructions').value,
-                items: cart,
+                items: [...cart],
                 subtotal: subtotal,
                 gst: gst,
                 discount: discountAmount,
@@ -736,7 +752,6 @@
                 paymentMethod: selectedPayment
             };
 
-            // Complete order directly - no payment gateway
             completeOrder(currentOrderData);
         }
 
@@ -747,10 +762,7 @@
             console.log('💳 Payment Method:', orderData.paymentMethod);
             console.log('📧 Email:', orderData.email);
             
-            // Show success modal
             showSuccessModal(currentOrderId, orderData.email);
-            
-            // Clear cart
             clearCart();
         }
 
@@ -761,83 +773,76 @@
             document.getElementById('successModal').classList.add('active');
         }
 
-        function downloadInvoice() {
+        async function downloadInvoicePDF() {
             if (!currentOrderData) {
                 alert('Order data not available');
                 return;
             }
 
             const orderId = document.getElementById('orderId').textContent;
+            
+            // Generate invoice HTML
             const invoiceHTML = generateInvoiceHTML(orderId, currentOrderData);
+            document.getElementById('invoiceForPDF').innerHTML = invoiceHTML;
+
+            // Use html2canvas and jsPDF to generate PDF
+            const element = document.getElementById('invoiceForPDF');
             
-            const blob = new Blob([invoiceHTML], { type: 'text/html' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Invoice-${orderId}.html`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-            
-            alert('✅ Invoice downloaded! Open it in your browser and print as PDF.');
+            try {
+                const canvas = await html2canvas(element, {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false
+                });
+
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                const imgWidth = 210;
+                const pageHeight = 297;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                pdf.save(`Invoice-${orderId}.pdf`);
+                
+                alert('✅ PDF Invoice downloaded successfully!');
+            } catch (error) {
+                console.error('PDF generation error:', error);
+                alert('Error generating PDF. Please try again.');
+            }
         }
 
         function generateInvoiceHTML(orderId, orderData) {
             return `
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Invoice - ${orderId}</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
-        .header { text-align: center; margin-bottom: 40px; border-bottom: 3px solid #4A9FD8; padding-bottom: 20px; }
-        .company-name { font-size: 32px; font-weight: bold; color: #4A9FD8; }
-        .tagline { color: #666; font-style: italic; margin-top: 5px; }
-        .invoice-title { font-size: 28px; margin-top: 20px; color: #333; }
-        .info-section { margin: 30px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .info-box { background: #f8f9fa; padding: 15px; border-radius: 8px; }
-        .info-label { font-weight: bold; color: #666; font-size: 12px; margin-bottom: 5px; }
-        .info-value { color: #333; font-size: 14px; }
-        table { width: 100%; border-collapse: collapse; margin: 30px 0; }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background: #4A9FD8; color: white; font-weight: bold; }
-        .total-section { text-align: right; margin-top: 30px; }
-        .total-row { display: flex; justify-content: flex-end; gap: 100px; margin: 10px 0; font-size: 16px; }
-        .total-row.grand { font-size: 24px; font-weight: bold; color: #4A9FD8; border-top: 2px solid #333; padding-top: 15px; margin-top: 15px; }
-        .footer { margin-top: 60px; text-align: center; color: #666; font-size: 12px; border-top: 2px solid #ddd; padding-top: 20px; }
-        .footer p { margin: 5px 0; }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="company-name">OPTIMA MEDITECH</div>
-        <div class="tagline">Healthcare Made Easy</div>
-        <div class="invoice-title">TAX INVOICE</div>
+<div style="font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; background: white;">
+    <div style="text-align: center; margin-bottom: 40px; border-bottom: 3px solid #4A9FD8; padding-bottom: 20px;">
+        <div style="font-size: 32px; font-weight: bold; color: #4A9FD8;">OPTIMA MEDITECH</div>
+        <div style="color: #666; font-style: italic; margin-top: 5px;">Healthcare Made Easy</div>
+        <div style="font-size: 28px; margin-top: 20px; color: #333;">TAX INVOICE</div>
     </div>
 
-    <div class="info-section">
-        <div class="info-box">
-            <div class="info-label">INVOICE NUMBER</div>
-            <div class="info-value">${orderId}</div>
+    <div style="margin: 30px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <div style="font-weight: bold; color: #666; font-size: 12px; margin-bottom: 5px;">INVOICE NUMBER</div>
+            <div style="color: #333; font-size: 14px;">${orderId}</div>
         </div>
-        <div class="info-box">
-            <div class="info-label">DATE</div>
-            <div class="info-value">${new Date().toLocaleDateString()}</div>
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <div style="font-weight: bold; color: #666; font-size: 12px; margin-bottom: 5px;">DATE</div>
+            <div style="color: #333; font-size: 14px;">${new Date().toLocaleDateString()}</div>
         </div>
-        <div class="info-box">
-            <div class="info-label">BILL TO</div>
-            <div class="info-value">
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <div style="font-weight: bold; color: #666; font-size: 12px; margin-bottom: 5px;">BILL TO</div>
+            <div style="color: #333; font-size: 14px;">
                 ${orderData.firstName} ${orderData.lastName}<br>
                 ${orderData.hospitalName}<br>
                 ${orderData.email}<br>
                 ${orderData.phone}
             </div>
         </div>
-        <div class="info-box">
-            <div class="info-label">SHIP TO</div>
-            <div class="info-value">
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <div style="font-weight: bold; color: #666; font-size: 12px; margin-bottom: 5px;">SHIP TO</div>
+            <div style="color: #333; font-size: 14px;">
                 ${orderData.address}<br>
                 ${orderData.city}, ${orderData.state}<br>
                 PIN: ${orderData.pincode}
@@ -845,61 +850,60 @@
         </div>
     </div>
 
-    <table>
+    <table style="width: 100%; border-collapse: collapse; margin: 30px 0;">
         <thead>
             <tr>
-                <th>ITEM DESCRIPTION</th>
-                <th>QTY</th>
-                <th>UNIT PRICE</th>
-                <th>AMOUNT</th>
+                <th style="padding: 15px; text-align: left; border-bottom: 1px solid #ddd; background: #4A9FD8; color: white; font-weight: bold;">ITEM DESCRIPTION</th>
+                <th style="padding: 15px; text-align: left; border-bottom: 1px solid #ddd; background: #4A9FD8; color: white; font-weight: bold;">QTY</th>
+                <th style="padding: 15px; text-align: left; border-bottom: 1px solid #ddd; background: #4A9FD8; color: white; font-weight: bold;">UNIT PRICE</th>
+                <th style="padding: 15px; text-align: left; border-bottom: 1px solid #ddd; background: #4A9FD8; color: white; font-weight: bold;">AMOUNT</th>
             </tr>
         </thead>
         <tbody>
             ${orderData.items.map(item => `
                 <tr>
-                    <td>${item.name}</td>
-                    <td>${item.quantity}</td>
-                    <td>₹${(item.price / 100).toLocaleString('en-IN')}</td>
-                    <td>₹${(item.price * item.quantity / 100).toLocaleString('en-IN')}</td>
+                    <td style="padding: 15px; text-align: left; border-bottom: 1px solid #ddd;">${item.name}</td>
+                    <td style="padding: 15px; text-align: left; border-bottom: 1px solid #ddd;">${item.quantity}</td>
+                    <td style="padding: 15px; text-align: left; border-bottom: 1px solid #ddd;">₹${(item.price / 100).toLocaleString('en-IN')}</td>
+                    <td style="padding: 15px; text-align: left; border-bottom: 1px solid #ddd;">₹${(item.price * item.quantity / 100).toLocaleString('en-IN')}</td>
                 </tr>
             `).join('')}
         </tbody>
     </table>
 
-    <div class="total-section">
-        <div class="total-row">
+    <div style="text-align: right; margin-top: 30px;">
+        <div style="display: flex; justify-content: flex-end; gap: 100px; margin: 10px 0; font-size: 16px;">
             <span>Subtotal:</span>
             <span>₹${(orderData.subtotal / 100).toLocaleString('en-IN')}</span>
         </div>
-        <div class="total-row">
+        <div style="display: flex; justify-content: flex-end; gap: 100px; margin: 10px 0; font-size: 16px;">
             <span>GST (18%):</span>
             <span>₹${(orderData.gst / 100).toLocaleString('en-IN')}</span>
         </div>
         ${orderData.discount > 0 ? `
-        <div class="total-row" style="color: #51cf66;">
+        <div style="display: flex; justify-content: flex-end; gap: 100px; margin: 10px 0; font-size: 16px; color: #51cf66;">
             <span>Discount:</span>
             <span>-₹${(orderData.discount / 100).toLocaleString('en-IN')}</span>
         </div>
         ` : ''}
-        <div class="total-row">
+        <div style="display: flex; justify-content: flex-end; gap: 100px; margin: 10px 0; font-size: 16px;">
             <span>Shipping:</span>
             <span>FREE</span>
         </div>
-        <div class="total-row grand">
+        <div style="display: flex; justify-content: flex-end; gap: 100px; margin: 10px 0; font-size: 24px; font-weight: bold; color: #4A9FD8; border-top: 2px solid #333; padding-top: 15px; margin-top: 15px;">
             <span>TOTAL:</span>
             <span>₹${(orderData.total / 100).toLocaleString('en-IN')}</span>
         </div>
     </div>
 
-    <div class="footer">
-        <p><strong>Thank you for your business!</strong></p>
-        <p>Optima Meditech | Healthcare District, India</p>
-        <p>Email: info@optimameditech.com | Phone: +91 (555) 123-4567</p>
-        <p>GST No: 27AABCU9603R1ZM | PAN: AABCU9603R</p>
+    <div style="margin-top: 60px; text-align: center; color: #666; font-size: 12px; border-top: 2px solid #ddd; padding-top: 20px;">
+        <p style="margin: 5px 0;"><strong>Thank you for your business!</strong></p>
+        <p style="margin: 5px 0;">Optima Meditech | Healthcare District, India</p>
+        <p style="margin: 5px 0;">Email: info@optimameditech.com | Phone: +91 (555) 123-4567</p>
+        <p style="margin: 5px 0;">GST No: 27AABCU9603R1ZM | PAN: AABCU9603R</p>
         <p style="margin-top: 15px; font-style: italic;">This is a computer-generated invoice and does not require a signature.</p>
     </div>
-</body>
-</html>
+</div>
             `;
         }
 
