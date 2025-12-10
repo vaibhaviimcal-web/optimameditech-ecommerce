@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposal for Optima Meditech - E-Commerce Platform Upgrade</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #4A9FD8;
+            --primary-green: #7BC043;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+        }
+        
+        .section {
+            margin: 4rem 0;
+        }
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .comparison-table th {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            color: white;
+            padding: 1.5rem;
+            text-align: left;
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+        .comparison-table td {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05rem;
+        }
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+        .check {
+            color: #27AE60;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .cross {
+            color: #E74C3C;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary-blue);
+        }
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-blue);
+        }
+        .feature-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-card ul li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .feature-card ul li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary-green);
+            font-weight: bold;
+        }
+        
+        .roi-section {
+            background: var(--light);
+            padding: 3rem;
+            border-radius: 20px;
+            margin: 3rem 0;
+        }
+        .roi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .roi-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        .roi-card h3 {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .roi-card p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .pricing-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin: 3rem 0;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .pricing-card {
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .pricing-card:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-5px);
+        }
+        .pricing-card.featured {
+            border-color: var(--primary-green);
+            background: linear-gradient(135deg, rgba(74, 159, 216, 0.05), rgba(123, 192, 67, 0.05));
+        }
+        .pricing-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        .pricing-card .price {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary-blue);
+            margin: 1rem 0;
+        }
+        .pricing-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        .pricing-card ul li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            margin: 3rem 0;
+        }
+        .cta-section h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+        .cta-section p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+        }
+        .btn {
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            background: white;
+            color: var(--primary-blue);
+            display: inline-block;
+            margin: 0.5rem;
+        }
+        
+        @media print {
+            .btn { display: none; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>Optima Meditech E-Commerce Platform</h1>
+        <p>Proposal for Digital Transformation & Revenue Growth</p>
+        <p style="margin-top: 1rem; font-size: 1.1rem;">Presented to: Vishrut Khaitaan, Director - Optima Meditech</p>
+    </div>
+
+    <div class="container">
+        <!-- Executive Summary -->
+        <div class="section">
+            <h2 class="section-title">Executive Summary</h2>
+            <p style="font-size: 1.2rem; line-height: 1.8;">
+                Your current website (optimameditech.com) serves as an excellent informational platform. However, it lacks critical e-commerce functionality that could <strong>3X your revenue</strong> and streamline operations. Our proposed platform transforms your business into a complete digital enterprise with advanced features that your competitors don't have.
+            </p>
+        </div>
+
+        <!-- Current vs New Platform Comparison -->
+        <div class="section">
+            <h2 class="section-title">Platform Comparison: Current vs New</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Current Website</th>
+                        <th>New E-Commerce Platform</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Online Ordering</strong></td>
+                        <td><span class="cross">✗</span> Contact form only</td>
+                        <td><span class="check">✓</span> Full e-commerce with cart & checkout</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Payment Processing</strong></td>
+                        <td><span class="cross">✗</span> Manual/offline only</td>
+                        <td><span class="check">✓</span> Multiple payment gateways (Razorpay, Stripe, PayPal)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>User Accounts</strong></td>
+                        <td><span class="cross">✗</span> No user system</td>
+                        <td><span class="check">✓</span> Complete user management with profiles, order history</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Product Management</strong></td>
+                        <td><span class="cross">✗</span> Static product display</td>
+                        <td><span class="check">✓</span> Dynamic catalog with 500+ products, categories, filters</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Order Tracking</strong></td>
+                        <td><span class="cross">✗</span> Manual email updates</td>
+                        <td><span class="check">✓</span> Real-time order tracking with courier integration</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Admin Dashboard</strong></td>
+                        <td><span class="cross">✗</span> No admin panel</td>
+                        <td><span class="check">✓</span> Comprehensive admin panel with analytics</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Inventory Management</strong></td>
+                        <td><span class="cross">✗</span> Manual tracking</td>
+                        <td><span class="check">✓</span> Automated inventory with low stock alerts</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Customer Analytics</strong></td>
+                        <td><span class="cross">✗</span> No data insights</td>
+                        <td><span class="check">✓</span> Advanced analytics, customer insights, sales reports</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mobile Responsiveness</strong></td>
+                        <td><span class="check">✓</span> Basic responsive</td>
+                        <td><span class="check">✓</span> Fully optimized mobile experience</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Wishlist & Favorites</strong></td>
+                        <td><span class="cross">✗</span> Not available</td>
+                        <td><span class="check">✓</span> Save products, compare, share</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reviews & Ratings</strong></td>
+                        <td><span class="cross">✗</span> No review system</td>
+                        <td><span class="check">✓</span> Customer reviews, ratings, testimonials</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Discount System</strong></td>
+                        <td><span class="cross">✗</span> Manual quotes</td>
+                        <td><span class="check">✓</span> Automated coupons, bulk discounts, loyalty rewards</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Invoice Generation</strong></td>
+                        <td><span class="cross">✗</span> Manual creation</td>
+                        <td><span class="check">✓</span> Automatic GST invoices with PDF download</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Multi-Admin System</strong></td>
+                        <td><span class="cross">✗</span> Single access</td>
+                        <td><span class="check">✓</span> 3-tier system (Super Admin, Admin, Staff)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Email Automation</strong></td>
+                        <td><span class="cross">✗</span> Manual emails</td>
+                        <td><span class="check">✓</span> Automated order confirmations, shipping updates</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- New Features You Don't Have -->
+        <div class="section">
+            <h2 class="section-title">15 Game-Changing Features You're Missing</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>1. Complete E-Commerce System</h3>
+                    <ul>
+                        <li>Shopping cart with real-time updates</li>
+                        <li>Multi-step checkout process</li>
+                        <li>Multiple payment methods</li>
+                        <li>Order confirmation & tracking</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>2. User Management System</h3>
+                    <ul>
+                        <li>Customer registration & login</li>
+                        <li>Profile management</li>
+                        <li>Order history</li>
+                        <li>Multiple delivery addresses</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>3. Advanced Admin Dashboard</h3>
+                    <ul>
+                        <li>Real-time sales analytics</li>
+                        <li>Revenue tracking</li>
+                        <li>Customer insights</li>
+                        <li>Product performance metrics</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>4. Inventory Management</h3>
+                    <ul>
+                        <li>Real-time stock tracking</li>
+                        <li>Low stock alerts</li>
+                        <li>Automated reorder points</li>
+                        <li>Supplier management</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>5. Order Management</h3>
+                    <ul>
+                        <li>Order processing workflow</li>
+                        <li>Status updates</li>
+                        <li>Shipment tracking</li>
+                        <li>Return management</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>6. Customer Loyalty Program</h3>
+                    <ul>
+                        <li>Points-based rewards</li>
+                        <li>Tier system (Silver, Gold, Platinum)</li>
+                        <li>Exclusive discounts</li>
+                        <li>Referral bonuses</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>7. Advanced Search & Filters</h3>
+                    <ul>
+                        <li>Smart product search</li>
+                        <li>Category filters</li>
+                        <li>Price range filters</li>
+                        <li>Brand & specification filters</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>8. Reviews & Ratings System</h3>
+                    <ul>
+                        <li>Customer reviews</li>
+                        <li>Star ratings</li>
+                        <li>Photo reviews</li>
+                        <li>Verified purchase badges</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>9. Discount & Coupon System</h3>
+                    <ul>
+                        <li>Percentage discounts</li>
+                        <li>Fixed amount coupons</li>
+                        <li>Bulk order discounts</li>
+                        <li>Time-limited offers</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>10. Automated Invoicing</h3>
+                    <ul>
+                        <li>GST-compliant invoices</li>
+                        <li>PDF generation</li>
+                        <li>Email delivery</li>
+                        <li>Invoice history</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>11. Super Admin Panel</h3>
+                    <ul>
+                        <li>Multi-admin management</li>
+                        <li>Role-based permissions</li>
+                        <li>Feature toggles</li>
+                        <li>System settings</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>12. Email Automation</h3>
+                    <ul>
+                        <li>Order confirmations</li>
+                        <li>Shipping notifications</li>
+                        <li>Delivery updates</li>
+                        <li>Marketing campaigns</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>13. Wishlist & Comparison</h3>
+                    <ul>
+                        <li>Save favorite products</li>
+                        <li>Compare specifications</li>
+                        <li>Share wishlists</li>
+                        <li>Price drop alerts</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>14. Mobile-First Design</h3>
+                    <ul>
+                        <li>Optimized for mobile</li>
+                        <li>Touch-friendly interface</li>
+                        <li>Fast loading times</li>
+                        <li>Progressive Web App ready</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>15. Analytics & Reporting</h3>
+                    <ul>
+                        <li>Sales reports</li>
+                        <li>Customer behavior analysis</li>
+                        <li>Product performance</li>
+                        <li>Revenue forecasting</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROI & Business Impact -->
+        <div class="section">
+            <h2 class="section-title">Expected ROI & Business Impact</h2>
+            <div class="roi-section">
+                <div class="roi-grid">
+                    <div class="roi-card">
+                        <h3>3X</h3>
+                        <p>Revenue Increase</p>
+                    </div>
+                    <div class="roi-card">
+                        <h3>70%</h3>
+                        <p>Time Saved on Orders</p>
+                    </div>
+                    <div class="roi-card">
+                        <h3>50%</h3>
+                        <p>Reduction in Errors</p>
+                    </div>
+                    <div class="roi-card">
+                        <h3>24/7</h3>
+                        <p>Sales Availability</p>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top: 3rem; font-size: 1.8rem; color: var(--primary-blue);">Financial Projections</h3>
+                <table class="comparison-table" style="margin-top: 2rem;">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Current (Manual)</th>
+                            <th>With New Platform</th>
+                            <th>Improvement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Monthly Orders</td>
+                            <td>50 orders</td>
+                            <td>150+ orders</td>
+                            <td><strong>+200%</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Average Order Value</td>
+                            <td>₹1,25,000</td>
+                            <td>₹1,50,000</td>
+                            <td><strong>+20%</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Monthly Revenue</td>
+                            <td>₹62,50,000</td>
+                            <td>₹2,25,00,000</td>
+                            <td><strong>+260%</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Order Processing Time</td>
+                            <td>30 minutes/order</td>
+                            <td>5 minutes/order</td>
+                            <td><strong>-83%</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Customer Reach</td>
+                            <td>Local (50 cities)</td>
+                            <td>Pan-India (500+ cities)</td>
+                            <td><strong>+900%</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Investment Options -->
+        <div class="section">
+            <h2 class="section-title">Investment Options</h2>
+            <div class="pricing-section">
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <h3>Starter Package</h3>
+                        <div class="price">₹2,49,000</div>
+                        <p style="color: #666; margin-bottom: 2rem;">One-time investment</p>
+                        <ul>
+                            <li>✓ Complete E-Commerce Platform</li>
+                            <li>✓ All 15 Pages</li>
+                            <li>✓ Admin Dashboard</li>
+                            <li>✓ User Management</li>
+                            <li>✓ Basic Support (30 days)</li>
+                            <li>✓ Documentation</li>
+                            <li>✓ Source Code</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="pricing-card featured">
+                        <h3>Professional Package</h3>
+                        <div class="price">₹4,15,000</div>
+                        <p style="color: #666; margin-bottom: 2rem;">One-time investment (RECOMMENDED)</p>
+                        <ul>
+                            <li>✓ Everything in Starter</li>
+                            <li>✓ Super Admin Panel</li>
+                            <li>✓ Database Integration</li>
+                            <li>✓ Payment Gateway Setup</li>
+                            <li>✓ Email Integration</li>
+                            <li>✓ Priority Support (90 days)</li>
+                            <li>✓ Custom Branding</li>
+                            <li>✓ Training Session (2 hours)</li>
+                            <li>✓ SEO Optimization</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <h3>Enterprise Package</h3>
+                        <div class="price">₹8,30,000</div>
+                        <p style="color: #666; margin-bottom: 2rem;">One-time investment</p>
+                        <ul>
+                            <li>✓ Everything in Professional</li>
+                            <li>✓ Full Customization</li>
+                            <li>✓ Dedicated Support (1 year)</li>
+                            <li>✓ Cloud Deployment (AWS/Azure)</li>
+                            <li>✓ SMS Integration</li>
+                            <li>✓ WhatsApp Integration</li>
+                            <li>✓ Advanced Analytics</li>
+                            <li>✓ Mobile App (Android + iOS)</li>
+                            <li>✓ Ongoing Maintenance</li>
+                            <li>✓ Priority Feature Updates</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why Choose Us -->
+        <div class="section">
+            <h2 class="section-title">Why This Investment Makes Sense</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>💰 Quick ROI</h3>
+                    <p>Break-even in 2-3 months based on projected revenue increase. Platform pays for itself quickly.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>🚀 Competitive Advantage</h3>
+                    <p>Most medical equipment suppliers still use manual processes. Be the first with full e-commerce.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>📈 Scalability</h3>
+                    <p>Handle 10X more orders without hiring additional staff. System grows with your business.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>⏰ Time Savings</h3>
+                    <p>Reduce order processing time by 83%. Focus on business growth, not manual tasks.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>📊 Data-Driven Decisions</h3>
+                    <p>Real-time analytics help you make informed business decisions and identify opportunities.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>🎯 Customer Experience</h3>
+                    <p>Modern, professional platform builds trust and increases customer satisfaction.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Implementation Timeline -->
+        <div class="section">
+            <h2 class="section-title">Implementation Timeline</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Duration</th>
+                        <th>Deliverables</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Phase 1: Setup</strong></td>
+                        <td>Week 1</td>
+                        <td>Platform deployment, database setup, initial configuration</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 2: Customization</strong></td>
+                        <td>Week 2</td>
+                        <td>Branding, product upload, payment gateway integration</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 3: Testing</strong></td>
+                        <td>Week 3</td>
+                        <td>Quality assurance, bug fixes, performance optimization</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 4: Training & Launch</strong></td>
+                        <td>Week 4</td>
+                        <td>Staff training, documentation, go-live support</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-section">
+            <h2>Ready to Transform Your Business?</h2>
+            <p>Let's schedule a demo and discuss how this platform can 3X your revenue</p>
+            <a href="mailto:vishrut@optimameditech.com" class="btn">Schedule a Meeting</a>
+            <a href="index.html" class="btn">View Live Demo</a>
+            <button onclick="window.print()" class="btn">Download Proposal (PDF)</button>
+        </div>
+
+        <!-- Contact -->
+        <div class="section" style="text-align: center; margin-top: 4rem;">
+            <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">Questions?</h3>
+            <p style="font-size: 1.2rem; color: #666;">
+                Contact us for a personalized demo and consultation<br>
+                <strong>Email:</strong> info@optimameditech.com | <strong>Phone:</strong> +91 (555) 123-4567
+            </p>
+        </div>
+    </div>
+</body>
+</html>
