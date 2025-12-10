@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Supabase Connection</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .result {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        button {
+            background: #4A9FD8;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        pre {
+            background: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Supabase Connection Test</h1>
+    
+    <div>
+        <button onclick="testConnection()">1. Test Connection</button>
+        <button onclick="testProducts()">2. Test Products Query</button>
+        <button onclick="testDirectAPI()">3. Test Direct API</button>
+        <button onclick="restartPostgREST()">4. Restart PostgREST</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        const SUPABASE_URL = 'https://lloiwbkgfsxdhjohfuwd.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_u6C2SMG2JM42-wDl33iS6w_GqUqaoTb';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        function addResult(title, content, isError = false) {
+            const div = document.createElement('div');
+            div.className = 'result ' + (isError ? 'error' : 'success');
+            div.innerHTML = `<h3>${title}</h3><pre>${content}</pre>`;
+            document.getElementById('results').appendChild(div);
+        }
+
+        async function testConnection() {
+            document.getElementById('results').innerHTML = '';
+            addResult('Testing Connection...', 'Attempting to connect to Supabase...');
+            
+            try {
+                const { data, error } = await supabase.from('products').select('count');
+                
+                if (error) {
+                    addResult('❌ Connection Error', JSON.stringify(error, null, 2), true);
+                } else {
+                    addResult('✅ Connection Successful', 'Connected to Supabase!');
+                }
+            } catch (err) {
+                addResult('❌ Exception', err.message, true);
+            }
+        }
+
+        async function testProducts() {
+            addResult('Testing Products Query...', 'Fetching products...');
+            
+            try {
+                const { data, error } = await supabase
+                    .from('products')
+                    .select('*')
+                    .limit(3);
+                
+                if (error) {
+                    addResult('❌ Query Error', JSON.stringify(error, null, 2), true);
+                    
+                    // Show detailed error info
+                    addResult('Error Details', `
+Code: ${error.code}
+Message: ${error.message}
+Details: ${error.details}
+Hint: ${error.hint}
+                    `, true);
+                } else {
+                    addResult('✅ Query Successful', JSON.stringify(data, null, 2));
+                }
+            } catch (err) {
+                addResult('❌ Exception', err.message + '\n\n' + err.stack, true);
+            }
+        }
+
+        async function testDirectAPI() {
+            addResult('Testing Direct REST API...', 'Making direct fetch request...');
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/products?limit=3`, {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+                
+                const text = await response.text();
+                
+                if (response.ok) {
+                    addResult('✅ Direct API Success', text);
+                } else {
+                    addResult('❌ Direct API Error', `
+Status: ${response.status}
+Status Text: ${response.statusText}
+Response: ${text}
+                    `, true);
+                }
+            } catch (err) {
+                addResult('❌ Fetch Exception', err.message + '\n\n' + err.stack, true);
+            }
+        }
+
+        async function restartPostgREST() {
+            addResult('PostgREST Restart Info', `
+To restart PostgREST and refresh the schema cache:
+
+1. Go to your Supabase Dashboard
+2. Click on "Settings" (gear icon)
+3. Click on "API"
+4. Scroll down to "PostgREST"
+5. Click "Restart PostgREST"
+
+OR run this SQL in SQL Editor:
+
+NOTIFY pgrst, 'reload schema';
+
+This will force PostgREST to reload the schema cache.
+            `);
+        }
+
+        // Auto-run first test on load
+        window.addEventListener('load', () => {
+            setTimeout(testConnection, 1000);
+        });
+    </script>
+</body>
+</html>
