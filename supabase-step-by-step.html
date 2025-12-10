@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Setup - Step by Step Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #4A9FD8;
+            margin-bottom: 1rem;
+        }
+        .step {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            border-left: 5px solid #7BC043;
+        }
+        .step-number {
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+        .step h2 {
+            display: inline-block;
+            vertical-align: middle;
+            color: #333;
+            font-size: 1.8rem;
+        }
+        .step-content {
+            margin-top: 1.5rem;
+            line-height: 1.8;
+        }
+        .info-box {
+            background: #e3f2fd;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border-left: 5px solid #4A9FD8;
+        }
+        .success-box {
+            background: #d4edda;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border-left: 5px solid #28a745;
+        }
+        .warning-box {
+            background: #fff3cd;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border-left: 5px solid #ffc107;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        .btn {
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-block;
+            margin: 0.5rem;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(74, 159, 216, 0.4);
+        }
+        ol {
+            margin-left: 2rem;
+            line-height: 2;
+        }
+        ol li {
+            margin: 1rem 0;
+        }
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 1rem 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .checkbox {
+            margin: 0.5rem 0;
+        }
+        .checkbox input {
+            margin-right: 0.5rem;
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗄️ Supabase Setup - Step by Step</h1>
+        <p style="color: #666; font-size: 1.1rem; margin-bottom: 2rem;">
+            Follow these exact steps to connect your e-commerce platform to Supabase database
+        </p>
+
+        <div class="info-box">
+            <h3>⏱️ Total Time: 15-20 minutes</h3>
+            <p style="margin-top: 0.5rem;">You'll need:</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li>GitHub account (you already have this)</li>
+                <li>Email address</li>
+                <li>15-20 minutes of focused time</li>
+            </ul>
+        </div>
+
+        <!-- STEP 1 -->
+        <div class="step">
+            <span class="step-number">1</span>
+            <h2>Create Supabase Account</h2>
+            <div class="step-content">
+                <ol>
+                    <li>Go to <a href="https://supabase.com" target="_blank"><strong>supabase.com</strong></a></li>
+                    <li>Click <strong>"Start your project"</strong> button</li>
+                    <li>Click <strong>"Sign in with GitHub"</strong></li>
+                    <li>Authorize Supabase to access your GitHub account</li>
+                </ol>
+                
+                <div class="success-box">
+                    <strong>✅ Checkpoint:</strong> You should now be logged into Supabase dashboard
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step">
+            <span class="step-number">2</span>
+            <h2>Create New Organization</h2>
+            <div class="step-content">
+                <ol>
+                    <li>Click <strong>"New organization"</strong></li>
+                    <li>Enter organization name: <code>Optima Meditech</code></li>
+                    <li>Select plan: <strong>Free</strong> (perfect for starting)</li>
+                    <li>Click <strong>"Create organization"</strong></li>
+                </ol>
+                
+                <div class="info-box">
+                    <strong>💡 Note:</strong> Free plan includes:
+                    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                        <li>500 MB database storage</li>
+                        <li>1 GB file storage</li>
+                        <li>50,000 monthly active users</li>
+                        <li>Unlimited API requests</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step">
+            <span class="step-number">3</span>
+            <h2>Create New Project</h2>
+            <div class="step-content">
+                <ol>
+                    <li>Click <strong>"New project"</strong></li>
+                    <li>Fill in the details:
+                        <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                            <li><strong>Name:</strong> <code>optimameditech-ecommerce</code></li>
+                            <li><strong>Database Password:</strong> Create a strong password (SAVE THIS!)</li>
+                            <li><strong>Region:</strong> Select <code>Southeast Asia (Singapore)</code> (closest to India)</li>
+                        </ul>
+                    </li>
+                    <li>Click <strong>"Create new project"</strong></li>
+                    <li>Wait 2-3 minutes for project to be created</li>
+                </ol>
+                
+                <div class="warning-box">
+                    <strong>⚠️ IMPORTANT:</strong> Save your database password somewhere safe! You'll need it later.
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="step">
+            <span class="step-number">4</span>
+            <h2>Run Database Schema</h2>
+            <div class="step-content">
+                <ol>
+                    <li>In your Supabase project, click <strong>"SQL Editor"</strong> in the left sidebar</li>
+                    <li>Click <strong>"New query"</strong></li>
+                    <li>Download the SQL file: <a href="supabase-schema.sql" download class="btn">📥 Download SQL Schema</a></li>
+                    <li>Open the downloaded file in a text editor</li>
+                    <li>Copy ALL the content (Ctrl+A, then Ctrl+C)</li>
+                    <li>Paste it into the Supabase SQL Editor</li>
+                    <li>Click <strong>"Run"</strong> button (or press Ctrl+Enter)</li>
+                    <li>Wait for execution to complete (should take 5-10 seconds)</li>
+                </ol>
+                
+                <div class="success-box">
+                    <strong>✅ Success Indicators:</strong>
+                    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                        <li>You should see "Success. No rows returned" message</li>
+                        <li>At the bottom, you'll see a list of 7 tables created</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 5 -->
+        <div class="step">
+            <span class="step-number">5</span>
+            <h2>Verify Tables Created</h2>
+            <div class="step-content">
+                <ol>
+                    <li>Click <strong>"Table Editor"</strong> in the left sidebar</li>
+                    <li>You should see these 7 tables:
+                        <div class="checkbox"><input type="checkbox"> products</div>
+                        <div class="checkbox"><input type="checkbox"> customers</div>
+                        <div class="checkbox"><input type="checkbox"> orders</div>
+                        <div class="checkbox"><input type="checkbox"> reviews</div>
+                        <div class="checkbox"><input type="checkbox"> discounts</div>
+                        <div class="checkbox"><input type="checkbox"> suppliers</div>
+                        <div class="checkbox"><input type="checkbox"> shipments</div>
+                    </li>
+                    <li>Click on <strong>"products"</strong> table</li>
+                    <li>You should see 3 sample products already inserted!</li>
+                </ol>
+                
+                <div class="success-box">
+                    <strong>✅ Checkpoint:</strong> If you see all 7 tables and 3 products, you're good to go!
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 6 -->
+        <div class="step">
+            <span class="step-number">6</span>
+            <h2>Get API Credentials</h2>
+            <div class="step-content">
+                <ol>
+                    <li>Click <strong>"Settings"</strong> (gear icon) in the left sidebar</li>
+                    <li>Click <strong>"API"</strong> in the settings menu</li>
+                    <li>You'll see two important values:
+                        <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                            <li><strong>Project URL:</strong> Something like <code>https://xxxxx.supabase.co</code></li>
+                            <li><strong>anon public key:</strong> A long string starting with <code>eyJhbGc...</code></li>
+                        </ul>
+                    </li>
+                    <li>Copy both values and save them in a text file</li>
+                </ol>
+                
+                <div class="warning-box">
+                    <strong>⚠️ IMPORTANT:</strong> Keep these credentials safe! You'll need them in the next step.
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 7 -->
+        <div class="step">
+            <span class="step-number">7</span>
+            <h2>Enable Authentication</h2>
+            <div class="step-content">
+                <ol>
+                    <li>Click <strong>"Authentication"</strong> in the left sidebar</li>
+                    <li>Click <strong>"Providers"</strong></li>
+                    <li>Make sure <strong>"Email"</strong> is enabled (it should be by default)</li>
+                    <li>Scroll down to <strong>"Email Templates"</strong></li>
+                    <li>Customize if needed (optional for now)</li>
+                </ol>
+                
+                <div class="info-box">
+                    <strong>💡 Note:</strong> Email authentication is now ready! Users can sign up with email/password.
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 8 -->
+        <div class="step">
+            <span class="step-number">8</span>
+            <h2>Create Storage Bucket (for Product Images)</h2>
+            <div class="step-content">
+                <ol>
+                    <li>Click <strong>"Storage"</strong> in the left sidebar</li>
+                    <li>Click <strong>"New bucket"</strong></li>
+                    <li>Enter bucket name: <code>product-images</code></li>
+                    <li>Make it <strong>Public</strong> (toggle the switch)</li>
+                    <li>Click <strong>"Create bucket"</strong></li>
+                </ol>
+                
+                <div class="success-box">
+                    <strong>✅ Done!</strong> You can now upload product images to this bucket.
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPLETION -->
+        <div class="success-box" style="margin-top: 3rem; padding: 2rem;">
+            <h2 style="color: #155724; margin-bottom: 1rem;">🎉 Supabase Setup Complete!</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 1rem;">You now have:</p>
+            <ul style="margin-left: 2rem; line-height: 2;">
+                <li>✅ Supabase project created</li>
+                <li>✅ 7 database tables with sample data</li>
+                <li>✅ Row Level Security enabled</li>
+                <li>✅ User authentication ready</li>
+                <li>✅ Storage bucket for images</li>
+                <li>✅ API credentials obtained</li>
+            </ul>
+        </div>
+
+        <!-- NEXT STEPS -->
+        <div class="info-box" style="margin-top: 2rem;">
+            <h3 style="margin-bottom: 1rem;">📋 What You Have Now:</h3>
+            <ol style="margin-left: 2rem; line-height: 2;">
+                <li><strong>Project URL:</strong> (you saved this)</li>
+                <li><strong>Anon Key:</strong> (you saved this)</li>
+                <li><strong>Database Password:</strong> (you saved this)</li>
+            </ol>
+            
+            <h3 style="margin: 2rem 0 1rem 0;">🚀 Next Step:</h3>
+            <p>Send me your <strong>Project URL</strong> and <strong>Anon Key</strong>, and I'll update the frontend code to connect to your Supabase database!</p>
+            
+            <p style="margin-top: 1rem; padding: 1rem; background: white; border-radius: 5px;">
+                <strong>Format:</strong><br>
+                Project URL: https://xxxxx.supabase.co<br>
+                Anon Key: eyJhbGc...
+            </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="supabase-schema.sql" download class="btn">📥 Download SQL Schema</a>
+            <a href="index.html" class="btn">🏠 Back to Homepage</a>
+        </div>
+    </div>
+</body>
+</html>
