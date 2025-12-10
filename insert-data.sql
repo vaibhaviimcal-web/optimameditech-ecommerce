@@ -42,13 +42,19 @@ INSERT INTO discounts (code, type, value, min_order_amount, max_usage, current_u
 ON CONFLICT (code) DO NOTHING;
 
 -- ============================================
--- INSERT SUPPLIERS
+-- INSERT SUPPLIERS (NO CONFLICT CLAUSE)
 -- ============================================
-INSERT INTO suppliers (name, contact_person, email, phone, gst_number, payment_terms, status, address) VALUES
-('MedTech Solutions Pvt Ltd', 'Ramesh Gupta', 'ramesh@medtech.com', '+91 98765 11111', '27AABCU9603R1ZM', 'Net 30', 'active', 'Mumbai, Maharashtra'),
-('Global Medical Devices', 'Sarah Johnson', 'sarah@globalmed.com', '+91 98765 22222', '29AABCU9603R1ZN', 'Net 45', 'active', 'Bangalore, Karnataka'),
-('Healthcare Equipment India', 'Vikram Singh', 'vikram@healthcare.in', '+91 98765 33333', '07AABCU9603R1ZO', 'Net 60', 'active', 'Delhi, NCR')
-ON CONFLICT (email) DO NOTHING;
+INSERT INTO suppliers (name, contact_person, email, phone, gst_number, payment_terms, status, address) 
+SELECT 'MedTech Solutions Pvt Ltd', 'Ramesh Gupta', 'ramesh@medtech.com', '+91 98765 11111', '27AABCU9603R1ZM', 'Net 30', 'active', 'Mumbai, Maharashtra'
+WHERE NOT EXISTS (SELECT 1 FROM suppliers WHERE email = 'ramesh@medtech.com');
+
+INSERT INTO suppliers (name, contact_person, email, phone, gst_number, payment_terms, status, address) 
+SELECT 'Global Medical Devices', 'Sarah Johnson', 'sarah@globalmed.com', '+91 98765 22222', '29AABCU9603R1ZN', 'Net 45', 'active', 'Bangalore, Karnataka'
+WHERE NOT EXISTS (SELECT 1 FROM suppliers WHERE email = 'sarah@globalmed.com');
+
+INSERT INTO suppliers (name, contact_person, email, phone, gst_number, payment_terms, status, address) 
+SELECT 'Healthcare Equipment India', 'Vikram Singh', 'vikram@healthcare.in', '+91 98765 33333', '07AABCU9603R1ZO', 'Net 60', 'active', 'Delhi, NCR'
+WHERE NOT EXISTS (SELECT 1 FROM suppliers WHERE email = 'vikram@healthcare.in');
 
 -- ============================================
 -- RE-ENABLE RLS
