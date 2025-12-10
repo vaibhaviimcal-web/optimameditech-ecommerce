@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot Demo - Optima Meditech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="chatbot.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 3rem;
+            color: #4A9FD8;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .icon {
+            font-size: 5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .info-box {
+            background: #e3f2fd;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 5px solid #4A9FD8;
+        }
+        .success-box {
+            background: #d4edda;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 5px solid #28a745;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .feature {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .btn {
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-block;
+            margin: 0.5rem;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(74, 159, 216, 0.4);
+        }
+        ul {
+            margin-left: 2rem;
+            line-height: 2;
+        }
+        .demo-instruction {
+            background: #fff3cd;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 5px solid #ffc107;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🤖</div>
+        <h1>AI Chatbot Ready!</h1>
+        <p style="text-align: center; color: #666; font-size: 1.2rem; margin-bottom: 2rem;">
+            Your intelligent customer support assistant is now live!
+        </p>
+
+        <div class="demo-instruction">
+            👉 Look at the bottom-right corner for the chat button!
+        </div>
+
+        <div class="success-box">
+            <h3 style="margin-bottom: 1rem;">✅ Chatbot Features:</h3>
+            <ul>
+                <li>🤖 AI-powered responses</li>
+                <li>💬 Natural conversation flow</li>
+                <li>⚡ Instant replies</li>
+                <li>🎯 Product recommendations</li>
+                <li>💰 Pricing information</li>
+                <li>🛡️ Warranty details</li>
+                <li>📞 Contact support</li>
+                <li>🚚 Delivery information</li>
+            </ul>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">🛍️</div>
+                <h4>Product Inquiries</h4>
+                <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">Ask about any medical equipment</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💰</div>
+                <h4>Pricing & Quotes</h4>
+                <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">Get instant price information</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎁</div>
+                <h4>Discounts & Offers</h4>
+                <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">Learn about current deals</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📞</div>
+                <h4>24/7 Support</h4>
+                <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">Always available to help</p>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3 style="margin-bottom: 1rem;">💡 Try These Questions:</h3>
+            <ul style="font-size: 0.95rem;">
+                <li>"Show me your products"</li>
+                <li>"What are your prices?"</li>
+                <li>"Do you offer warranties?"</li>
+                <li>"How can I contact support?"</li>
+                <li>"Tell me about delivery"</li>
+                <li>"What discounts do you have?"</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <h3 style="margin-bottom: 1rem;">🎯 Chatbot Capabilities:</h3>
+            <ul style="font-size: 0.95rem;">
+                <li>✅ Understands natural language</li>
+                <li>✅ Provides detailed product information</li>
+                <li>✅ Shares pricing and discount codes</li>
+                <li>✅ Explains warranty terms</li>
+                <li>✅ Gives delivery details</li>
+                <li>✅ Offers payment options</li>
+                <li>✅ Links to relevant pages</li>
+                <li>✅ Quick reply buttons for common questions</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="products-firebase-with-chat.html" class="btn">🛍️ View Products with Chatbot</a>
+            <a href="admin-firebase.html" class="btn">📊 Admin Dashboard</a>
+            <a href="firebase-complete.html" class="btn">🏠 Back to Summary</a>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #e0e0e0;">
+            <p style="color: #666;">
+                <strong>🎉 AI Chatbot Integration Complete!</strong><br>
+                Click the chat button in the bottom-right corner to start chatting!
+            </p>
+        </div>
+    </div>
+
+    <!-- AI Chatbot -->
+    <script src="chatbot.js"></script>
+</body>
+</html>
