@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Pages - Optima Meditech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f7fa;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #1a1a2e;
+            margin-bottom: 1rem;
+        }
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+        .section h2 {
+            font-size: 1.5rem;
+            color: #4A9FD8;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #4A9FD8;
+            padding-bottom: 0.5rem;
+        }
+        .page-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .page-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #4A9FD8;
+        }
+        .page-card.deprecated {
+            border-left-color: #ff4444;
+            opacity: 0.7;
+        }
+        .page-card h3 {
+            font-size: 1.1rem;
+            color: #1a1a2e;
+            margin-bottom: 0.5rem;
+        }
+        .page-card p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .page-card a {
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .page-card.deprecated a {
+            background: #999;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .badge-success { background: #d4edda; color: #155724; }
+        .badge-warning { background: #fff3cd; color: #856404; }
+        .badge-danger { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 All Pages - Optima Meditech</h1>
+        <p style="color: #666; margin-bottom: 2rem;">Complete list of all pages in the e-commerce platform</p>
+
+        <!-- Firebase Pages -->
+        <div class="section">
+            <h2>🔥 Firebase Pages <span class="badge badge-success">RECOMMENDED</span></h2>
+            <div class="page-grid">
+                <div class="page-card">
+                    <h3>Products + AI Chat</h3>
+                    <p>Product catalog with AI chatbot assistance</p>
+                    <a href="products-firebase-with-chat.html">Open Page →</a>
+                </div>
+                <div class="page-card">
+                    <h3>Admin Dashboard</h3>
+                    <p>Complete admin panel with Firebase data</p>
+                    <a href="admin-firebase.html">Open Page →</a>
+                </div>
+                <div class="page-card">
+                    <h3>Products Page</h3>
+                    <p>Product catalog without chatbot</p>
+                    <a href="products-firebase.html">Open Page →</a>
+                </div>
+                <div class="page-card">
+                    <h3>Customer Registration</h3>
+                    <p>Sign up form with Firebase integration</p>
+                    <a href="register-firebase.html">Open Page →</a>
+                </div>
+                <div class="page-card">
+                    <h3>Firebase Setup</h3>
+                    <p>Add sample data to Firebase</p>
+                    <a href="firebase-setup-v2.html">Open Page →</a>
+                </div>
+                <div class="page-card">
+                    <h3>Firebase Summary</h3>
+                    <p>Firebase integration completion page</p>
+                    <a href="firebase-complete.html">Open Page →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chatbot Pages -->
+        <div class="section">
+            <h2>🤖 AI Chatbot Pages</h2>
+            <div class="page-grid">
+                <div class="page-card">
+                    <h3>Chatbot Demo</h3>
+                    <p>AI chatbot demonstration and features</p>
+                    <a href="chatbot-demo.html">Open Page →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- JSON Pages -->
+        <div class="section">
+            <h2>📁 Static JSON Pages <span class="badge badge-warning">BACKUP</span></h2>
+            <div class="page-grid">
+                <div class="page-card">
+                    <h3>Admin Dashboard (JSON)</h3>
+                    <p>Admin panel with inline JSON data</p>
+                    <a href="admin-json-fixed.html">Open Page →</a>
+                </div>
+                <div class="page-card">
+                    <h3>Products (JSON)</h3>
+                    <p>Product catalog with static JSON</p>
+                    <a href="products-json.html">Open Page →</a>
+                </div>
+                <div class="page-card">
+                    <h3>JSON Summary</h3>
+                    <p>JSON version completion page</p>
+                    <a href="json-version-ready.html">Open Page →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Pages -->
+        <div class="section">
+            <h2>🧪 Test Pages</h2>
+            <div class="page-grid">
+                <div class="page-card">
+                    <h3>Supabase Test V1</h3>
+                    <p>Original Supabase connection test</p>
+                    <a href="test-supabase.html">Open Page →</a>
+                </div>
+                <div class="page-card">
+                    <h3>Supabase Test V2</h3>
+                    <p>Alternative Supabase test page</p>
+                    <a href="test-supabase-v2.html">Open Page →</a>
+                </div>
+                <div class="page-card">
+                    <h3>Final Test</h3>
+                    <p>Final Supabase connection test</p>
+                    <a href="test-final.html">Open Page →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deprecated Pages -->
+        <div class="section">
+            <h2>⚠️ Deprecated Pages <span class="badge badge-danger">DO NOT USE</span></h2>
+            <div class="page-grid">
+                <div class="page-card deprecated">
+                    <h3>Old Registration</h3>
+                    <p>Redirects to Firebase version</p>
+                    <a href="register.html">Open Page →</a>
+                </div>
+                <div class="page-card deprecated">
+                    <h3>Old Admin Panel</h3>
+                    <p>Redirects to Firebase version</p>
+                    <a href="admin.html">Open Page →</a>
+                </div>
+                <div class="page-card deprecated">
+                    <h3>Old Admin JSON</h3>
+                    <p>Has JSON loading errors</p>
+                    <a href="admin-json.html">Open Page →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Documentation -->
+        <div class="section">
+            <h2>📖 Documentation</h2>
+            <div class="page-grid">
+                <div class="page-card">
+                    <h3>Backup Summary</h3>
+                    <p>Complete project documentation</p>
+                    <a href="BACKUP-SUMMARY.md">View Documentation →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="section">
+            <h2>🎯 Quick Access</h2>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a href="products-firebase-with-chat.html" style="background: linear-gradient(135deg, #4A9FD8, #7BC043); color: white; padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 700;">🛍️ Shop Now</a>
+                <a href="admin-firebase.html" style="background: linear-gradient(135deg, #4A9FD8, #7BC043); color: white; padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 700;">📊 Admin</a>
+                <a href="chatbot-demo.html" style="background: linear-gradient(135deg, #4A9FD8, #7BC043); color: white; padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 700;">🤖 Chatbot</a>
+                <a href="register-firebase.html" style="background: linear-gradient(135deg, #4A9FD8, #7BC043); color: white; padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 700;">👤 Register</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
