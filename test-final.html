@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Supabase Test</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        h1 { color: #4A9FD8; }
+        .result {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 5px solid #c62828;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-left: 5px solid #2e7d32;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left: 5px solid #ffc107;
+        }
+        button {
+            background: #4A9FD8;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #3d8bc4;
+        }
+        pre {
+            background: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 13px;
+        }
+        .info-box {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #4A9FD8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Final Supabase Connection Test</h1>
+        
+        <div class="info-box">
+            <h3>⚠️ IMPORTANT: Check Your Supabase Anon Key</h3>
+            <p>Go to your Supabase Dashboard → Settings → API</p>
+            <p>Copy the <strong>"anon public"</strong> key (starts with <code>eyJ...</code>)</p>
+            <p>Paste it below and click "Update Key"</p>
+            <input type="text" id="anonKey" placeholder="Paste your anon key here (eyJ...)" style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px;">
+            <button onclick="updateKey()">Update Key</button>
+        </div>
+
+        <div>
+            <button onclick="testConnection()">🧪 Test Connection</button>
+            <button onclick="testProducts()">📦 Test Products Query</button>
+            <button onclick="clearResults()">🗑️ Clear Results</button>
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://lloiwbkgfsxdhjohfuwd.supabase.co';
+        let SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxsb2l3YmtnZnN4ZGhqb2hmdXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM4NjI0NzAsImV4cCI6MjA0OTQzODQ3MH0.YOUR_ACTUAL_KEY_HERE';
+
+        function addResult(title, content, type = 'success') {
+            const div = document.createElement('div');
+            div.className = 'result ' + type;
+            div.innerHTML = `<h3>${title}</h3><pre>${content}</pre>`;
+            document.getElementById('results').appendChild(div);
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        function updateKey() {
+            const key = document.getElementById('anonKey').value.trim();
+            if (key && key.startsWith('eyJ')) {
+                SUPABASE_ANON_KEY = key;
+                addResult('✅ Key Updated', 'Anon key has been updated. Now click "Test Connection"');
+            } else {
+                addResult('❌ Invalid Key', 'The key should start with "eyJ". Please copy the correct anon key from Supabase.', 'error');
+            }
+        }
+
+        async function testConnection() {
+            clearResults();
+            addResult('🔄 Testing...', 'Attempting to connect to Supabase...');
+
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+
+                if (response.ok) {
+                    addResult('✅ Connection Successful!', `Connected to Supabase!\nStatus: ${response.status} ${response.statusText}`);
+                } else {
+                    const text = await response.text();
+                    addResult('❌ Connection Failed', `Status: ${response.status}\nResponse: ${text}`, 'error');
+                }
+            } catch (err) {
+                addResult('❌ Network Error', `${err.message}\n\nPossible causes:\n1. Firewall blocking Supabase\n2. VPN/Proxy interference\n3. Network restrictions\n4. Invalid API key\n\nTry:\n- Disable VPN\n- Try different network\n- Check firewall settings`, 'error');
+            }
+        }
+
+        async function testProducts() {
+            clearResults();
+            addResult('🔄 Querying Products...', 'Fetching products from database...');
+
+            try {
+                const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                
+                const { data, error, status, statusText } = await supabase
+                    .from('products')
+                    .select('*')
+                    .limit(3);
+
+                if (error) {
+                    addResult('❌ Query Error', JSON.stringify({
+                        message: error.message,
+                        details: error.details,
+                        hint: error.hint,
+                        code: error.code
+                    }, null, 2), 'error');
+                } else if (data) {
+                    addResult('✅ Products Retrieved!', `Found ${data.length} products:\n\n${JSON.stringify(data, null, 2)}`);
+                    
+                    // Display products nicely
+                    if (data.length > 0) {
+                        let productList = '\n\nProducts:\n';
+                        data.forEach((p, i) => {
+                            productList += `\n${i + 1}. ${p.name}\n   Price: ₹${p.price}\n   Stock: ${p.stock}\n   Category: ${p.category}\n`;
+                        });
+                        addResult('📦 Product List', productList);
+                    }
+                } else {
+                    addResult('⚠️ No Data', 'Query succeeded but returned no data', 'warning');
+                }
+            } catch (err) {
+                addResult('❌ Exception', `${err.message}\n\n${err.stack}`, 'error');
+            }
+        }
+
+        // Show initial message
+        window.addEventListener('load', () => {
+            addResult('👋 Welcome!', 'First, update your Supabase anon key above, then click "Test Connection"', 'warning');
+        });
+    </script>
+</body>
+</html>
