@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Optima Meditech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f7fa;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #1a1a2e;
+            margin-bottom: 2rem;
+        }
+        .success-banner {
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        .stat-card h3 {
+            font-size: 2.5rem;
+            color: #4A9FD8;
+            margin-bottom: 0.5rem;
+        }
+        .stat-card p {
+            color: #666;
+            font-size: 1rem;
+        }
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+        .section h2 {
+            font-size: 1.8rem;
+            color: #1a1a2e;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #4A9FD8;
+            padding-bottom: 0.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th {
+            background: #f8f9fa;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        table tr:hover {
+            background: #f8f9fa;
+        }
+        .badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .badge-success { background: #d4edda; color: #155724; }
+        .product-img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Admin Dashboard</h1>
+        
+        <div class="success-banner">
+            ✅ Connected to Static JSON Data (No Supabase Connection Required!)
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3 id="totalRevenue">₹0</h3>
+                <p>Total Revenue</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalOrders">0</h3>
+                <p>Total Orders</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalProducts">0</h3>
+                <p>Total Products</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalCustomers">0</h3>
+                <p>Total Customers</p>
+            </div>
+        </div>
+
+        <!-- Products Section -->
+        <div class="section">
+            <h2>Products</h2>
+            <div id="productsTable">
+                <div class="loading">Loading products...</div>
+            </div>
+        </div>
+
+        <!-- Discounts Section -->
+        <div class="section">
+            <h2>Discount Codes</h2>
+            <div id="discountsTable">
+                <div class="loading">Loading discounts...</div>
+            </div>
+        </div>
+
+        <!-- Suppliers Section -->
+        <div class="section">
+            <h2>Suppliers</h2>
+            <div id="suppliersTable">
+                <div class="loading">Loading suppliers...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load Products
+        async function loadProducts() {
+            const container = document.getElementById('productsTable');
+            try {
+                const response = await fetch('data/products.json');
+                const products = await response.json();
+
+                if (products.length === 0) {
+                    container.innerHTML = '<p>No products found.</p>';
+                    return;
+                }
+
+                let html = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>SKU</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Sales</th>
+                                <th>Rating</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                products.forEach(product => {
+                    html += `
+                        <tr>
+                            <td><img src="${product.image_url}" alt="${product.name}" class="product-img"></td>
+                            <td>${product.sku}</td>
+                            <td><strong>${product.name}</strong></td>
+                            <td>${product.category}</td>
+                            <td>₹${product.price.toLocaleString()}</td>
+                            <td>${product.stock}</td>
+                            <td>${product.sales}</td>
+                            <td>⭐ ${product.rating}</td>
+                            <td><span class="badge badge-success">${product.status}</span></td>
+                        </tr>
+                    `;
+                });
+
+                html += '</tbody></table>';
+                container.innerHTML = html;
+
+                // Update stats
+                document.getElementById('totalProducts').textContent = products.length;
+                
+                // Calculate total revenue
+                const totalRevenue = products.reduce((sum, p) => sum + (p.price * p.sales), 0);
+                document.getElementById('totalRevenue').textContent = '₹' + totalRevenue.toLocaleString();
+                
+                // Calculate total orders (sum of sales)
+                const totalOrders = products.reduce((sum, p) => sum + p.sales, 0);
+                document.getElementById('totalOrders').textContent = totalOrders;
+
+            } catch (error) {
+                container.innerHTML = `<div class="error">Error loading products: ${error.message}</div>`;
+            }
+        }
+
+        // Load Discounts
+        async function loadDiscounts() {
+            const container = document.getElementById('discountsTable');
+            try {
+                const response = await fetch('data/discounts.json');
+                const discounts = await response.json();
+
+                if (discounts.length === 0) {
+                    container.innerHTML = '<p>No discounts found.</p>';
+                    return;
+                }
+
+                let html = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Type</th>
+                                <th>Value</th>
+                                <th>Min Order</th>
+                                <th>Usage</th>
+                                <th>Valid Until</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                discounts.forEach(discount => {
+                    const usage = `${discount.current_usage}/${discount.max_usage}`;
+                    const validUntil = new Date(discount.valid_until).toLocaleDateString();
+                    
+                    html += `
+                        <tr>
+                            <td><strong>${discount.code}</strong></td>
+                            <td>${discount.type}</td>
+                            <td>${discount.type === 'percentage' ? discount.value + '%' : '₹' + discount.value.toLocaleString()}</td>
+                            <td>₹${discount.min_order_amount.toLocaleString()}</td>
+                            <td>${usage}</td>
+                            <td>${validUntil}</td>
+                            <td><span class="badge badge-success">${discount.status}</span></td>
+                        </tr>
+                    `;
+                });
+
+                html += '</tbody></table>';
+                container.innerHTML = html;
+
+            } catch (error) {
+                container.innerHTML = `<div class="error">Error loading discounts: ${error.message}</div>`;
+            }
+        }
+
+        // Load Suppliers
+        async function loadSuppliers() {
+            const container = document.getElementById('suppliersTable');
+            try {
+                const response = await fetch('data/suppliers.json');
+                const suppliers = await response.json();
+
+                if (suppliers.length === 0) {
+                    container.innerHTML = '<p>No suppliers found.</p>';
+                    return;
+                }
+
+                let html = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Contact Person</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>GST Number</th>
+                                <th>Payment Terms</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                suppliers.forEach(supplier => {
+                    html += `
+                        <tr>
+                            <td><strong>${supplier.name}</strong></td>
+                            <td>${supplier.contact_person}</td>
+                            <td>${supplier.email}</td>
+                            <td>${supplier.phone}</td>
+                            <td>${supplier.gst_number}</td>
+                            <td>${supplier.payment_terms}</td>
+                            <td><span class="badge badge-success">${supplier.status}</span></td>
+                        </tr>
+                    `;
+                });
+
+                html += '</tbody></table>';
+                container.innerHTML = html;
+                
+                // Update customer count (using suppliers as proxy)
+                document.getElementById('totalCustomers').textContent = suppliers.length;
+
+            } catch (error) {
+                container.innerHTML = `<div class="error">Error loading suppliers: ${error.message}</div>`;
+            }
+        }
+
+        // Initialize
+        window.addEventListener('load', async () => {
+            await loadProducts();
+            await loadDiscounts();
+            await loadSuppliers();
+        });
+    </script>
+</body>
+</html>
