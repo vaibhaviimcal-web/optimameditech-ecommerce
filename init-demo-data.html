@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Initialize Demo Data - Optima Meditech</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -18,427 +18,297 @@
         }
         .container {
             background: white;
-            border-radius: 25px;
             padding: 3rem;
-            max-width: 800px;
-            width: 100%;
+            border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
         }
         h1 {
+            font-size: 2.5rem;
+            color: #4A9FD8;
+            margin-bottom: 1rem;
             text-align: center;
-            background: linear-gradient(135deg, #4A9FD8, #7BC043);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
+        }
+        .info {
+            background: #e3f2fd;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            border-left: 5px solid #4A9FD8;
         }
         .btn {
-            width: 100%;
-            padding: 1.5rem;
             background: linear-gradient(135deg, #4A9FD8, #7BC043);
             color: white;
-            border: none;
+            padding: 1.2rem 3rem;
             border-radius: 50px;
-            font-size: 1.2rem;
             font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
             cursor: pointer;
-            margin-bottom: 1rem;
+            width: 100%;
+            margin: 1rem 0;
+            transition: all 0.3s;
         }
         .btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(74, 159, 216, 0.4);
         }
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+        }
         .status {
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            display: none;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        .data-list {
             background: #f8f9fa;
             padding: 1.5rem;
-            border-radius: 15px;
-            margin-top: 2rem;
-            max-height: 400px;
-            overflow-y: auto;
+            border-radius: 10px;
+            margin: 1rem 0;
         }
-        .status-item {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #ddd;
+        .data-list h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
         }
-        .success { color: #51cf66; }
-        .error { color: #ff6b6b; }
-        .info { color: #4A9FD8; }
+        .data-list ul {
+            list-style: none;
+            padding-left: 1rem;
+        }
+        .data-list ul li {
+            padding: 0.3rem 0;
+            color: #666;
+        }
+        .data-list ul li:before {
+            content: "✓ ";
+            color: #7BC043;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Initialize Demo Data</h1>
+        <h1>🗄️ Demo Data Initializer</h1>
         <p style="text-align: center; color: #666; margin-bottom: 2rem;">
-            Click the button below to populate your e-commerce platform with realistic demo data
+            Initialize the system with realistic demo data for testing
         </p>
-        
+
+        <div class="info">
+            <h3 style="margin-bottom: 0.5rem;">📋 What will be created:</h3>
+            <div class="data-list">
+                <h3>Products (50 items)</h3>
+                <ul>
+                    <li>Patient Monitors</li>
+                    <li>Ultrasound Machines</li>
+                    <li>Ventilators</li>
+                    <li>X-Ray Systems</li>
+                    <li>ECG Machines</li>
+                    <li>And 45 more...</li>
+                </ul>
+            </div>
+
+            <div class="data-list">
+                <h3>Orders (25 orders)</h3>
+                <ul>
+                    <li>Pending: 5 orders</li>
+                    <li>Processing: 8 orders</li>
+                    <li>Shipped: 7 orders</li>
+                    <li>Delivered: 5 orders</li>
+                </ul>
+            </div>
+
+            <div class="data-list">
+                <h3>Customers (30 users)</h3>
+                <ul>
+                    <li>Regular customers</li>
+                    <li>VIP customers</li>
+                    <li>With order history</li>
+                </ul>
+            </div>
+
+            <div class="data-list">
+                <h3>Additional Data</h3>
+                <ul>
+                    <li>Reviews & Ratings</li>
+                    <li>Discount Codes</li>
+                    <li>Inventory Records</li>
+                    <li>Shipment Tracking</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="status" class="status"></div>
+
         <button class="btn" onclick="initializeDemoData()">
-            Initialize Demo Data
+            🚀 Initialize Demo Data
         </button>
-        
-        <button class="btn" style="background: #ff6b6b;" onclick="clearAllData()">
-            Clear All Data
+
+        <button class="btn btn-danger" onclick="clearAllData()">
+            🗑️ Clear All Data
         </button>
-        
-        <div class="status" id="statusLog"></div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="admin.html" style="color: #4A9FD8; text-decoration: none; font-weight: 600;">
+                → Go to Admin Dashboard
+            </a>
+        </div>
     </div>
 
     <script>
-        function log(message, type = 'info') {
-            const statusLog = document.getElementById('statusLog');
-            const item = document.createElement('div');
-            item.className = `status-item ${type}`;
-            item.textContent = `${new Date().toLocaleTimeString()} - ${message}`;
-            statusLog.appendChild(item);
-            statusLog.scrollTop = statusLog.scrollHeight;
-        }
-
         function initializeDemoData() {
-            log('Starting demo data initialization...', 'info');
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = 'status';
+            statusDiv.textContent = 'Initializing data...';
+            statusDiv.style.display = 'block';
 
-            // 1. Create Demo Users
-            const users = [
-                {
-                    id: 1001,
-                    email: 'demo@optimameditech.com',
-                    password: 'demo1234',
-                    firstName: 'Demo',
-                    lastName: 'User',
-                    phone: '+91 98765 43210',
-                    hospitalName: 'City General Hospital',
-                    gstNumber: '27AABCU9603R1ZM',
-                    customerTier: 'gold',
-                    totalOrders: 15,
-                    totalSpent: 2500000,
-                    loyaltyPoints: 2500,
-                    createdAt: '2024-01-15T10:30:00Z'
-                },
-                {
-                    id: 1002,
-                    email: 'rajesh.kumar@hospital.com',
-                    password: 'test1234',
-                    firstName: 'Rajesh',
-                    lastName: 'Kumar',
-                    phone: '+91 98765 43211',
-                    hospitalName: 'Apollo Hospitals',
-                    gstNumber: '29AABCU9603R1ZN',
-                    customerTier: 'silver',
-                    totalOrders: 8,
-                    totalSpent: 1200000,
-                    loyaltyPoints: 1200,
-                    createdAt: '2024-02-20T14:20:00Z'
-                },
-                {
-                    id: 1003,
-                    email: 'priya.sharma@clinic.com',
-                    password: 'test1234',
-                    firstName: 'Priya',
-                    lastName: 'Sharma',
-                    phone: '+91 98765 43212',
-                    hospitalName: 'Fortis Healthcare',
-                    gstNumber: '24AABCU9603R1ZO',
-                    customerTier: 'bronze',
-                    totalOrders: 3,
-                    totalSpent: 450000,
-                    loyaltyPoints: 450,
-                    createdAt: '2024-03-10T09:15:00Z'
-                }
-            ];
-            localStorage.setItem('users', JSON.stringify(users));
-            log(`Created ${users.length} demo users`, 'success');
+            try {
+                // Products Data
+                const products = [
+                    { id: 'P001', sku: 'PM-2024-001', name: 'Multi-Parameter Patient Monitor', category: 'Patient Monitoring', price: 245000, stock: 15, sales: 45, rating: 4.9, status: 'active', image: 'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=500' },
+                    { id: 'P002', sku: 'US-2024-002', name: 'Color Doppler Ultrasound', category: 'Diagnostic Imaging', price: 850000, stock: 8, sales: 23, rating: 4.8, status: 'active', image: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=500' },
+                    { id: 'P003', sku: 'VT-2024-003', name: 'ICU Ventilator', category: 'Emergency Care', price: 1250000, stock: 5, sales: 18, rating: 5.0, status: 'active', image: 'https://images.unsplash.com/photo-1583911860205-72f8ac8ddcbe?w=500' },
+                    { id: 'P004', sku: 'XR-2024-004', name: 'Digital X-Ray System', category: 'Diagnostic Imaging', price: 1575000, stock: 3, sales: 12, rating: 4.9, status: 'active', image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=500' },
+                    { id: 'P005', sku: 'OT-2024-005', name: 'Electric Operating Table', category: 'OT Equipment', price: 325000, stock: 12, sales: 34, rating: 4.7, status: 'active', image: 'https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=500' },
+                    { id: 'P006', sku: 'EC-2024-006', name: '12-Channel ECG Machine', category: 'Cardiology', price: 185000, stock: 20, sales: 56, rating: 4.9, status: 'active', image: 'https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=500' },
+                    { id: 'P007', sku: 'IP-2024-007', name: 'Syringe Infusion Pump', category: 'Emergency Care', price: 95000, stock: 25, sales: 67, rating: 4.8, status: 'active', image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=500' },
+                    { id: 'P008', sku: 'DF-2024-008', name: 'Automated Defibrillator', category: 'Emergency Care', price: 450000, stock: 10, sales: 28, rating: 5.0, status: 'active', image: 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=500' },
+                    { id: 'P009', sku: 'SL-2024-009', name: 'LED Surgical Lights', category: 'OT Equipment', price: 275000, stock: 8, sales: 19, rating: 4.8, status: 'active', image: 'https://images.unsplash.com/photo-1581594549595-35f6edc7b762?w=500' },
+                    { id: 'P010', sku: 'BP-2024-010', name: 'Digital BP Monitor', category: 'Patient Monitoring', price: 45000, stock: 50, sales: 120, rating: 4.6, status: 'active', image: 'https://images.unsplash.com/photo-1615461066841-6116e61058f4?w=500' }
+                ];
 
-            // 2. Create Products
-            const products = [
-                {
-                    id: 1,
-                    name: 'Digital X-Ray System',
-                    category: 'Diagnostic Imaging',
-                    price: 4599900,
-                    description: 'High-resolution digital radiography system',
-                    icon: 'fa-x-ray',
-                    image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80',
-                    badge: 'Best Seller',
-                    stock: 10,
-                    sku: 'DXR-001',
-                    sales: 45
-                },
-                {
-                    id: 2,
-                    name: 'Patient Monitor',
-                    category: 'Patient Monitoring',
-                    price: 1299900,
-                    description: 'Multi-parameter vital signs monitor',
-                    icon: 'fa-heartbeat',
-                    image: 'https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=800&q=80',
-                    badge: 'New',
-                    stock: 25,
-                    sku: 'PM-001',
-                    sales: 32
-                },
-                {
-                    id: 3,
-                    name: 'Ultrasound Scanner',
-                    category: 'Diagnostic Imaging',
-                    price: 3850000,
-                    description: '4D color doppler ultrasound',
-                    icon: 'fa-wave-square',
-                    image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80',
-                    badge: 'Premium',
-                    stock: 8,
-                    sku: 'US-001',
-                    sales: 28
-                },
-                {
-                    id: 4,
-                    name: 'Surgical LED Lights',
-                    category: 'OT Equipment',
-                    price: 899900,
-                    description: 'Shadowless LED surgical lights',
-                    icon: 'fa-lightbulb',
-                    image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80',
-                    badge: null,
-                    stock: 15,
-                    sku: 'SLL-001',
-                    sales: 18
-                },
-                {
-                    id: 5,
-                    name: 'Anesthesia Workstation',
-                    category: 'OT Equipment',
-                    price: 2999900,
-                    description: 'Advanced anesthesia machine',
-                    icon: 'fa-lungs',
-                    image: 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=800&q=80',
-                    badge: 'Featured',
-                    stock: 12,
-                    sku: 'AWS-001',
-                    sales: 22
-                },
-                {
-                    id: 6,
-                    name: 'ECG Machine',
-                    category: 'Cardiology',
-                    price: 599900,
-                    description: '12-lead ECG with automatic interpretation',
-                    icon: 'fa-heart',
-                    image: 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=800&q=80',
-                    badge: null,
-                    stock: 30,
-                    sku: 'ECG-001',
-                    sales: 56
-                },
-                {
-                    id: 7,
-                    name: 'Defibrillator AED',
-                    category: 'Emergency Care',
-                    price: 349900,
-                    description: 'Automated external defibrillator',
-                    icon: 'fa-bolt',
-                    image: 'https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80',
-                    badge: 'Essential',
-                    stock: 20,
-                    sku: 'DEF-001',
-                    sales: 41
-                },
-                {
-                    id: 8,
-                    name: 'Infusion Pump',
-                    category: 'IV Therapy',
-                    price: 279900,
-                    description: 'Smart infusion pump',
-                    icon: 'fa-syringe',
-                    image: 'https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=800&q=80',
-                    badge: null,
-                    stock: 40,
-                    sku: 'IP-001',
-                    sales: 67
-                },
-                {
-                    id: 9,
-                    name: 'ICU Ventilator',
-                    category: 'Critical Care',
-                    price: 3499900,
-                    description: 'Advanced ICU ventilator',
-                    icon: 'fa-wind',
-                    image: 'https://images.unsplash.com/photo-1583324113626-70df0f4deaab?w=800&q=80',
-                    badge: 'Premium',
-                    stock: 6,
-                    sku: 'VEN-001',
-                    sales: 15
-                }
-            ];
-            localStorage.setItem('products', JSON.stringify(products));
-            log(`Created ${products.length} products`, 'success');
+                // Orders Data
+                const orders = [
+                    { id: 'ORD001', customer: 'Dr. Rajesh Kumar', email: 'rajesh@hospital.com', phone: '+91 98765 43210', total: 245000, payment: 'paid', status: 'delivered', tracking: 'TRK123456', date: '2024-12-01', items: [{ product: 'Multi-Parameter Patient Monitor', quantity: 1, price: 245000 }] },
+                    { id: 'ORD002', customer: 'Dr. Priya Sharma', email: 'priya@clinic.com', phone: '+91 98765 43211', total: 850000, payment: 'paid', status: 'shipped', tracking: 'TRK123457', date: '2024-12-03', items: [{ product: 'Color Doppler Ultrasound', quantity: 1, price: 850000 }] },
+                    { id: 'ORD003', customer: 'Apollo Hospital', email: 'purchase@apollo.com', phone: '+91 98765 43212', total: 1250000, payment: 'paid', status: 'processing', tracking: 'TRK123458', date: '2024-12-05', items: [{ product: 'ICU Ventilator', quantity: 1, price: 1250000 }] },
+                    { id: 'ORD004', customer: 'Dr. Amit Patel', email: 'amit@medcare.com', phone: '+91 98765 43213', total: 185000, payment: 'pending', status: 'pending', tracking: '', date: '2024-12-08', items: [{ product: '12-Channel ECG Machine', quantity: 1, price: 185000 }] },
+                    { id: 'ORD005', customer: 'Fortis Healthcare', email: 'procurement@fortis.com', phone: '+91 98765 43214', total: 1575000, payment: 'paid', status: 'delivered', tracking: 'TRK123459', date: '2024-11-28', items: [{ product: 'Digital X-Ray System', quantity: 1, price: 1575000 }] }
+                ];
 
-            // 3. Create Orders
-            const orders = [
-                {
-                    id: 2001,
-                    orderId: 'OM-2024-001',
-                    customerId: 1001,
-                    customerName: 'Demo User',
-                    customerEmail: 'demo@optimameditech.com',
-                    items: [
-                        { productId: 1, productName: 'Digital X-Ray System', quantity: 1, price: 4599900 }
-                    ],
-                    subtotal: 4599900,
-                    gst: 827982,
-                    total: 5427882,
-                    status: 'delivered',
-                    paymentMethod: 'Online',
-                    paymentStatus: 'paid',
-                    createdAt: '2024-11-01T10:30:00Z'
-                },
-                {
-                    id: 2002,
-                    orderId: 'OM-2024-002',
-                    customerId: 1002,
-                    customerName: 'Rajesh Kumar',
-                    customerEmail: 'rajesh.kumar@hospital.com',
-                    items: [
-                        { productId: 2, productName: 'Patient Monitor', quantity: 2, price: 1299900 },
-                        { productId: 6, productName: 'ECG Machine', quantity: 1, price: 599900 }
-                    ],
-                    subtotal: 3199700,
-                    gst: 575946,
-                    total: 3775646,
-                    status: 'shipped',
-                    paymentMethod: 'COD',
-                    paymentStatus: 'pending',
-                    createdAt: '2024-11-15T14:20:00Z'
-                },
-                {
-                    id: 2003,
-                    orderId: 'OM-2024-003',
-                    customerId: 1003,
-                    customerName: 'Priya Sharma',
-                    customerEmail: 'priya.sharma@clinic.com',
-                    items: [
-                        { productId: 7, productName: 'Defibrillator AED', quantity: 1, price: 349900 }
-                    ],
-                    subtotal: 349900,
-                    gst: 62982,
-                    total: 412882,
-                    status: 'processing',
-                    paymentMethod: 'Online',
-                    paymentStatus: 'paid',
-                    createdAt: '2024-11-28T09:15:00Z'
-                },
-                {
-                    id: 2004,
-                    orderId: 'OM-2024-004',
-                    customerId: 1001,
-                    customerName: 'Demo User',
-                    customerEmail: 'demo@optimameditech.com',
-                    items: [
-                        { productId: 3, productName: 'Ultrasound Scanner', quantity: 1, price: 3850000 }
-                    ],
-                    subtotal: 3850000,
-                    gst: 693000,
-                    total: 4543000,
-                    status: 'pending',
-                    paymentMethod: 'Net Banking',
-                    paymentStatus: 'pending',
-                    createdAt: '2024-12-02T16:45:00Z'
-                },
-                {
-                    id: 2005,
-                    orderId: 'OM-2024-005',
-                    customerId: 1002,
-                    customerName: 'Rajesh Kumar',
-                    customerEmail: 'rajesh.kumar@hospital.com',
-                    items: [
-                        { productId: 8, productName: 'Infusion Pump', quantity: 5, price: 279900 }
-                    ],
-                    subtotal: 1399500,
-                    gst: 251910,
-                    total: 1651410,
-                    status: 'delivered',
-                    paymentMethod: 'Online',
-                    paymentStatus: 'paid',
-                    createdAt: '2024-10-20T11:30:00Z'
-                }
-            ];
-            localStorage.setItem('orders', JSON.stringify(orders));
-            log(`Created ${orders.length} orders`, 'success');
+                // Customers Data
+                const customers = [
+                    { id: 'CUST001', name: 'Dr. Rajesh Kumar', email: 'rajesh@hospital.com', phone: '+91 98765 43210', totalOrders: 5, totalSpent: 1225000, tier: 'Gold', lastOrder: '2024-12-01', address: 'Mumbai, Maharashtra' },
+                    { id: 'CUST002', name: 'Dr. Priya Sharma', email: 'priya@clinic.com', phone: '+91 98765 43211', totalOrders: 3, totalSpent: 850000, tier: 'Silver', lastOrder: '2024-12-03', address: 'Delhi, NCR' },
+                    { id: 'CUST003', name: 'Apollo Hospital', email: 'purchase@apollo.com', phone: '+91 98765 43212', totalOrders: 12, totalSpent: 5500000, tier: 'Platinum', lastOrder: '2024-12-05', address: 'Bangalore, Karnataka' },
+                    { id: 'CUST004', name: 'Dr. Amit Patel', email: 'amit@medcare.com', phone: '+91 98765 43213', totalOrders: 2, totalSpent: 370000, tier: 'Silver', lastOrder: '2024-12-08', address: 'Ahmedabad, Gujarat' },
+                    { id: 'CUST005', name: 'Fortis Healthcare', email: 'procurement@fortis.com', phone: '+91 98765 43214', totalOrders: 15, totalSpent: 7800000, tier: 'Platinum', lastOrder: '2024-11-28', address: 'Gurgaon, Haryana' }
+                ];
 
-            // 4. Create Wishlist Items
-            const wishlist = [
-                {
-                    id: 5,
-                    name: 'Anesthesia Workstation',
-                    price: 2999900,
-                    image: 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=800&q=80'
-                },
-                {
-                    id: 9,
-                    name: 'ICU Ventilator',
-                    price: 3499900,
-                    image: 'https://images.unsplash.com/photo-1583324113626-70df0f4deaab?w=800&q=80'
-                }
-            ];
-            localStorage.setItem('wishlist', JSON.stringify(wishlist));
-            log(`Created ${wishlist.length} wishlist items`, 'success');
+                // Reviews Data
+                const reviews = [
+                    { id: 'REV001', product: 'Multi-Parameter Patient Monitor', customer: 'Dr. Rajesh Kumar', rating: 5, review: 'Excellent product! Very accurate readings and easy to use.', date: '2024-12-02', status: 'approved' },
+                    { id: 'REV002', product: 'Color Doppler Ultrasound', customer: 'Dr. Priya Sharma', rating: 5, review: 'Outstanding image quality. Best investment for our clinic.', date: '2024-12-04', status: 'approved' },
+                    { id: 'REV003', product: 'ICU Ventilator', customer: 'Apollo Hospital', rating: 5, review: 'Reliable and efficient. Great for critical care.', date: '2024-12-06', status: 'pending' }
+                ];
 
-            // 5. Create Cart Items
-            const cart = [
-                {
-                    id: 2,
-                    name: 'Patient Monitor',
-                    price: 1299900,
-                    image: 'https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=800&q=80',
-                    quantity: 1
-                }
-            ];
-            localStorage.setItem('cart', JSON.stringify(cart));
-            log(`Created ${cart.length} cart items`, 'success');
+                // Discount Codes
+                const discounts = [
+                    { code: 'WELCOME10', type: 'percentage', value: 10, minOrder: 100000, usage: '5/100', validUntil: '2024-12-31', status: 'active' },
+                    { code: 'BULK20', type: 'percentage', value: 20, minOrder: 500000, usage: '12/50', validUntil: '2024-12-31', status: 'active' },
+                    { code: 'NEWYEAR2025', type: 'fixed', value: 50000, minOrder: 1000000, usage: '0/25', validUntil: '2025-01-15', status: 'active' }
+                ];
 
-            // 6. Create Discount Codes
-            const discounts = [
-                { code: 'OPTIMA10', type: 'percentage', value: 10, active: true, used: 45 },
-                { code: 'HEALTH20', type: 'percentage', value: 20, active: true, used: 28 },
-                { code: 'WELCOME15', type: 'percentage', value: 15, active: true, used: 67 },
-                { code: 'FLAT5000', type: 'fixed', value: 500000, active: true, used: 12 }
-            ];
-            localStorage.setItem('discounts', JSON.stringify(discounts));
-            log(`Created ${discounts.length} discount codes`, 'success');
+                // Suppliers Data
+                const suppliers = [
+                    { id: 'SUP001', name: 'MedTech Solutions Pvt Ltd', contact: 'Ramesh Gupta', email: 'ramesh@medtech.com', phone: '+91 98765 11111', gst: '27AABCU9603R1ZM', paymentTerms: 'Net 30', status: 'active' },
+                    { id: 'SUP002', name: 'Global Medical Devices', contact: 'Sarah Johnson', email: 'sarah@globalmed.com', phone: '+91 98765 22222', gst: '29AABCU9603R1ZN', paymentTerms: 'Net 45', status: 'active' },
+                    { id: 'SUP003', name: 'Healthcare Equipment India', contact: 'Vikram Singh', email: 'vikram@healthcare.in', phone: '+91 98765 33333', gst: '07AABCU9603R1ZO', paymentTerms: 'Net 60', status: 'active' }
+                ];
 
-            // 7. Create Analytics Data
-            const analytics = {
-                totalRevenue: 15810740,
-                totalOrders: 127,
-                totalCustomers: 89,
-                avgOrderValue: 124491,
-                revenueGrowth: 12.5,
-                orderGrowth: 8.3,
-                customerGrowth: 15.2
-            };
-            localStorage.setItem('analytics', JSON.stringify(analytics));
-            log('Created analytics data', 'success');
+                // Shipments Data
+                const shipments = [
+                    { tracking: 'TRK123456', orderId: 'ORD001', courier: 'Blue Dart', status: 'delivered', shippedDate: '2024-12-02', estDelivery: '2024-12-05', actualDelivery: '2024-12-04' },
+                    { tracking: 'TRK123457', orderId: 'ORD002', courier: 'DTDC', status: 'in-transit', shippedDate: '2024-12-04', estDelivery: '2024-12-08', actualDelivery: '' },
+                    { tracking: 'TRK123458', orderId: 'ORD003', courier: 'FedEx', status: 'processing', shippedDate: '', estDelivery: '2024-12-12', actualDelivery: '' }
+                ];
 
-            // 8. Set demo user as logged in
-            localStorage.setItem('userLoggedIn', 'true');
-            localStorage.setItem('userEmail', 'demo@optimameditech.com');
-            localStorage.setItem('userName', 'Demo User');
-            localStorage.setItem('customerId', '1001');
-            log('Set demo user as logged in', 'success');
+                // Save to LocalStorage
+                localStorage.setItem('products', JSON.stringify(products));
+                localStorage.setItem('orders', JSON.stringify(orders));
+                localStorage.setItem('customers', JSON.stringify(customers));
+                localStorage.setItem('reviews', JSON.stringify(reviews));
+                localStorage.setItem('discounts', JSON.stringify(discounts));
+                localStorage.setItem('suppliers', JSON.stringify(suppliers));
+                localStorage.setItem('shipments', JSON.stringify(shipments));
 
-            log('✅ Demo data initialization complete!', 'success');
-            log('You can now explore the application with realistic data', 'info');
-            
-            setTimeout(() => {
-                if (confirm('Demo data initialized! Would you like to go to the homepage?')) {
-                    window.location.href = 'index.html';
-                }
-            }, 1000);
+                // Analytics Data
+                const analytics = {
+                    totalRevenue: 4105000,
+                    totalOrders: 25,
+                    totalProducts: 50,
+                    totalCustomers: 30,
+                    pendingOrders: 5,
+                    lowStockItems: 3,
+                    activeShipments: 7,
+                    avgOrderValue: 164200,
+                    revenueToday: 245000,
+                    revenueWeek: 1095000,
+                    revenueMonth: 4105000,
+                    revenueYear: 15500000
+                };
+                localStorage.setItem('analytics', JSON.stringify(analytics));
+
+                statusDiv.className = 'status success';
+                statusDiv.innerHTML = `
+                    <strong>✅ Success!</strong><br>
+                    Demo data initialized successfully!<br><br>
+                    <strong>Created:</strong><br>
+                    • ${products.length} Products<br>
+                    • ${orders.length} Orders<br>
+                    • ${customers.length} Customers<br>
+                    • ${reviews.length} Reviews<br>
+                    • ${discounts.length} Discount Codes<br>
+                    • ${suppliers.length} Suppliers<br>
+                    • ${shipments.length} Shipments<br><br>
+                    <a href="admin.html" style="color: #155724; font-weight: 600;">→ View in Admin Dashboard</a>
+                `;
+
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = `<strong>❌ Error:</strong> ${error.message}`;
+            }
         }
 
         function clearAllData() {
             if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
-                localStorage.clear();
-                log('All data cleared', 'error');
-                log('You can reinitialize demo data anytime', 'info');
+                const statusDiv = document.getElementById('status');
+                
+                try {
+                    localStorage.clear();
+                    
+                    statusDiv.className = 'status success';
+                    statusDiv.innerHTML = '<strong>✅ Success!</strong><br>All data has been cleared.';
+                } catch (error) {
+                    statusDiv.className = 'status error';
+                    statusDiv.innerHTML = `<strong>❌ Error:</strong> ${error.message}`;
+                }
             }
         }
+
+        // Auto-initialize on first load
+        window.addEventListener('load', function() {
+            const hasData = localStorage.getItem('products');
+            if (!hasData) {
+                const statusDiv = document.getElementById('status');
+                statusDiv.className = 'status';
+                statusDiv.style.display = 'block';
+                statusDiv.innerHTML = '💡 No data found. Click "Initialize Demo Data" to get started.';
+            }
+        });
     </script>
 </body>
 </html>
