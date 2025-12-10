@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Supabase Connection V2</title>
+    <!-- Try unpkg CDN instead of jsdelivr -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .result {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        button {
+            background: #4A9FD8;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        pre {
+            background: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Supabase Connection Test V2</h1>
+    
+    <div>
+        <button onclick="testLibraryLoaded()">1. Check Library</button>
+        <button onclick="testDirectFetch()">2. Test Direct Fetch</button>
+        <button onclick="testWithSupabase()">3. Test with Supabase Client</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        const SUPABASE_URL = 'https://lloiwbkgfsxdhjohfuwd.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxsb2l3YmtnZnN4ZGhqb2hmdXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM4NjI0NzAsImV4cCI6MjA0OTQzODQ3MH0.sb_publishable_u6C2SMG2JM42-wDl33iS6w_GqUqaoTb';
+
+        function addResult(title, content, isError = false) {
+            const div = document.createElement('div');
+            div.className = 'result ' + (isError ? 'error' : 'success');
+            div.innerHTML = `<h3>${title}</h3><pre>${content}</pre>`;
+            document.getElementById('results').appendChild(div);
+        }
+
+        function testLibraryLoaded() {
+            document.getElementById('results').innerHTML = '';
+            
+            if (typeof window.supabase !== 'undefined') {
+                addResult('✅ Supabase Library Loaded', 'window.supabase is available!');
+                
+                try {
+                    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    addResult('✅ Client Created', 'Supabase client created successfully!');
+                } catch (err) {
+                    addResult('❌ Client Creation Failed', err.message, true);
+                }
+            } else {
+                addResult('❌ Supabase Library NOT Loaded', 'window.supabase is undefined. CDN may be blocked.', true);
+                addResult('💡 Solution', 'Try using a VPN or different network. The CDN might be blocked by your firewall/network.');
+            }
+        }
+
+        async function testDirectFetch() {
+            addResult('Testing Direct Fetch...', 'Making direct API call without Supabase client...');
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/products?select=*&limit=3`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                addResult('Response Status', `${response.status} ${response.statusText}`);
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult('✅ Direct Fetch Success!', JSON.stringify(data, null, 2));
+                } else {
+                    addResult('❌ API Error', JSON.stringify(data, null, 2), true);
+                }
+            } catch (err) {
+                addResult('❌ Fetch Failed', `${err.message}\n\nThis might be a CORS or network issue.`, true);
+            }
+        }
+
+        async function testWithSupabase() {
+            if (typeof window.supabase === 'undefined') {
+                addResult('❌ Cannot Test', 'Supabase library not loaded. Try test 2 (Direct Fetch) instead.', true);
+                return;
+            }
+
+            addResult('Testing with Supabase Client...', 'Querying products...');
+            
+            try {
+                const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                
+                const { data, error } = await supabase
+                    .from('products')
+                    .select('*')
+                    .limit(3);
+                
+                if (error) {
+                    addResult('❌ Query Error', JSON.stringify(error, null, 2), true);
+                } else {
+                    addResult('✅ Query Success!', JSON.stringify(data, null, 2));
+                }
+            } catch (err) {
+                addResult('❌ Exception', err.message + '\n\n' + err.stack, true);
+            }
+        }
+
+        // Auto-run on load
+        window.addEventListener('load', () => {
+            setTimeout(testLibraryLoaded, 500);
+        });
+    </script>
+</body>
+</html>
