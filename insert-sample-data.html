@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insert Sample Data - Supabase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #4A9FD8;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .status {
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            display: none;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+            display: block;
+        }
+        .btn {
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
+            color: white;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin: 1rem 0;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(74, 159, 216, 0.4);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .progress {
+            margin: 1rem 0;
+        }
+        .progress-item {
+            padding: 0.5rem;
+            margin: 0.3rem 0;
+            border-radius: 5px;
+            background: #f8f9fa;
+        }
+        .progress-item.done {
+            background: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Insert Sample Data</h1>
+        <p style="text-align: center; color: #666; margin-bottom: 2rem;">
+            Click the button below to populate your Supabase database with sample data
+        </p>
+
+        <div id="status" class="status"></div>
+
+        <div id="progress" class="progress"></div>
+
+        <button class="btn" onclick="insertAllData()" id="insertBtn">
+            🚀 Insert Sample Data
+        </button>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="admin.html" style="color: #4A9FD8; text-decoration: none; font-weight: 600;">
+                → Go to Admin Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script>
+        async function insertAllData() {
+            const statusDiv = document.getElementById('status');
+            const progressDiv = document.getElementById('progress');
+            const btn = document.getElementById('insertBtn');
+            
+            btn.disabled = true;
+            statusDiv.className = 'status info';
+            statusDiv.textContent = 'Inserting data... Please wait...';
+            progressDiv.innerHTML = '';
+
+            try {
+                // 1. Insert Products
+                addProgress('Inserting products...', false);
+                const { data: products, error: productsError } = await supabase
+                    .from('products')
+                    .insert([
+                        {
+                            sku: 'PM-2024-001',
+                            name: 'Multi-Parameter Patient Monitor',
+                            category: 'Patient Monitoring',
+                            price: 245000,
+                            stock: 15,
+                            sales: 45,
+                            rating: 4.9,
+                            status: 'active',
+                            image_url: 'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=500',
+                            description: 'Advanced patient monitoring system with multi-parameter display'
+                        },
+                        {
+                            sku: 'US-2024-002',
+                            name: 'Color Doppler Ultrasound',
+                            category: 'Diagnostic Imaging',
+                            price: 850000,
+                            stock: 8,
+                            sales: 23,
+                            rating: 4.8,
+                            status: 'active',
+                            image_url: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=500',
+                            description: 'High-resolution color doppler ultrasound machine'
+                        },
+                        {
+                            sku: 'VT-2024-003',
+                            name: 'ICU Ventilator',
+                            category: 'Emergency Care',
+                            price: 1250000,
+                            stock: 5,
+                            sales: 18,
+                            rating: 5.0,
+                            status: 'active',
+                            image_url: 'https://images.unsplash.com/photo-1583911860205-72f8ac8ddcbe?w=500',
+                            description: 'Advanced ICU ventilator with multiple modes'
+                        },
+                        {
+                            sku: 'XR-2024-004',
+                            name: 'Digital X-Ray System',
+                            category: 'Diagnostic Imaging',
+                            price: 1575000,
+                            stock: 3,
+                            sales: 12,
+                            rating: 4.9,
+                            status: 'active',
+                            image_url: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=500',
+                            description: 'High-resolution digital X-ray imaging system'
+                        },
+                        {
+                            sku: 'OT-2024-005',
+                            name: 'Electric Operating Table',
+                            category: 'OT Equipment',
+                            price: 325000,
+                            stock: 12,
+                            sales: 34,
+                            rating: 4.7,
+                            status: 'active',
+                            image_url: 'https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=500',
+                            description: 'Fully electric operating table with multiple positions'
+                        },
+                        {
+                            sku: 'EC-2024-006',
+                            name: '12-Channel ECG Machine',
+                            category: 'Cardiology',
+                            price: 185000,
+                            stock: 20,
+                            sales: 56,
+                            rating: 4.9,
+                            status: 'active',
+                            image_url: 'https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=500',
+                            description: 'Advanced 12-channel ECG machine with interpretation'
+                        },
+                        {
+                            sku: 'IP-2024-007',
+                            name: 'Syringe Infusion Pump',
+                            category: 'Emergency Care',
+                            price: 95000,
+                            stock: 25,
+                            sales: 67,
+                            rating: 4.8,
+                            status: 'active',
+                            image_url: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=500',
+                            description: 'Precision syringe infusion pump with alarm system'
+                        },
+                        {
+                            sku: 'DF-2024-008',
+                            name: 'Automated Defibrillator',
+                            category: 'Emergency Care',
+                            price: 450000,
+                            stock: 10,
+                            sales: 28,
+                            rating: 5.0,
+                            status: 'active',
+                            image_url: 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=500',
+                            description: 'Automated external defibrillator with voice prompts'
+                        },
+                        {
+                            sku: 'SL-2024-009',
+                            name: 'LED Surgical Lights',
+                            category: 'OT Equipment',
+                            price: 275000,
+                            stock: 8,
+                            sales: 19,
+                            rating: 4.8,
+                            status: 'active',
+                            image_url: 'https://images.unsplash.com/photo-1581594549595-35f6edc7b762?w=500',
+                            description: 'High-intensity LED surgical lights with shadow reduction'
+                        },
+                        {
+                            sku: 'BP-2024-010',
+                            name: 'Digital BP Monitor',
+                            category: 'Patient Monitoring',
+                            price: 45000,
+                            stock: 50,
+                            sales: 120,
+                            rating: 4.6,
+                            status: 'active',
+                            image_url: 'https://images.unsplash.com/photo-1615461066841-6116e61058f4?w=500',
+                            description: 'Automatic digital blood pressure monitor'
+                        }
+                    ])
+                    .select();
+
+                if (productsError) throw new Error('Products: ' + productsError.message);
+                addProgress('✅ Products inserted: ' + products.length, true);
+
+                // 2. Insert Discounts
+                addProgress('Inserting discount codes...', false);
+                const { data: discounts, error: discountsError } = await supabase
+                    .from('discounts')
+                    .insert([
+                        {
+                            code: 'WELCOME10',
+                            type: 'percentage',
+                            value: 10,
+                            min_order_amount: 100000,
+                            max_usage: 100,
+                            current_usage: 5,
+                            valid_until: '2024-12-31 23:59:59',
+                            status: 'active'
+                        },
+                        {
+                            code: 'BULK20',
+                            type: 'percentage',
+                            value: 20,
+                            min_order_amount: 500000,
+                            max_usage: 50,
+                            current_usage: 12,
+                            valid_until: '2024-12-31 23:59:59',
+                            status: 'active'
+                        },
+                        {
+                            code: 'NEWYEAR2025',
+                            type: 'fixed',
+                            value: 50000,
+                            min_order_amount: 1000000,
+                            max_usage: 25,
+                            current_usage: 0,
+                            valid_until: '2025-01-15 23:59:59',
+                            status: 'active'
+                        }
+                    ])
+                    .select();
+
+                if (discountsError) throw new Error('Discounts: ' + discountsError.message);
+                addProgress('✅ Discount codes inserted: ' + discounts.length, true);
+
+                // 3. Insert Suppliers
+                addProgress('Inserting suppliers...', false);
+                const { data: suppliers, error: suppliersError } = await supabase
+                    .from('suppliers')
+                    .insert([
+                        {
+                            name: 'MedTech Solutions Pvt Ltd',
+                            contact_person: 'Ramesh Gupta',
+                            email: 'ramesh@medtech.com',
+                            phone: '+91 98765 11111',
+                            gst_number: '27AABCU9603R1ZM',
+                            payment_terms: 'Net 30',
+                            status: 'active',
+                            address: 'Mumbai, Maharashtra'
+                        },
+                        {
+                            name: 'Global Medical Devices',
+                            contact_person: 'Sarah Johnson',
+                            email: 'sarah@globalmed.com',
+                            phone: '+91 98765 22222',
+                            gst_number: '29AABCU9603R1ZN',
+                            payment_terms: 'Net 45',
+                            status: 'active',
+                            address: 'Bangalore, Karnataka'
+                        },
+                        {
+                            name: 'Healthcare Equipment India',
+                            contact_person: 'Vikram Singh',
+                            email: 'vikram@healthcare.in',
+                            phone: '+91 98765 33333',
+                            gst_number: '07AABCU9603R1ZO',
+                            payment_terms: 'Net 60',
+                            status: 'active',
+                            address: 'Delhi, NCR'
+                        }
+                    ])
+                    .select();
+
+                if (suppliersError) throw new Error('Suppliers: ' + suppliersError.message);
+                addProgress('✅ Suppliers inserted: ' + suppliers.length, true);
+
+                // Success!
+                statusDiv.className = 'status success';
+                statusDiv.innerHTML = `
+                    <strong>✅ Success!</strong><br>
+                    Sample data inserted successfully!<br><br>
+                    <strong>Summary:</strong><br>
+                    • ${products.length} Products<br>
+                    • ${discounts.length} Discount Codes<br>
+                    • ${suppliers.length} Suppliers<br><br>
+                    <a href="admin.html" style="color: #155724; font-weight: 600;">→ View in Admin Dashboard</a>
+                `;
+
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = `<strong>❌ Error:</strong> ${error.message}`;
+                btn.disabled = false;
+            }
+        }
+
+        function addProgress(message, done) {
+            const progressDiv = document.getElementById('progress');
+            const item = document.createElement('div');
+            item.className = 'progress-item' + (done ? ' done' : '');
+            item.textContent = message;
+            progressDiv.appendChild(item);
+        }
+    </script>
+</body>
+</html>
