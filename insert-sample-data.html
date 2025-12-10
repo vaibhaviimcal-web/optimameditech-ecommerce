@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insert Sample Data - Supabase</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -113,8 +112,15 @@
         </div>
     </div>
 
-    <script src="supabase-config.js"></script>
+    <!-- Load Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <script>
+        // Initialize Supabase
+        const SUPABASE_URL = 'https://lloiwbkgfsxdhjohfuwd.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_u6C2SMG2JM42-wDl33iS6w_GqUqaoTb';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         async function insertAllData() {
             const statusDiv = document.getElementById('status');
             const progressDiv = document.getElementById('progress');
