@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Optima Meditech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="chatbot.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f7fa;
+        }
+        nav {
+            background: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #4A9FD8;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        .section h2 {
+            font-size: 1.5rem;
+            color: #1a1a2e;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #4A9FD8;
+            padding-bottom: 0.5rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #4A9FD8;
+            box-shadow: 0 0 0 3px rgba(74, 159, 216, 0.1);
+        }
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .payment-option {
+            border: 2px solid #e0e0e0;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .payment-option:hover {
+            border-color: #4A9FD8;
+        }
+        .payment-option.selected {
+            border-color: #4A9FD8;
+            background: #f0f8ff;
+        }
+        .order-summary {
+            position: sticky;
+            top: 2rem;
+        }
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .cart-item-info {
+            flex: 1;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .summary-row.total {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #4A9FD8;
+            border-bottom: none;
+            margin-top: 1rem;
+        }
+        .btn {
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1rem;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(74, 159, 216, 0.4);
+        }
+        .success-banner {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 600;
+        }
+        .trust-badges {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e0e0e0;
+        }
+        .trust-badge {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        @media (max-width: 968px) {
+            .checkout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">OPTIMA MEDITECH</div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="success-banner">
+            🔥 Firebase Checkout - Secure & Real-time Order Processing
+        </div>
+
+        <div class="checkout-grid">
+            <!-- Left Column: Billing & Shipping -->
+            <div>
+                <div class="section">
+                    <h2>Billing & Shipping Details</h2>
+                    <form id="checkoutForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>First Name *</label>
+                                <input type="text" id="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name *</label>
+                                <input type="text" id="lastName" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email Address *</label>
+                            <input type="email" id="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" id="phone" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Hospital/Clinic Name *</label>
+                            <input type="text" id="hospitalName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Complete Address *</label>
+                            <textarea id="address" rows="3" required></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>City *</label>
+                                <input type="text" id="city" required>
+                            </div>
+                            <div class="form-group">
+                                <label>State *</label>
+                                <select id="state" required>
+                                    <option value="">Select State</option>
+                                    <option value="Maharashtra">Maharashtra</option>
+                                    <option value="Delhi">Delhi</option>
+                                    <option value="Karnataka">Karnataka</option>
+                                    <option value="Tamil Nadu">Tamil Nadu</option>
+                                    <option value="Gujarat">Gujarat</option>
+                                    <option value="Rajasthan">Rajasthan</option>
+                                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                    <option value="West Bengal">West Bengal</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>PIN Code *</label>
+                                <input type="text" id="pincode" required>
+                            </div>
+                            <div class="form-group">
+                                <label>GST Number (Optional)</label>
+                                <input type="text" id="gstNumber">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Special Instructions (Optional)</label>
+                            <textarea id="instructions" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="section" style="margin-top: 2rem;">
+                    <h2>Payment Method</h2>
+                    <div class="payment-methods">
+                        <div class="payment-option selected" data-method="online">
+                            <strong>💳 Online Payment</strong>
+                            <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">Credit/Debit Card, UPI, Net Banking</p>
+                        </div>
+                        <div class="payment-option" data-method="netbanking">
+                            <strong>🏦 Net Banking</strong>
+                            <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">Direct bank transfer</p>
+                        </div>
+                        <div class="payment-option" data-method="cod">
+                            <strong>💵 Cash on Delivery</strong>
+                            <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">Pay when you receive</p>
+                        </div>
+                    </div>
+
+                    <div class="trust-badges">
+                        <div class="trust-badge">
+                            <div style="font-size: 2rem;">🔒</div>
+                            <div>Secure Checkout</div>
+                        </div>
+                        <div class="trust-badge">
+                            <div style="font-size: 2rem;">✅</div>
+                            <div>100% Safe</div>
+                        </div>
+                        <div class="trust-badge">
+                            <div style="font-size: 2rem;">🛡️</div>
+                            <div>Verified</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Order Summary -->
+            <div>
+                <div class="section order-summary">
+                    <h2>Order Summary</h2>
+                    
+                    <div id="cartItems">
+                        <p style="text-align: center; color: #666; padding: 2rem;">Your cart is empty</p>
+                    </div>
+
+                    <div style="margin-top: 2rem;">
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">₹0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping:</span>
+                            <span id="shipping">FREE</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>GST (18%):</span>
+                            <span id="gst">₹0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Discount:</span>
+                            <span id="discount">-₹0.00</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total:</span>
+                            <span id="total">₹0.00</span>
+                        </div>
+                    </div>
+
+                    <button class="btn" id="placeOrderBtn" style="margin-top: 2rem;">
+                        Place Order
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC194-sAmiGOJQmf834P2REN1d77HFhz8A",
+            authDomain: "optimameditech-ecommerce.firebaseapp.com",
+            projectId: "optimameditech-ecommerce",
+            storageBucket: "optimameditech-ecommerce.firebasestorage.app",
+            messagingSenderId: "301836474574",
+            appId: "1:301836474574:web:bf1a4d3fa6be8ab775589f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Payment method selection
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+            });
+        });
+
+        // Load cart from localStorage
+        function loadCart() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const cartItemsDiv = document.getElementById('cartItems');
+            
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem;">Your cart is empty</p>';
+                return;
+            }
+
+            let html = '';
+            let subtotal = 0;
+
+            cart.forEach(item => {
+                subtotal += item.price * item.quantity;
+                html += `
+                    <div class="cart-item">
+                        <img src="${item.image_url}" alt="${item.name}">
+                        <div class="cart-item-info">
+                            <div style="font-weight: 600;">${item.name}</div>
+                            <div style="color: #666; font-size: 0.9rem;">Qty: ${item.quantity}</div>
+                            <div style="color: #7BC043; font-weight: 700;">₹${(item.price * item.quantity).toLocaleString()}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            cartItemsDiv.innerHTML = html;
+
+            // Calculate totals
+            const gstAmount = subtotal * 0.18;
+            const total = subtotal + gstAmount;
+
+            document.getElementById('subtotal').textContent = '₹' + subtotal.toLocaleString();
+            document.getElementById('gst').textContent = '₹' + gstAmount.toLocaleString();
+            document.getElementById('total').textContent = '₹' + total.toLocaleString();
+        }
+
+        // Place order
+        document.getElementById('placeOrderBtn').addEventListener('click', async () => {
+            const form = document.getElementById('checkoutForm');
+            
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+
+            const btn = document.getElementById('placeOrderBtn');
+            btn.disabled = true;
+            btn.textContent = 'Processing...';
+
+            try {
+                const orderData = {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    hospitalName: document.getElementById('hospitalName').value,
+                    address: document.getElementById('address').value,
+                    city: document.getElementById('city').value,
+                    state: document.getElementById('state').value,
+                    pincode: document.getElementById('pincode').value,
+                    gstNumber: document.getElementById('gstNumber').value || 'N/A',
+                    instructions: document.getElementById('instructions').value || 'N/A',
+                    paymentMethod: document.querySelector('.payment-option.selected').dataset.method,
+                    items: cart,
+                    subtotal: parseFloat(document.getElementById('subtotal').textContent.replace('₹', '').replace(',', '')),
+                    gst: parseFloat(document.getElementById('gst').textContent.replace('₹', '').replace(',', '')),
+                    total: parseFloat(document.getElementById('total').textContent.replace('₹', '').replace(',', '')),
+                    status: 'pending',
+                    createdAt: new Date().toISOString()
+                };
+
+                await addDoc(collection(db, 'orders'), orderData);
+
+                // Clear cart
+                localStorage.removeItem('cart');
+
+                // Show success
+                alert('✅ Order placed successfully! Order ID: OM-' + Date.now());
+                window.location.href = 'products-firebase-with-chat.html';
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Order failed: ' + error.message);
+                btn.disabled = false;
+                btn.textContent = 'Place Order';
+            }
+        });
+
+        // Initialize
+        loadCart();
+    </script>
+
+    <!-- AI Chatbot -->
+    <script src="chatbot.js"></script>
+</body>
+</html>
