@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Pages Site</title>
+</head>
+<body>
+[
+  {
+    "id": "1",
+    "name": "MedTech Solutions Pvt Ltd",
+    "contact_person": "Ramesh Gupta",
+    "email": "ramesh@medtech.com",
+    "phone": "+91 98765 11111",
+    "gst_number": "27AABCU9603R1ZM",
+    "payment_terms": "Net 30",
+    "status": "active",
+    "address": "Mumbai, Maharashtra"
+  },
+  {
+    "id": "2",
+    "name": "Global Medical Devices",
+    "contact_person": "Sarah Johnson",
+    "email": "sarah@globalmed.com",
+    "phone": "+91 98765 22222",
+    "gst_number": "29AABCU9603R1ZN",
+    "payment_terms": "Net 45",
+    "status": "active",
+    "address": "Bangalore, Karnataka"
+  },
+  {
+    "id": "3",
+    "name": "Healthcare Equipment India",
+    "contact_person": "Vikram Singh",
+    "email": "vikram@healthcare.in",
+    "phone": "+91 98765 33333",
+    "gst_number": "07AABCU9603R1ZO",
+    "payment_terms": "Net 60",
+    "status": "active",
+    "address": "Delhi, NCR"
+  }
+]
+</body>
+</html>
