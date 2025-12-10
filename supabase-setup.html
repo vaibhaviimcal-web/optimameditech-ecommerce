@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Integration Guide - Optima Meditech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #4A9FD8;
+            margin-bottom: 1rem;
+        }
+        h2 {
+            font-size: 2rem;
+            color: #333;
+            margin: 2rem 0 1rem 0;
+            border-bottom: 3px solid #4A9FD8;
+            padding-bottom: 0.5rem;
+        }
+        h3 {
+            font-size: 1.5rem;
+            color: #4A9FD8;
+            margin: 1.5rem 0 0.5rem 0;
+        }
+        .info-box {
+            background: #e3f2fd;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border-left: 5px solid #4A9FD8;
+        }
+        .warning-box {
+            background: #fff3cd;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border-left: 5px solid #ffc107;
+        }
+        .success-box {
+            background: #d4edda;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border-left: 5px solid #28a745;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        pre code {
+            background: transparent;
+            color: #f8f8f2;
+            padding: 0;
+        }
+        .step {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border-left: 5px solid #7BC043;
+        }
+        .step-number {
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        table th {
+            background: #4A9FD8;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+        table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .btn {
+            background: linear-gradient(135deg, #4A9FD8, #7BC043);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-block;
+            margin: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗄️ Supabase Integration Guide</h1>
+        <p style="color: #666; font-size: 1.1rem; margin-bottom: 2rem;">
+            Complete guide to connect your e-commerce platform with Supabase database
+        </p>
+
+        <div class="info-box">
+            <h3>📋 What You'll Get:</h3>
+            <ul style="line-height: 2; margin-left: 2rem; margin-top: 1rem;">
+                <li>✅ Real-time database with PostgreSQL</li>
+                <li>✅ User authentication & authorization</li>
+                <li>✅ File storage for product images</li>
+                <li>✅ Real-time subscriptions</li>
+                <li>✅ Row-level security</li>
+                <li>✅ Auto-generated APIs</li>
+            </ul>
+        </div>
+
+        <h2>Step 1: Create Supabase Project</h2>
+        <div class="step">
+            <span class="step-number">1</span>
+            <div style="display: inline-block; vertical-align: top; width: calc(100% - 60px);">
+                <h3>Sign up for Supabase</h3>
+                <ol style="line-height: 2; margin-left: 2rem;">
+                    <li>Go to <a href="https://supabase.com" target="_blank">supabase.com</a></li>
+                    <li>Click "Start your project"</li>
+                    <li>Sign in with GitHub</li>
+                    <li>Create a new organization</li>
+                    <li>Create a new project:
+                        <ul style="margin-left: 2rem;">
+                            <li>Name: <code>optimameditech-ecommerce</code></li>
+                            <li>Database Password: (save this securely!)</li>
+                            <li>Region: Choose closest to India (Singapore/Mumbai)</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <h2>Step 2: Database Schema Setup</h2>
+        <div class="step">
+            <span class="step-number">2</span>
+            <div style="display: inline-block; vertical-align: top; width: calc(100% - 60px);">
+                <h3>Run SQL Commands</h3>
+                <p>Go to SQL Editor in Supabase and run these commands:</p>
+                
+                <h4 style="margin-top: 1.5rem;">1. Products Table</h4>
+                <pre><code>CREATE TABLE products (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  sku VARCHAR(50) UNIQUE NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  category VARCHAR(100) NOT NULL,
+  price DECIMAL(10, 2) NOT NULL,
+  stock INTEGER DEFAULT 0,
+  sales INTEGER DEFAULT 0,
+  rating DECIMAL(2, 1) DEFAULT 0,
+  status VARCHAR(20) DEFAULT 'active',
+  image_url TEXT,
+  description TEXT,
+  specifications JSONB,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);</code></pre>
+
+                <h4 style="margin-top: 1.5rem;">2. Customers Table</h4>
+                <pre><code>CREATE TABLE customers (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id),
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  phone VARCHAR(20),
+  total_orders INTEGER DEFAULT 0,
+  total_spent DECIMAL(12, 2) DEFAULT 0,
+  tier VARCHAR(20) DEFAULT 'Silver',
+  last_order_date TIMESTAMP,
+  address TEXT,
+  city VARCHAR(100),
+  state VARCHAR(100),
+  pincode VARCHAR(10),
+  gst_number VARCHAR(50),
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);</code></pre>
+
+                <h4 style="margin-top: 1.5rem;">3. Orders Table</h4>
+                <pre><code>CREATE TABLE orders (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  order_number VARCHAR(50) UNIQUE NOT NULL,
+  customer_id UUID REFERENCES customers(id),
+  customer_name VARCHAR(255) NOT NULL,
+  customer_email VARCHAR(255) NOT NULL,
+  customer_phone VARCHAR(20),
+  total_amount DECIMAL(12, 2) NOT NULL,
+  payment_status VARCHAR(20) DEFAULT 'pending',
+  payment_method VARCHAR(50),
+  order_status VARCHAR(20) DEFAULT 'pending',
+  tracking_number VARCHAR(100),
+  items JSONB NOT NULL,
+  shipping_address TEXT,
+  billing_address TEXT,
+  notes TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);</code></pre>
+
+                <h4 style="margin-top: 1.5rem;">4. Reviews Table</h4>
+                <pre><code>CREATE TABLE reviews (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  product_id UUID REFERENCES products(id),
+  customer_id UUID REFERENCES customers(id),
+  customer_name VARCHAR(255) NOT NULL,
+  rating INTEGER CHECK (rating >= 1 AND rating <= 5),
+  review_text TEXT,
+  status VARCHAR(20) DEFAULT 'pending',
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);</code></pre>
+
+                <h4 style="margin-top: 1.5rem;">5. Discounts Table</h4>
+                <pre><code>CREATE TABLE discounts (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  code VARCHAR(50) UNIQUE NOT NULL,
+  type VARCHAR(20) NOT NULL,
+  value DECIMAL(10, 2) NOT NULL,
+  min_order_amount DECIMAL(10, 2) DEFAULT 0,
+  max_usage INTEGER,
+  current_usage INTEGER DEFAULT 0,
+  valid_until TIMESTAMP,
+  status VARCHAR(20) DEFAULT 'active',
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);</code></pre>
+
+                <h4 style="margin-top: 1.5rem;">6. Suppliers Table</h4>
+                <pre><code>CREATE TABLE suppliers (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  contact_person VARCHAR(255),
+  email VARCHAR(255),
+  phone VARCHAR(20),
+  gst_number VARCHAR(50),
+  payment_terms VARCHAR(100),
+  status VARCHAR(20) DEFAULT 'active',
+  address TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);</code></pre>
+
+                <h4 style="margin-top: 1.5rem;">7. Shipments Table</h4>
+                <pre><code>CREATE TABLE shipments (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  order_id UUID REFERENCES orders(id),
+  tracking_number VARCHAR(100) UNIQUE NOT NULL,
+  courier VARCHAR(100),
+  status VARCHAR(50) DEFAULT 'processing',
+  shipped_date TIMESTAMP,
+  estimated_delivery TIMESTAMP,
+  actual_delivery TIMESTAMP,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);</code></pre>
+            </div>
+        </div>
+
+        <h2>Step 3: Enable Row Level Security (RLS)</h2>
+        <div class="step">
+            <span class="step-number">3</span>
+            <div style="display: inline-block; vertical-align: top; width: calc(100% - 60px);">
+                <h3>Secure Your Data</h3>
+                <pre><code>-- Enable RLS on all tables
+ALTER TABLE products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE customers ENABLE ROW LEVEL SECURITY;
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
+ALTER TABLE discounts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE suppliers ENABLE ROW LEVEL SECURITY;
+ALTER TABLE shipments ENABLE ROW LEVEL SECURITY;
+
+-- Public read access for products
+CREATE POLICY "Public can view products" ON products
+  FOR SELECT USING (status = 'active');
+
+-- Authenticated users can view their own data
+CREATE POLICY "Users can view own orders" ON orders
+  FOR SELECT USING (auth.uid() IN (
+    SELECT user_id FROM customers WHERE id = orders.customer_id
+  ));
+
+-- Admin full access (you'll need to set up admin role)
+CREATE POLICY "Admins have full access" ON products
+  FOR ALL USING (
+    auth.jwt() ->> 'role' = 'admin'
+  );</code></pre>
+            </div>
+        </div>
+
+        <h2>Step 4: Get API Credentials</h2>
+        <div class="step">
+            <span class="step-number">4</span>
+            <div style="display: inline-block; vertical-align: top; width: calc(100% - 60px);">
+                <h3>Copy Your Credentials</h3>
+                <ol style="line-height: 2; margin-left: 2rem;">
+                    <li>Go to Project Settings → API</li>
+                    <li>Copy these values:
+                        <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                            <li><strong>Project URL:</strong> <code>https://xxxxx.supabase.co</code></li>
+                            <li><strong>anon/public key:</strong> <code>eyJhbGc...</code></li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <h2>Step 5: Frontend Integration</h2>
+        <div class="step">
+            <span class="step-number">5</span>
+            <div style="display: inline-block; vertical-align: top; width: calc(100% - 60px);">
+                <h3>Add Supabase Client</h3>
+                <p>Add this to your HTML files (before closing <code>&lt;/body&gt;</code> tag):</p>
+                <pre><code>&lt;!-- Supabase Client --&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"&gt;&lt;/script&gt;
+&lt;script&gt;
+  // Initialize Supabase
+  const SUPABASE_URL = 'YOUR_PROJECT_URL';
+  const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // Example: Fetch products
+  async function getProducts() {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('status', 'active');
+    
+    if (error) console.error('Error:', error);
+    else console.log('Products:', data);
+    return data;
+  }
+
+  // Example: Create order
+  async function createOrder(orderData) {
+    const { data, error } = await supabase
+      .from('orders')
+      .insert([orderData])
+      .select();
+    
+    if (error) console.error('Error:', error);
+    else console.log('Order created:', data);
+    return data;
+  }
+
+  // Example: User signup
+  async function signUp(email, password) {
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password
+    });
+    
+    if (error) console.error('Error:', error);
+    else console.log('User created:', data);
+    return data;
+  }
+&lt;/script&gt;</code></pre>
+            </div>
+        </div>
+
+        <h2>Step 6: Storage Setup (Product Images)</h2>
+        <div class="step">
+            <span class="step-number">6</span>
+            <div style="display: inline-block; vertical-align: top; width: calc(100% - 60px);">
+                <h3>Create Storage Bucket</h3>
+                <ol style="line-height: 2; margin-left: 2rem;">
+                    <li>Go to Storage in Supabase dashboard</li>
+                    <li>Create new bucket: <code>product-images</code></li>
+                    <li>Make it public</li>
+                    <li>Upload images and get URLs</li>
+                </ol>
+                
+                <h4 style="margin-top: 1.5rem;">Upload Image Example:</h4>
+                <pre><code>async function uploadProductImage(file) {
+  const fileName = `${Date.now()}_${file.name}`;
+  const { data, error } = await supabase.storage
+    .from('product-images')
+    .upload(fileName, file);
+  
+  if (error) console.error('Error:', error);
+  else {
+    const imageUrl = supabase.storage
+      .from('product-images')
+      .getPublicUrl(fileName).data.publicUrl;
+    console.log('Image URL:', imageUrl);
+    return imageUrl;
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <h2>Step 7: Testing</h2>
+        <div class="success-box">
+            <h3>✅ Test Your Integration</h3>
+            <ol style="line-height: 2; margin-left: 2rem; margin-top: 1rem;">
+                <li>Open browser console (F12)</li>
+                <li>Run: <code>getProducts()</code></li>
+                <li>Check if data is returned</li>
+                <li>Test user signup/login</li>
+                <li>Test creating an order</li>
+            </ol>
+        </div>
+
+        <h2>Migration from LocalStorage to Supabase</h2>
+        <div class="warning-box">
+            <h3>⚠️ Migration Steps</h3>
+            <ol style="line-height: 2; margin-left: 2rem; margin-top: 1rem;">
+                <li>Export demo data from LocalStorage</li>
+                <li>Transform to Supabase format</li>
+                <li>Bulk insert into Supabase tables</li>
+                <li>Update frontend to use Supabase instead of LocalStorage</li>
+                <li>Test thoroughly before going live</li>
+            </ol>
+        </div>
+
+        <h2>Next Steps</h2>
+        <div class="info-box">
+            <h3>🚀 Ready to Deploy?</h3>
+            <ul style="line-height: 2; margin-left: 2rem; margin-top: 1rem;">
+                <li>✅ Database schema created</li>
+                <li>✅ RLS policies configured</li>
+                <li>✅ API credentials obtained</li>
+                <li>✅ Frontend integration code ready</li>
+                <li>✅ Storage bucket created</li>
+            </ul>
+            <p style="margin-top: 1rem;">
+                <strong>Need help?</strong> Contact: vaibhav.iimcal@gmail.com
+            </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="init-demo-data.html" class="btn">← Initialize Demo Data</a>
+            <a href="admin.html" class="btn">Go to Admin Dashboard →</a>
+        </div>
+    </div>
+</body>
+</html>
